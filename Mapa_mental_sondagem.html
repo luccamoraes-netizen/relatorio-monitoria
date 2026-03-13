@@ -3,213 +3,400 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mapa Mental — Sondagem de Alta Performance</title>
+<title>Mapa Mental — Sondagem de Vendas</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Bebas+Neue&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
-:root{--c1:#FF3CAC;--c2:#784BA0;--c3:#2B86C5;--c4:#00F5D4;--c5:#FFE74C;--c6:#FF6B35;--c7:#06D6A0;--c8:#118AB2;--dark:#0d0d1a;--mid:#13132a;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--dark);font-family:'Nunito',sans-serif;overflow-x:hidden;min-height:100vh;}
-.bg-blobs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.15;animation:blobF 12s ease-in-out infinite alternate;}
-.b1{width:600px;height:600px;background:var(--c1);top:-150px;left:-150px;}
-.b2{width:500px;height:500px;background:var(--c3);bottom:-100px;right:-100px;animation-delay:-4s;}
-.b3{width:400px;height:400px;background:var(--c4);top:35%;left:55%;animation-delay:-8s;}
-.b4{width:350px;height:350px;background:var(--c5);top:10%;right:15%;animation-delay:-2s;}
-.b5{width:300px;height:300px;background:var(--c7);bottom:20%;left:10%;animation-delay:-6s;}
-@keyframes blobF{0%{transform:translateY(0) scale(1)}100%{transform:translateY(50px) scale(1.1)}}
-.particles{position:fixed;inset:0;pointer-events:none;z-index:0;}
-.particle{position:absolute;animation:pFloat linear infinite;opacity:0;}
-@keyframes pFloat{0%{transform:translateY(100vh) rotate(0);opacity:0}10%{opacity:.7}90%{opacity:.4}100%{transform:translateY(-10vh) rotate(720deg);opacity:0}}
-.prog{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--c1),var(--c4),var(--c5));z-index:9999;transition:width .1s;box-shadow:0 0 12px var(--c4);}
-.hero{position:relative;z-index:10;text-align:center;padding:55px 20px 20px;}
-.hero-tag{display:inline-block;background:linear-gradient(135deg,var(--c1),var(--c6));color:#fff;font-family:'Fredoka One',cursive;font-size:.88rem;letter-spacing:3px;padding:6px 22px;border-radius:50px;margin-bottom:16px;animation:tagPop .6s cubic-bezier(.34,1.56,.64,1) both;text-transform:uppercase;}
-@keyframes tagPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
-.hero-title{font-family:'Bebas Neue',cursive;font-size:clamp(2.8rem,8vw,7rem);line-height:1;letter-spacing:2px;background:linear-gradient(90deg,var(--c5),var(--c1),var(--c4),var(--c5));background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:titleSlide .8s .2s cubic-bezier(.34,1.56,.64,1) both,gradS 4s linear infinite;}
-@keyframes titleSlide{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes gradS{0%{background-position:0%}100%{background-position:300%}}
-.hero-sub{color:rgba(255,255,255,.6);font-size:1rem;margin-top:12px;font-weight:700;animation:fadeUp .6s .5s both;}
-@keyframes fadeUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
-.center-wrap{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;margin:30px 0 10px;}
-.center-node{position:relative;width:140px;height:140px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.pulse{position:absolute;width:100%;height:100%;border-radius:50%;border:3px solid var(--c4);animation:pulseR 2.2s ease-out infinite;pointer-events:none;}
-.pulse2{animation-delay:.7s;border-color:var(--c5);}
-.pulse3{animation-delay:1.4s;border-color:var(--c1);}
-@keyframes pulseR{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.8);opacity:0}}
-.center-circle{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--c1),var(--c3),var(--c4));display:flex;align-items:center;justify-content:center;font-size:3.2rem;position:relative;z-index:2;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;animation:glowCycle 4s linear infinite;}
-@keyframes glowCycle{0%{box-shadow:0 0 40px var(--c1),0 0 80px var(--c3)}33%{box-shadow:0 0 40px var(--c4),0 0 80px var(--c1)}66%{box-shadow:0 0 40px var(--c3),0 0 80px var(--c4)}100%{box-shadow:0 0 40px var(--c1),0 0 80px var(--c3)}}
-.center-circle:hover{transform:scale(1.18) rotate(15deg);}
-.center-hint{color:rgba(255,255,255,.4);font-size:.78rem;margin-top:10px;letter-spacing:1px;animation:fadeUp .5s 1.1s both;}
-.lead-badge{position:relative;z-index:10;text-align:center;margin:12px 0 8px;}
-.lead-badge span{font-family:'Bebas Neue',cursive;font-size:clamp(1.6rem,4vw,2.8rem);background:linear-gradient(90deg,var(--c4),var(--c3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;}
-.compass-badge{margin:0 auto 40px;position:relative;z-index:10;max-width:680px;background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.02));border:1.5px solid rgba(255,255,255,.12);border-radius:20px;padding:20px 28px;backdrop-filter:blur(10px);display:flex;align-items:center;gap:16px;animation:fadeUp .7s .7s both;}
-.compass-icon{font-size:2.6rem;animation:spin 8s linear infinite;flex-shrink:0;}
-@keyframes spin{to{transform:rotate(360deg)}}
-.compass-text strong{color:var(--c4);font-family:'Fredoka One',cursive;font-size:1.2rem;display:block;margin-bottom:3px;}
-.compass-text span{color:rgba(255,255,255,.65);font-size:.9rem;line-height:1.5;}
-.cards-container{position:relative;z-index:10;max-width:1320px;margin:0 auto;padding:0 20px 60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:26px;}
-.card{background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border-radius:24px;padding:28px 24px 24px;position:relative;overflow:hidden;cursor:pointer;transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;animation:cardIn .6s both;backdrop-filter:blur(8px);}
-.card:nth-child(1){animation-delay:.1s}.card:nth-child(2){animation-delay:.2s}.card:nth-child(3){animation-delay:.3s}.card:nth-child(4){animation-delay:.4s}.card:nth-child(5){animation-delay:.5s}
-@keyframes cardIn{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}
-.card::before{content:'';position:absolute;inset:0;border-radius:22px;padding:2px;background:var(--cg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:destination-out;mask-composite:exclude;transition:opacity .3s;opacity:.5;}
-.card:hover::before{opacity:1}
-.card:hover{transform:translateY(-10px) scale(1.025);box-shadow:0 32px 64px rgba(0,0,0,.45),0 0 50px var(--cs);}
-.card[data-card="1"]{--cg:linear-gradient(135deg,#FF3CAC,#FF6B35);--cs:rgba(255,60,172,.35);}
-.card[data-card="2"]{--cg:linear-gradient(135deg,#784BA0,#2B86C5);--cs:rgba(120,75,160,.35);}
-.card[data-card="3"]{--cg:linear-gradient(135deg,#06D6A0,#118AB2);--cs:rgba(6,214,160,.35);}
-.card[data-card="4"]{--cg:linear-gradient(135deg,#FFE74C,#FF6B35);--cs:rgba(255,231,76,.35);}
-.card[data-card="5"]{--cg:linear-gradient(135deg,#FF3CAC,#784BA0);--cs:rgba(255,60,172,.35);}
-.card-num{position:absolute;top:18px;right:22px;font-family:'Bebas Neue',cursive;font-size:4.5rem;line-height:1;opacity:.07;color:#fff;pointer-events:none;transition:opacity .3s;}
-.card:hover .card-num{opacity:.14}
-.card-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
-.card-emoji{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.85rem;background:var(--cg);flex-shrink:0;animation:eB 2.5s ease-in-out infinite;box-shadow:0 8px 20px var(--cs);}
-@keyframes eB{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.card-label{font-family:'Fredoka One',cursive;font-size:1.4rem;color:#fff;line-height:1.2;}
-.card-q{color:rgba(255,255,255,.5);font-size:.8rem;margin-top:3px;font-style:italic;line-height:1.4;}
-.card-divider{height:2px;border-radius:2px;background:var(--cg);margin:14px 0;}
-.card-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;}
-.chip{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.12);border-radius:50px;padding:5px 13px;font-size:.78rem;color:rgba(255,255,255,.82);font-weight:700;cursor:pointer;transition:all .25s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;position:relative;overflow:hidden;}
-.chip::before{content:'';position:absolute;inset:0;background:var(--cg);opacity:0;transition:opacity .25s;border-radius:50px;}
-.chip:hover::before{opacity:1}
-.chip:hover{transform:scale(1.1) translateY(-2px);border-color:transparent;color:#fff;box-shadow:0 6px 16px var(--cs);}
-.chip span{position:relative;z-index:1;}
-.card-preview{background:rgba(0,0,0,.25);border-radius:14px;padding:12px 14px;border-left:3px solid;margin-bottom:14px;}
-.card[data-card="1"] .card-preview{border-color:#FF3CAC;}
-.card[data-card="2"] .card-preview{border-color:#784BA0;}
-.card[data-card="3"] .card-preview{border-color:#06D6A0;}
-.card[data-card="4"] .card-preview{border-color:#FFE74C;}
-.card[data-card="5"] .card-preview{border-color:#FF3CAC;}
-.preview-label{font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.4);font-weight:900;margin-bottom:5px;}
-.preview-tip{font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.45;font-style:italic;}
-.obj-badge{background:var(--cg);border-radius:14px;padding:11px 15px;position:relative;overflow:hidden;}
-.obj-badge::after{content:'🎯';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:1.5rem;opacity:.25;}
-.obj-label{font-size:.65rem;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.65);font-weight:900;margin-bottom:2px;}
-.obj-text{font-family:'Fredoka One',cursive;font-size:.95rem;color:#fff;line-height:1.3;}
-.click-hint{text-align:center;font-size:.78rem;color:rgba(255,255,255,.3);margin:4px 0 8px;font-style:italic;position:relative;z-index:10;}
-.click-hint span{display:inline-block;animation:bounce2 1.2s ease-in-out infinite;}
-@keyframes bounce2{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(14px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .3s;}
-.modal-overlay.open{opacity:1;pointer-events:all;}
-.modal{background:linear-gradient(145deg,#1a1a2e,#16213e);border-radius:28px;max-width:600px;width:100%;position:relative;border:2px solid rgba(255,255,255,.1);transform:scale(.8) translateY(30px);transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 40px 100px rgba(0,0,0,.7);max-height:90vh;overflow-y:auto;overflow-x:hidden;}
-.modal-overlay.open .modal{transform:scale(1) translateY(0);}
-.modal::-webkit-scrollbar{width:5px;}
-.modal::-webkit-scrollbar-thumb{background:var(--c1);border-radius:5px;}
-.modal-hdr{padding:28px 28px 0;position:relative;}
-.modal-close{position:absolute;top:16px;right:18px;background:rgba(255,255,255,.1);border:none;color:#fff;font-size:1.1rem;border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:10;}
-.modal-close:hover{background:var(--c1);transform:rotate(90deg);}
-.modal-emoji-big{font-size:3rem;margin-bottom:10px;display:block;}
-.modal-title{font-family:'Bebas Neue',cursive;font-size:2.2rem;color:#fff;letter-spacing:1px;margin-bottom:4px;}
-.modal-question{color:rgba(255,255,255,.5);font-style:italic;font-size:.88rem;margin-bottom:18px;line-height:1.5;}
-.modal-divider{height:2px;border-radius:2px;margin-bottom:0;}
-.modal-tabs{display:flex;gap:0;border-bottom:1.5px solid rgba(255,255,255,.08);padding:0 28px;overflow-x:auto;}
-.modal-tabs::-webkit-scrollbar{display:none;}
-.tab-btn{padding:12px 18px;font-family:'Fredoka One',cursive;font-size:.92rem;color:rgba(255,255,255,.4);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;flex-shrink:0;}
-.tab-btn.active{color:#fff;border-bottom-color:var(--tac,var(--c4));}
-.modal-body{padding:20px 28px 28px;}
-.tab-panel{display:none;}
-.tab-panel.active{display:block;}
-.perg-item{background:rgba(255,255,255,.05);border-radius:14px;padding:13px 16px;margin-bottom:9px;border-left:3px solid;animation:itemIn .3s both;transition:all .2s;cursor:pointer;}
-.perg-item:hover{background:rgba(255,255,255,.09);transform:translateX(5px);}
-@keyframes itemIn{from{transform:translateX(-20px);opacity:0}to{transform:translateX(0);opacity:1}}
-.perg-item-q{font-size:.9rem;color:#fff;font-weight:700;margin-bottom:4px;}
-.perg-item-hint{font-size:.75rem;color:rgba(255,255,255,.45);line-height:1.4;font-style:italic;}
-.sinal-item{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.04);border-radius:12px;padding:12px 14px;margin-bottom:8px;animation:itemIn .3s both;transition:all .2s;}
-.sinal-item:hover{background:rgba(255,255,255,.08);}
-.sinal-icon{font-size:1.4rem;flex-shrink:0;margin-top:1px;}
-.sinal-text strong{display:block;font-size:.88rem;color:#fff;margin-bottom:2px;}
-.sinal-text span{font-size:.75rem;color:rgba(255,255,255,.5);line-height:1.4;}
-.pitfall-item{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-radius:12px;margin-bottom:8px;animation:itemIn .3s both;}
-.pitfall-item.red{background:rgba(255,60,172,.1);border:1px solid rgba(255,60,172,.2);}
-.pitfall-item.green{background:rgba(6,214,160,.1);border:1px solid rgba(6,214,160,.2);}
-.pi-icon{font-size:1.2rem;flex-shrink:0;}
-.pi-text{font-size:.82rem;line-height:1.45;}
-.pitfall-item.red .pi-text{color:rgba(255,200,200,.8);}
-.pitfall-item.green .pi-text{color:rgba(180,255,235,.8);}
-.modal-obj{border-radius:16px;padding:16px 18px;margin-top:16px;}
-.modal-obj-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.6);font-weight:900;margin-bottom:4px;}
-.modal-obj-txt{font-family:'Fredoka One',cursive;font-size:1.05rem;color:#fff;}
-#fwCanvas{position:fixed;inset:0;pointer-events:none;z-index:500;}
-.closer-section{position:relative;z-index:10;max-width:940px;margin:0 auto 50px;padding:0 20px;}
-.section-title{font-family:'Bebas Neue',cursive;font-size:clamp(2rem,5vw,3.2rem);text-align:center;letter-spacing:2px;margin-bottom:22px;}
-.closer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-@media(max-width:600px){.closer-grid{grid-template-columns:1fr}}
-.closer-item{background:rgba(255,255,255,.05);border-radius:18px;padding:22px 18px;text-align:center;border:1.5px solid rgba(255,255,255,.1);transition:all .3s cubic-bezier(.34,1.56,.64,1);cursor:pointer;position:relative;overflow:hidden;}
-.closer-item:hover{transform:scale(1.06) translateY(-4px);background:rgba(255,255,255,.09);border-color:var(--c4);box-shadow:0 16px 40px rgba(0,245,212,.2);}
-.ci-icon{font-size:2.1rem;margin-bottom:9px;display:block;}
-.ci-word{font-family:'Fredoka One',cursive;font-size:1.4rem;background:linear-gradient(135deg,var(--c4),var(--c3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;margin-bottom:5px;}
-.ci-desc{color:rgba(255,255,255,.55);font-size:.8rem;line-height:1.45;}
-.vs-section{position:relative;z-index:10;max-width:940px;margin:0 auto 50px;padding:0 20px;}
-.vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-@media(max-width:600px){.vs-grid{grid-template-columns:1fr}}
-.vs-card{border-radius:18px;padding:22px;border:1.5px solid rgba(255,255,255,.1);}
-.vs-card.ass{background:linear-gradient(135deg,rgba(6,214,160,.12),rgba(17,138,178,.08));border-color:rgba(6,214,160,.3);}
-.vs-card.trad{background:linear-gradient(135deg,rgba(255,60,172,.08),rgba(255,107,53,.06));border-color:rgba(255,60,172,.2);}
-.vs-card-title{font-family:'Fredoka One',cursive;font-size:1.2rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.vs-card.ass .vs-card-title{color:var(--c7);}
-.vs-card.trad .vs-card-title{color:rgba(255,255,255,.45);}
-.vs-item{display:flex;align-items:flex-start;gap:8px;font-size:.83rem;color:rgba(255,255,255,.75);margin-bottom:9px;line-height:1.4;}
-.vs-item::before{content:'✅';font-size:.9rem;flex-shrink:0;}
-.vs-card.trad .vs-item::before{content:'❌';}
-.obj-section{position:relative;z-index:10;max-width:940px;margin:0 auto 50px;padding:0 20px;}
-.obj-card{background:rgba(255,255,255,.05);border-radius:18px;overflow:hidden;border:1.5px solid rgba(255,255,255,.08);cursor:pointer;transition:all .3s;margin-bottom:10px;}
-.obj-card:hover{border-color:var(--c5);box-shadow:0 12px 30px rgba(255,231,76,.15);}
-.obj-header{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.obj-q{font-family:'Fredoka One',cursive;font-size:.98rem;color:var(--c5);}
-.obj-arrow{color:rgba(255,255,255,.3);transition:transform .3s;font-size:1.1rem;flex-shrink:0;}
-.obj-card.open .obj-arrow{transform:rotate(90deg);}
-.obj-body{max-height:0;overflow:hidden;transition:max-height .4s ease;}
-.obj-card.open .obj-body{max-height:320px;}
-.obj-answer{padding:0 18px 16px;font-size:.87rem;color:rgba(255,255,255,.7);line-height:1.6;border-top:1px solid rgba(255,255,255,.07);}
-.obj-answer strong{color:var(--c4);display:block;margin-bottom:6px;font-family:'Fredoka One',cursive;font-size:.95rem;padding-top:12px;}
-.shimmer-ring{position:fixed;border-radius:50%;pointer-events:none;z-index:499;animation:shimmerOut .9s ease-out forwards;}
-@keyframes shimmerOut{0%{transform:translate(-50%,-50%) scale(0);opacity:1;border-width:8px}100%{transform:translate(-50%,-50%) scale(6);opacity:0;border-width:1px}}
-.conf{position:fixed;pointer-events:none;z-index:9999;animation:confFall 1.3s ease-in forwards;}
-@keyframes confFall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(150px) rotate(720deg);opacity:0}}
-@keyframes rippleA{0%{transform:scale(0);opacity:1}100%{transform:scale(30);opacity:0}}
-@keyframes flashOut{0%{opacity:1}100%{opacity:0}}
-.footer{text-align:center;padding:30px 20px;color:rgba(255,255,255,.2);font-size:.78rem;position:relative;z-index:10;letter-spacing:1px;}
-.footer span{color:var(--c1);}
-@media(max-width:700px){.cards-container{grid-template-columns:1fr}.compass-badge{flex-direction:column;text-align:center}.modal-body{padding:16px 18px 22px}.modal-hdr{padding:22px 20px 0}}
+  :root {
+    --c1: #FF3CAC;
+    --c2: #784BA0;
+    --c3: #2B86C5;
+    --c4: #00F5D4;
+    --c5: #FFE74C;
+    --c6: #FF6B35;
+    --c7: #06D6A0;
+    --c8: #118AB2;
+    --dark: #0d0d1a;
+    --light: #f9f5ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  #canvasExplosion {
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+  }
+
+  .bg-blobs {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+    animation: blobFloat 10s ease-in-out infinite alternate;
+  }
+  .blob1 { width:500px;height:500px;background:var(--c1);top:-100px;left:-100px;animation-delay:0s; }
+  .blob2 { width:400px;height:400px;background:var(--c3);bottom:-80px;right:-80px;animation-delay:-3s; }
+  .blob3 { width:350px;height:350px;background:var(--c4);top:40%;left:60%;animation-delay:-6s; }
+  .blob4 { width:300px;height:300px;background:var(--c5);top:20%;right:20%;animation-delay:-1.5s; }
+  @keyframes blobFloat {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(40px) scale(1.08); }
+  }
+
+  .particles { position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0; }
+  .particle {
+    position:absolute;
+    border-radius:50%;
+    animation: particleFloat linear infinite;
+    opacity: 0;
+  }
+  @keyframes particleFloat {
+    0%   { transform: translateY(100vh) rotate(0); opacity:0; }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.5; }
+    100% { transform: translateY(-10vh) rotate(720deg); opacity:0; }
+  }
+
+  .hero {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 60px 20px 30px;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--c1), var(--c6));
+    color: #fff;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    padding: 6px 22px;
+    border-radius: 50px;
+    margin-bottom: 18px;
+    animation: tagPop 0.6s cubic-bezier(.34,1.56,.64,1) both;
+    text-transform: uppercase;
+  }
+  @keyframes tagPop { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+
+  .hero-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 1;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, var(--c5), var(--c1), var(--c4), var(--c5));
+    background-size: 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: titleSlide 0.8s 0.2s cubic-bezier(.34,1.56,.64,1) both, gradShift 4s linear infinite;
+  }
+  @keyframes titleSlide { from{transform:translateY(40px);opacity:0} to{transform:translateY(0);opacity:1} }
+  @keyframes gradShift { 0%{background-position:0%} 100%{background-position:300%} }
+
+  .hero-subtitle {
+    color: rgba(255,255,255,0.65);
+    font-size: 1.05rem;
+    margin-top: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    animation: fadeUp 0.6s 0.5s both;
+  }
+  @keyframes fadeUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+  .compass-badge {
+    margin: 0 auto 50px;
+    position: relative;
+    z-index: 10;
+    max-width: 650px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 22px 30px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    animation: fadeUp 0.7s 0.7s both;
+  }
+  .compass-icon {
+    font-size: 2.8rem;
+    animation: spin 8s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform:rotate(360deg) } }
+  .compass-text { text-align: left; }
+  .compass-text strong {
+    color: var(--c4);
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.25rem;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .compass-text span { color: rgba(255,255,255,0.7); font-size: 0.95rem; line-height: 1.5; }
+
+  .cards-container {
+    position: relative;
+    z-index: 10;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 30px;
+  }
+
+  .card {
+    background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    border-radius: 24px;
+    border: 2px solid transparent;
+    padding: 32px 28px 28px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s ease;
+    animation: cardIn 0.6s both;
+    backdrop-filter: blur(8px);
+  }
+  .card:nth-child(1){animation-delay:.1s} .card:nth-child(2){animation-delay:.2s}
+  .card:nth-child(3){animation-delay:.3s} .card:nth-child(4){animation-delay:.4s}
+  .card:nth-child(5){animation-delay:.5s}
+  @keyframes cardIn { from{transform:translateY(50px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+  .card::before {
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:22px;
+    padding:2px;
+    background: var(--card-gradient);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    transition: opacity 0.3s;
+    opacity: 0.6;
+  }
+  .card:hover::before { opacity: 1; }
+
+  .card::after {
+    content:'';
+    position:absolute;
+    top:-50%;left:-50%;
+    width:200%;height:200%;
+    background: radial-gradient(circle at center, var(--card-glow) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events:none;
+  }
+  .card:hover::after { opacity: 0.12; }
+
+  .card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 40px var(--card-shadow);
+  }
+
+  .card[data-card="1"] { --card-gradient:linear-gradient(135deg,#FF3CAC,#FF6B35); --card-glow:#FF3CAC; --card-shadow:rgba(255,60,172,0.3); --theme-color:#FF3CAC; }
+  .card[data-card="2"] { --card-gradient:linear-gradient(135deg,#784BA0,#2B86C5); --card-glow:#784BA0; --card-shadow:rgba(120,75,160,0.3); --theme-color:#784BA0; }
+  .card[data-card="3"] { --card-gradient:linear-gradient(135deg,#06D6A0,#118AB2); --card-glow:#06D6A0; --card-shadow:rgba(6,214,160,0.3); --theme-color:#06D6A0; }
+  .card[data-card="4"] { --card-gradient:linear-gradient(135deg,#FFE74C,#FF6B35); --card-glow:#FFE74C; --card-shadow:rgba(255,231,76,0.3); --theme-color:#FFE74C; }
+  .card[data-card="5"] { --card-gradient:linear-gradient(135deg,#FF3CAC,#784BA0); --card-glow:#FF3CAC; --card-shadow:rgba(255,60,172,0.3); --theme-color:#FF3CAC; }
+
+  .card-number {
+    position: absolute;
+    top: 20px; right: 24px;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 4.5rem;
+    line-height: 1;
+    opacity: 0.08;
+    color: #fff;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .card:hover .card-number { opacity: 0.15; }
+
+  .card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .card-emoji {
+    width: 58px; height: 58px;
+    border-radius: 16px;
+    display: flex;align-items:center;justify-content:center;
+    font-size: 1.9rem;
+    background: var(--card-gradient);
+    flex-shrink: 0;
+    animation: emojiBounce 2s ease-in-out infinite;
+    box-shadow: 0 8px 20px var(--card-shadow);
+  }
+  @keyframes emojiBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+
+  .card-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.45rem;
+    color: #fff;
+    line-height: 1.2;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  .card-question {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.82rem;
+    margin-top: 3px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .card-divider {
+    height: 2px;
+    border-radius: 2px;
+    background: var(--card-gradient);
+    margin: 16px 0;
+    transform-origin: left;
+    animation: dividerGrow 0.5s 0.8s both;
+  }
+  @keyframes dividerGrow { from{transform:scaleX(0)} to{transform:scaleX(1)} }
+
+  .card-items { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .item-chip {
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.85);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+  }
+  .item-chip::before {
+    content:'';
+    position:absolute;inset:0;
+    background: var(--card-gradient);
+    opacity:0;
+    transition:opacity 0.25s;
+    border-radius:50px;
+  }
+  .item-chip:hover::before { opacity:1; }
+  .item-chip:hover {
+    transform: scale(1.08) translateY(-2px);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 6px 16px var(--card-shadow);
+  }
+  .item-chip span { position:relative;z-index:1; }
+
+  .obj-badge { background: var(--card-gradient); border-radius: 14px; padding: 12px 16px; position: relative; overflow: hidden; }
+  .obj-badge::before { content:'🎯'; position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:1.6rem; opacity:0.3; }
+  .obj-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.7); font-weight: 900; margin-bottom: 3px; }
+  .obj-text { font-family: 'Fredoka One', cursive; font-size: 1rem; color: #fff; line-height: 1.3; text-shadow: 0 1px 6px rgba(0,0,0,0.3); }
+
+  .closer-section { position: relative; z-index: 10; max-width: 900px; margin: 0 auto 60px; padding: 0 20px; animation: fadeUp 0.6s 0.6s both; }
+  .closer-title { font-family: 'Bebas Neue', cursive; font-size: clamp(2rem, 5vw, 3.5rem); text-align: center; color: var(--c5); letter-spacing: 2px; margin-bottom: 24px; text-shadow: 0 0 30px rgba(255,231,76,0.5); }
+  .closer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media(max-width:600px){.closer-grid{grid-template-columns:1fr}}
+
+  .closer-item { background: rgba(255,255,255,0.05); border-radius: 18px; padding: 24px 20px; text-align: center; border: 1.5px solid rgba(255,255,255,0.1); transition: all 0.3s cubic-bezier(.34,1.56,.64,1); cursor: pointer; }
+  .closer-item:hover { transform: scale(1.06) translateY(-4px); background: rgba(255,255,255,0.1); border-color: var(--c4); box-shadow: 0 16px 40px rgba(0,245,212,0.2); }
+  .closer-item .icon { font-size: 2.2rem; margin-bottom: 10px; display:block; }
+  .closer-item .word { font-family: 'Fredoka One', cursive; font-size: 1.5rem; background: linear-gradient(135deg, var(--c4), var(--c3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; margin-bottom: 6px; }
+  .closer-item .desc { color: rgba(255,255,255,0.6); font-size: 0.82rem; line-height: 1.4; }
+
+  .modal-overlay { position:fixed;inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:1000; display:flex;align-items:center;justify-content:center; padding:20px; opacity:0;pointer-events:none; transition:opacity 0.3s; }
+  .modal-overlay.open { opacity:1;pointer-events:all; }
+  .modal { background:linear-gradient(145deg,#1a1a2e,#16213e); border-radius:24px; padding:36px 32px; max-width:480px;width:100%; position:relative; border:2px solid rgba(255,255,255,0.1); transform:scale(0.8) translateY(30px); transition:transform 0.4s cubic-bezier(.34,1.56,.64,1); box-shadow:0 40px 80px rgba(0,0,0,0.6); }
+  .modal-overlay.open .modal { transform:scale(1) translateY(0); }
+  .modal-close { position:absolute;top:14px;right:18px; background:rgba(255,255,255,0.1);border:none; color:#fff;font-size:1.2rem;border-radius:50%; width:34px;height:34px;cursor:pointer; display:flex;align-items:center;justify-content:center; transition:all 0.2s; }
+  .modal-close:hover { background:var(--c1);transform:rotate(90deg); }
+  .modal-emoji { font-size:3rem;margin-bottom:12px;display:block; }
+  .modal-title { font-family:'Bebas Neue',cursive; font-size:2rem; color:#fff; margin-bottom:6px; letter-spacing:1px; }
+  .modal-question { color:rgba(255,255,255,0.5); font-style:italic; font-size:0.9rem; margin-bottom:20px; line-height:1.5; }
+  .modal-items { display:flex;flex-direction:column;gap:8px;margin-bottom:20px; }
+  .modal-item { display:flex;align-items:center;gap:10px; background:rgba(255,255,255,0.05); border-radius:12px;padding:10px 14px; font-size:0.9rem;color:rgba(255,255,255,0.85); animation:itemIn 0.3s both; transition:all 0.2s; }
+  .modal-item:hover { background:rgba(255,255,255,0.1); transform:translateX(6px); }
+  @keyframes itemIn { from{transform:translateX(-20px);opacity:0} to{transform:translateX(0);opacity:1} }
+  .modal-item-dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+  .modal-obj { border-radius:14px;padding:14px 18px; background:var(--modal-gradient); }
+  .modal-obj-label { font-size:0.68rem;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.6);font-weight:900; }
+  .modal-obj-text { font-family:'Fredoka One',cursive;font-size:1.1rem;color:#fff;margin-top:3px; }
+
+  .footer { text-align:center; padding:30px 20px; color:rgba(255,255,255,0.25); font-size:0.8rem; position:relative;z-index:10; letter-spacing:1px; }
+  .footer span { color:var(--c1); }
+
+  .pulse-ring { position:absolute; width:100%;height:100%; border-radius:50%; background:transparent; border:3px solid var(--c4); animation:pulseOut 2s ease-out infinite; pointer-events:none; }
+  @keyframes pulseOut { 0%{transform:scale(0.5);opacity:1} 100%{transform:scale(1.5);opacity:0} }
+
+  .center-node { position:relative;z-index:10; display:flex;justify-content:center; margin-bottom:40px; }
+  .center-node-inner { position:relative; width:120px;height:120px; display:flex;align-items:center;justify-content:center; }
+  .center-circle { width:100px;height:100px; border-radius:50%; background:linear-gradient(135deg,var(--c1),var(--c3),var(--c4)); display:flex;align-items:center;justify-content:center; font-size:3rem; animation:rotate3d 6s linear infinite; box-shadow:0 0 40px rgba(255,60,172,0.5),0 0 80px rgba(43,134,197,0.3); position:relative;z-index:2; cursor:pointer; transition:transform 0.3s; }
+  .center-circle:hover { transform:scale(1.15); }
+  @keyframes rotate3d { 0%{box-shadow:0 0 40px var(--c1),0 0 80px var(--c3)} 33%{box-shadow:0 0 40px var(--c4),0 0 80px var(--c1)} 66%{box-shadow:0 0 40px var(--c3),0 0 80px var(--c4)} 100%{box-shadow:0 0 40px var(--c1),0 0 80px var(--c3)} }
+
+  .lead-badge { display:inline-block; font-family:'Fredoka One',cursive; font-size:clamp(1.5rem,4vw,2.5rem); background:linear-gradient(90deg,var(--c4),var(--c3)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-align:center; position:relative;z-index:10; margin-bottom:8px; display:block; animation:fadeUp 0.5s 0.9s both; }
+
+  @media(max-width:700px) { .cards-container { grid-template-columns:1fr; } .compass-badge { flex-direction:column;text-align:center; } }
+
+  .progress-bar { position:fixed;top:0;left:0; height:4px; background:linear-gradient(90deg,var(--c1),var(--c4),var(--c5)); z-index:9999; transition:width 0.1s; box-shadow:0 0 10px var(--c4); }
 </style>
 </head>
 <body>
-<canvas id="fwCanvas"></canvas>
-<div class="prog" id="prog"></div>
-<div class="bg-blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div><div class="blob b5"></div></div>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="bg-blobs">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+  <div class="blob blob4"></div>
+</div>
 <div class="particles" id="particles"></div>
 
+<canvas id="canvasExplosion"></canvas>
+
 <section class="hero">
-  <div class="hero-tag">🚀 Guia de Alta Performance em Vendas</div>
-  <h1 class="hero-title">SONDAGEM<br>MATADORA</h1>
-  <p class="hero-sub">O mapa que transforma conversas em fechamentos 🔥 Assinatura de veículos</p>
+  <div class="hero-tag">🚀 Guia de Alta Performance</div>
+  <h1 class="hero-title">SONDAGEM<br>DE VENDAS</h1>
+  <p class="hero-subtitle">O mapa que transforma conversas em fechamentos 🔥</p>
 </section>
 
-<div class="center-wrap">
-  <div class="center-node" id="centerNode" onclick="bigBang(event)">
-    <div class="pulse"></div><div class="pulse pulse2"></div><div class="pulse pulse3"></div>
-    <div class="center-circle">🗺️</div>
+<div class="center-node">
+  <div class="center-node-inner">
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring" style="animation-delay:0.7s;border-color:var(--c5)"></div>
+    <div class="center-circle" onclick="fancyExplode(event, '#00F5D4')">🗺️</div>
   </div>
-  <div class="center-hint">👆 Clica no mapa para o espetáculo!</div>
 </div>
-<div class="lead-badge"><span>⚡ LEAD NOVO ⚡</span></div>
-<p class="click-hint"><span>👇</span> Clique nos cards — cada um tem perguntas, sinais e armadilhas exclusivas</p>
+
+<div class="lead-badge">⚡ LEAD NOVO ⚡</div>
+<p style="text-align:center;color:rgba(255,255,255,0.4);font-size:0.85rem;margin-bottom:40px;position:relative;z-index:10;">Clique nos cards e chips para explorar</p>
 
 <section class="closer-section">
-  <div class="section-title" style="color:var(--c5);text-shadow:0 0 30px rgba(255,231,76,.5);">O MELHOR CLOSER</div>
+  <div class="closer-title">O MELHOR CLOSER</div>
   <div class="closer-grid">
-    <div class="closer-item" onclick="ripple(event)">
-      <span class="ci-icon">👂</span>
-      <span class="ci-word">ESCUTA</span>
-      <span class="ci-desc">Pare e escute. Cada palavra é dado de ouro. Quem fala mais, vende menos.</span>
+    <div class="closer-item" onclick="ripple(event); fancyExplode(event, '#FFE74C')">
+      <span class="icon">👂</span>
+      <span class="word">ESCUTA</span>
+      <span class="desc">Ouve com atenção total. Cada palavra do cliente é um dado.</span>
     </div>
-    <div class="closer-item" onclick="ripple(event)">
-      <span class="ci-icon">🔍</span>
-      <span class="ci-word">APROFUNDA</span>
-      <span class="ci-desc">"Por quê isso é importante pra você?" revela a dor real escondida por trás de cada resposta.</span>
+    <div class="closer-item" onclick="ripple(event); fancyExplode(event, '#00F5D4')">
+      <span class="icon">🔍</span>
+      <span class="word">APROFUNDA</span>
+      <span class="desc">Vai além da superfície. Pergunta o "por quê" por trás de cada resposta.</span>
     </div>
-    <div class="closer-item" onclick="ripple(event)">
-      <span class="ci-icon">🔗</span>
-      <span class="ci-word">CONECTA</span>
-      <span class="ci-desc">Liga cada resposta à assinatura. Faz o cliente sentir que a solução foi feita sob medida pra ele.</span>
+    <div class="closer-item" onclick="ripple(event); fancyExplode(event, '#2B86C5')">
+      <span class="icon">🔗</span>
+      <span class="word">CONECTA</span>
+      <span class="desc">Liga as respostas à solução. Faz o cliente ver que a assinatura é feita pra ele.</span>
     </div>
   </div>
 </section>
@@ -217,497 +404,222 @@ body{background:var(--dark);font-family:'Nunito',sans-serif;overflow-x:hidden;mi
 <div class="compass-badge">
   <div class="compass-icon">🧭</div>
   <div class="compass-text">
-    <strong>Não é questionário. É bússola.</strong>
-    <span>Use como guia da conversa — não como roteiro engessado. Adapte a ordem, salte etapas se o cliente já trouxer a resposta, e sempre retome o fio condutor: <em>qual dor a assinatura resolve pra esse cliente específico?</em></span>
+    <strong>Não é um questionário. É uma bússola.</strong>
+    <span>Use o mapa como guia da conversa — não como roteiro engessado. Ouça, adapte e conecte cada resposta à assinatura ideal.</span>
   </div>
 </div>
 
 <div class="cards-container">
-  <div class="card" data-card="1" onclick="openModal(1)">
-    <div class="card-num">01</div>
+  <div class="card" data-card="1" onclick="openModal(1); fancyExplode(event, '#FF3CAC')">
+    <div class="card-number">01</div>
     <div class="card-header">
       <div class="card-emoji">🔥</div>
-      <div><div class="card-label">Motivo da Busca</div><div class="card-q">O que levou o cliente até você?</div></div>
+      <div class="card-title-wrap">
+        <div class="card-label">Motivo da Busca</div>
+        <div class="card-question">O que levou o cliente a se interessar pela assinatura?</div>
+      </div>
     </div>
     <div class="card-divider"></div>
-    <div class="card-chips">
-      <div class="chip" onclick="chipClick(event)"><span>💰 Economia</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>⚡ Praticidade</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🚗 Troca de carro</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>💼 Trabalho/frota</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>➕ Segundo carro</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>😤 Cansaço de IPVA/seguro</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🔋 Quer elétrico/híbrido</span></div>
-    </div>
-    <div class="card-preview">
-      <div class="preview-label">💡 Frase de ouro — clique para expandir</div>
-      <div class="preview-tip">"O que te fez pensar em assinar um carro agora?"</div>
+    <div class="card-items">
+      <div class="item-chip" onclick="chipClick(event)"><span>💰 Economia</span></div>
+      <div class="item-chip" onclick="chipClick(event)"><span>⚡ Praticidade</span></div>
+      <div class="item-chip" onclick="chipClick(event)"><span>🚗 Troca de carro</span></div>
+      <div class="item-chip" onclick="chipClick(event)"><span>💼 Trabalho</span></div>
+      <div class="item-chip" onclick="chipClick(event)"><span>➕ Segundo carro</span></div>
     </div>
     <div class="obj-badge"><div class="obj-label">🎯 Objetivo</div><div class="obj-text">Descobrir a DOR que a assinatura resolve</div></div>
   </div>
 
-  <div class="card" data-card="2" onclick="openModal(2)">
-    <div class="card-num">02</div>
+  <div class="card" data-card="2" onclick="openModal(2); fancyExplode(event, '#784BA0')">
+    <div class="card-number">02</div>
     <div class="card-header">
       <div class="card-emoji">📍</div>
-      <div><div class="card-label">Situação Atual</div><div class="card-q">Qual o cenário de mobilidade do cliente hoje?</div></div>
+      <div class="card-title-wrap"><div class="card-label">Situação Atual</div><div class="card-question">Qual o cenário de mobilidade atual do cliente?</div></div>
     </div>
     <div class="card-divider"></div>
-    <div class="card-chips">
-      <div class="chip" onclick="chipClick(event)"><span>🚗 Carro próprio</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🚌 Transporte público</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>📱 Uber/99</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🏷️ Modelo atual</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>📅 Há quanto tempo</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🔧 Frequência de revisão</span></div>
+    <div class="card-items">
+      <div class="item-chip" onclick="chipClick(event)"><span>🚗 Carro próprio</span></div>
+      <div class="item-chip" onclick="chipClick(event)"><span>🚌 Transporte público</span></div>
+      <div class="item-chip" onclick="chipClick(event)"><span>📱 App de mobilidade</span></div>
+      <div class="item-chip" onclick="chipClick(event)"><span>🏷️ Modelo atual</span></div>
     </div>
-    <div class="card-preview">
-      <div class="preview-label">💡 Frase de ouro — clique para expandir</div>
-      <div class="preview-tip">"Quanto você gasta por mês hoje com seu carro/transporte, somando tudo?"</div>
-    </div>
-    <div class="obj-badge"><div class="obj-label">🎯 Objetivo</div><div class="obj-text">Mapear a dor financeira e operacional atual</div></div>
+    <div class="obj-badge"><div class="obj-label">🎯 Objetivo</div><div class="obj-text">Descobrir a DOR que a assinatura resolve</div></div>
   </div>
 
-  <div class="card" data-card="3" onclick="openModal(3)">
-    <div class="card-num">03</div>
+  <div class="card" data-card="3" onclick="openModal(3); fancyExplode(event, '#06D6A0')">
+    <div class="card-number">03</div>
     <div class="card-header">
       <div class="card-emoji">🛣️</div>
-      <div><div class="card-label">Perfil de Uso</div><div class="card-q">Como o carro vai ser usado no dia a dia?</div></div>
+      <div class="card-title-wrap"><div class="card-label">Perfil de Uso</div><div class="card-question">Como o cliente usa o carro no dia a dia?</div></div>
     </div>
     <div class="card-divider"></div>
-    <div class="card-chips">
-      <div class="chip" onclick="chipClick(event)"><span>📏 Km/mês</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🌆 Cidade ou estrada</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>👥 Quantas pessoas</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🎒 Porta-malas</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>⚙️ Auto ou manual</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🏢 Trabalho ou lazer</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>👶 Criança/pet a bordo</span></div>
+    <div class="card-items">
+      <div class="item-chip" onclick="chipClick(event)"><span>📏 Km/dia ou mês</span></div>
+      <div class="item-chip" onclick="chipClick(event)"><span>🌆 Cidade ou estrada</span></div>
     </div>
-    <div class="card-preview">
-      <div class="preview-label">💡 Frase de ouro — clique para expandir</div>
-      <div class="preview-tip">"Me conta um dia típico seu com o carro — do começo ao fim."</div>
-    </div>
-    <div class="obj-badge"><div class="obj-label">🎯 Objetivo</div><div class="obj-text">Identificar categoria, modelo e franquia ideais</div></div>
+    <div class="obj-badge"><div class="obj-label">🎯 Objetivo</div><div class="obj-text">Identificar categoria e franquia ideais</div></div>
   </div>
 
-  <div class="card" data-card="4" onclick="openModal(4)">
-    <div class="card-num">04</div>
+  <div class="card" data-card="4" onclick="openModal(4); fancyExplode(event, '#FFE74C')">
+    <div class="card-number">04</div>
     <div class="card-header">
       <div class="card-emoji">💳</div>
-      <div><div class="card-label">Situação Financeira</div><div class="card-q">Qual a capacidade e sensibilidade financeira?</div></div>
+      <div class="card-title-wrap"><div class="card-label">Situação Financeira</div><div class="card-question">Qual a capacidade financeira do cliente?</div></div>
     </div>
     <div class="card-divider"></div>
-    <div class="card-chips">
-      <div class="chip" onclick="chipClick(event)"><span>💵 Budget mensal</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🔧 Custo manutenção atual</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🛡️ Seguro atual</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>📊 Custo total mobilidade</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>💡 PJ ou PF?</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🏦 Parcela vs. mensalidade</span></div>
+    <div class="card-items">
+      <div class="item-chip" onclick="chipClick(event)"><span>💵 Quanto quer pagar</span></div>
+      <div class="item-chip" onclick="chipClick(event)"><span>🔧 Custos</span></div>
     </div>
-    <div class="card-preview">
-      <div class="preview-label">💡 Frase de ouro — clique para expandir</div>
-      <div class="preview-tip">"Se a gente conseguir um valor com tudo incluído dentro do seu bolso, faz sentido fechar hoje?"</div>
-    </div>
-    <div class="obj-badge"><div class="obj-label">🎯 Objetivo</div><div class="obj-text">Posicionar o VALOR, não o preço da assinatura</div></div>
+    <div class="obj-badge"><div class="obj-label">🎯 Objetivo</div><div class="obj-text">Posicionar o VALOR da assinatura</div></div>
   </div>
 
-  <div class="card" data-card="5" onclick="openModal(5)">
-    <div class="card-num">05</div>
+  <div class="card" data-card="5" onclick="openModal(5); fancyExplode(event, '#FF3CAC')">
+    <div class="card-number">05</div>
     <div class="card-header">
       <div class="card-emoji">⏰</div>
-      <div><div class="card-label">Momento de Decisão</div><div class="card-q">Quem decide, quando e com base em quê?</div></div>
+      <div class="card-title-wrap"><div class="card-label">Momento de Decisão</div><div class="card-question">Quem é o decisor e qual a urgência?</div></div>
     </div>
     <div class="card-divider"></div>
-    <div class="card-chips">
-      <div class="chip" onclick="chipClick(event)"><span>👤 Único decisor?</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>💑 Cônjuge/sócio</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🏷️ Critério: preço</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>🚘 Critério: modelo</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>⚡ Urgência da necessidade</span></div>
-      <div class="chip" onclick="chipClick(event)"><span>📆 Prazo ideal de entrega</span></div>
+    <div class="card-items">
+      <div class="item-chip" onclick="chipClick(event)"><span>👤 Quem decide</span></div>
+      <div class="item-chip" onclick="chipClick(event)"><span>⚡ Urgência</span></div>
     </div>
-    <div class="card-preview">
-      <div class="preview-label">💡 Frase de ouro — clique para expandir</div>
-      <div class="preview-tip">"O que precisaria acontecer hoje pra você sair daqui com o carro garantido?"</div>
-    </div>
-    <div class="obj-badge"><div class="obj-label">🎯 Objetivo</div><div class="obj-text">Eliminar bloqueios e criar caminho para o fechamento</div></div>
+    <div class="obj-badge"><div class="obj-label">🎯 Objetivo</div><div class="obj-text">Identificar decisor e criar urgência</div></div>
   </div>
 </div>
 
-<section class="vs-section">
-  <div class="section-title" style="background:linear-gradient(90deg,var(--c7),var(--c3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">ASSINATURA vs. CARRO PRÓPRIO</div>
-  <div class="vs-grid">
-    <div class="vs-card ass">
-      <div class="vs-card-title">✅ Assinatura de veículo</div>
-      <div class="vs-item">Mensalidade única — sem surpresas financeiras</div>
-      <div class="vs-item">IPVA, seguro, manutenção e revisão inclusos</div>
-      <div class="vs-item">Troca de carro sem burocracia nem perda</div>
-      <div class="vs-item">Sem desvalorização do veículo — risco é da empresa</div>
-      <div class="vs-item">Sem entrada, sem financiamento, sem juros</div>
-      <div class="vs-item">Flexibilidade de prazo (12 a 48 meses)</div>
-      <div class="vs-item">Carro zero sempre confiável</div>
-      <div class="vs-item">PJ pode lançar como despesa e deduzir do IR</div>
-    </div>
-    <div class="vs-card trad">
-      <div class="vs-card-title">⚠️ Carro próprio / financiado</div>
-      <div class="vs-item">IPVA + licenciamento todo ano</div>
-      <div class="vs-item">Seguro separado (média R$3.000–R$8.000/ano)</div>
-      <div class="vs-item">Manutenção imprevisível — surpresas constantes</div>
-      <div class="vs-item">Depreciação de 15–20% ao ano inevitável</div>
-      <div class="vs-item">Entrada + parcelas com juros altos</div>
-      <div class="vs-item">Burocracia chata na hora de trocar ou vender</div>
-      <div class="vs-item">Preso no mesmo modelo por anos</div>
-      <div class="vs-item">Capital imobilizado em bem que deprecia</div>
-    </div>
-  </div>
-</section>
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)"><div class="modal" id="modal"><button class="modal-close" onclick="closeModal()">✕</button><span class="modal-emoji" id="mEmoji"></span><div class="modal-title" id="mTitle"></div><div class="modal-question" id="mQuestion"></div><div class="modal-items" id="mItems"></div><div class="modal-obj" id="mObj"><div class="modal-obj-label">🎯 Objetivo</div><div class="modal-obj-text" id="mObjText"></div></div></div></div>
 
-<section class="obj-section">
-  <div class="section-title" style="color:var(--c1);text-shadow:0 0 30px rgba(255,60,172,.4);">OBJEÇÕES + COMO VIRAR</div>
-  <div id="objGrid"></div>
-</section>
-
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
-    <button class="modal-close" onclick="closeModalDirect()">✕</button>
-    <div class="modal-hdr">
-      <span class="modal-emoji-big" id="mEmoji"></span>
-      <div class="modal-title" id="mTitle"></div>
-      <div class="modal-question" id="mQuestion"></div>
-      <div class="modal-divider" id="mDivider"></div>
-    </div>
-    <div class="modal-tabs" id="mTabs"></div>
-    <div class="modal-body">
-      <div id="tabP" class="tab-panel active"></div>
-      <div id="tabS" class="tab-panel"></div>
-      <div id="tabA" class="tab-panel"></div>
-      <div class="modal-obj" id="mObj">
-        <div class="modal-obj-lbl">🎯 Objetivo desta etapa</div>
-        <div class="modal-obj-txt" id="mObjTxt"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<footer class="footer">Feito com <span>❤️</span> para executivos de vendas de alta performance &nbsp;|&nbsp; 🔥 Sonde melhor. Feche mais. Sempre.</footer>
+<footer class="footer">Feito com <span>❤️</span> para executivos de alta performance &nbsp;|&nbsp; 🚀 Feche mais. Sempre.</footer>
 
 <script>
-// PARTICLES
-(()=>{
-  const c=document.getElementById('particles'),cols=['#FF3CAC','#FFE74C','#00F5D4','#2B86C5','#06D6A0','#FF6B35','#784BA0'];
-  for(let i=0;i<40;i++){
-    const p=document.createElement('div');p.className='particle';
-    const s=Math.random()*7+3;
-    p.style.cssText=`width:${s}px;height:${s}px;background:${cols[~~(Math.random()*cols.length)]};left:${Math.random()*100}%;animation-duration:${Math.random()*12+7}s;animation-delay:${Math.random()*12}s;border-radius:${Math.random()>.5?'50%':'3px'};`;
-    c.appendChild(p);
+const canvas = document.getElementById('canvasExplosion');
+const ctx = canvas.getContext('2d');
+let fancyParticles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class FancyParticle {
+  constructor(x, y, color) {
+    this.x = x; this.y = y; this.color = color;
+    this.size = Math.random() * 5 + 2;
+    this.speedX = (Math.random() - 0.5) * 15;
+    this.speedY = (Math.random() - 0.5) * 15;
+    this.gravity = 0.25;
+    this.friction = 0.96;
+    this.life = 1.0;
+    this.decay = Math.random() * 0.02 + 0.015;
   }
-})();
-
-// SCROLL PROGRESS
-window.addEventListener('scroll',()=>{
-  const h=document.body.scrollHeight-window.innerHeight;
-  document.getElementById('prog').style.width=(window.scrollY/h*100)+'%';
-});
-
-// CONFETTI
-const CC=['#FF3CAC','#FFE74C','#00F5D4','#FF6B35','#784BA0','#06D6A0','#2B86C5','#fff'];
-function spawnConf(x,y,n=10){
-  for(let i=0;i<n;i++){
-    const c=document.createElement('div');c.className='conf';
-    const s=Math.random()*9+4;
-    c.style.cssText=`left:${x+Math.random()*80-40}px;top:${y+Math.random()*30-15}px;width:${s}px;height:${s}px;background:${CC[~~(Math.random()*CC.length)]};border-radius:${Math.random()>.5?'50%':'2px'};transform:translate(-50%,-50%) rotate(${Math.random()*360}deg);animation-delay:${Math.random()*.25}s;`;
-    document.body.appendChild(c);setTimeout(()=>c.remove(),1500);
+  update() {
+    this.speedX *= this.friction; this.speedY *= this.friction;
+    this.speedY += this.gravity;
+    this.x += this.speedX; this.y += this.speedY;
+    this.life -= this.decay;
   }
-}
-
-// RIPPLE
-function ripple(e){
-  const el=e.currentTarget;el.style.position='relative';el.style.overflow='hidden';
-  const r=document.createElement('div');
-  r.style.cssText=`position:absolute;border-radius:50%;background:rgba(255,255,255,.25);width:10px;height:10px;top:${e.offsetY-5}px;left:${e.offsetX-5}px;animation:rippleA .6s ease-out forwards;pointer-events:none;z-index:99;`;
-  el.appendChild(r);setTimeout(()=>r.remove(),700);
-}
-
-// CHIP
-function chipClick(e){
-  e.stopPropagation();
-  const rect=e.currentTarget.getBoundingClientRect();
-  spawnConf(rect.left+rect.width/2,rect.top+rect.height/2,7);
-}
-
-// FIREWORKS
-const fwC=document.getElementById('fwCanvas');
-const ctx=fwC.getContext('2d');
-let fwP=[];
-function resizeFW(){fwC.width=window.innerWidth;fwC.height=window.innerHeight;}
-resizeFW();window.addEventListener('resize',resizeFW);
-
-function explode(x,y,col){
-  const n=50+~~(Math.random()*30);
-  for(let i=0;i<n;i++){
-    const a=Math.random()*Math.PI*2,spd=Math.random()*7+1;
-    fwP.push({x,y,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd,life:1,col,size:Math.random()*3+1});
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.life;
+    ctx.fillStyle = this.color;
+    ctx.shadowBlur = 15; ctx.shadowColor = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
   }
 }
 
-let fwLoop=null;
-function startFW(){if(fwLoop) return;(function loop(){
-  ctx.clearRect(0,0,fwC.width,fwC.height);
-  fwP=fwP.filter(p=>{
-    p.x+=p.vx;p.y+=p.vy;p.vy+=.09;p.vx*=.97;p.life-=.02;
-    if(p.life<=0) return false;
-    ctx.save();ctx.globalAlpha=p.life;ctx.fillStyle=p.col;
-    ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();ctx.restore();
-    return true;
+function fancyExplode(e, color) {
+  const x = e.clientX || (e.touches && e.touches[0].clientX);
+  const y = e.clientY || (e.touches && e.touches[0].clientY);
+  for(let i=0; i<40; i++) fancyParticles.push(new FancyParticle(x, y, color));
+}
+
+function animateFancy() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  fancyParticles.forEach((p, i) => {
+    if(p.life <= 0) fancyParticles.splice(i, 1);
+    else { p.update(); p.draw(); }
   });
-  if(fwP.length>0){fwLoop=requestAnimationFrame(loop);}else fwLoop=null;
-})();}
-
-function bigBang(){
-  const rect=document.getElementById('centerNode').getBoundingClientRect();
-  const cx=rect.left+rect.width/2,cy=rect.top+rect.height/2;
-
-  // shimmer rings
-  for(let i=0;i<6;i++){
-    const sr=document.createElement('div');sr.className='shimmer-ring';
-    sr.style.cssText=`left:${cx}px;top:${cy}px;width:${rect.width}px;height:${rect.height}px;border:6px solid ${CC[~~(Math.random()*CC.length)]};animation-delay:${i*.13}s;`;
-    document.body.appendChild(sr);setTimeout(()=>sr.remove(),1100+i*130);
-  }
-
-  // fireworks bursts
-  const colors=['#FF3CAC','#FFE74C','#00F5D4','#FF6B35','#06D6A0','#2B86C5','#784BA0','#fff'];
-  for(let f=0;f<12;f++){
-    setTimeout(()=>{
-      const fx=cx+(Math.random()-.5)*window.innerWidth*.75;
-      const fy=Math.random()*window.innerHeight*.7;
-      explode(fx,fy,colors[~~(Math.random()*colors.length)]);
-    },f*80);
-  }
-  startFW();
-
-  // mega confetti
-  for(let i=0;i<8;i++) setTimeout(()=>spawnConf(cx+(Math.random()-.5)*400,cy+(Math.random()-.5)*250,18),i*70);
-
-  // screen flash
-  const fl=document.createElement('div');
-  fl.style.cssText='position:fixed;inset:0;background:rgba(255,255,255,.1);pointer-events:none;z-index:498;animation:flashOut .5s ease-out forwards;';
-  document.body.appendChild(fl);setTimeout(()=>fl.remove(),500);
-
-  // center emoji spin
-  const cc=document.querySelector('.center-circle');
-  cc.style.transition='transform .3s cubic-bezier(.34,1.56,.64,1)';
-  cc.style.transform='scale(1.4) rotate(360deg)';
-  setTimeout(()=>{cc.style.transform='';},400);
+  requestAnimationFrame(animateFancy);
 }
-
-// OBJEÇÕES
-const objecoes=[
-  {q:'💸 "Tá caro, consigo comprar um carro por menos."',a:'<strong>Vira assim:</strong> "Faz sentido! Mas você já calculou o custo total de ter o carro? IPVA, seguro (média R$4.000–8.000/ano), manutenção, desvalorização — em 3 anos, um carro de R$70k pode custar R$120k. Na assinatura, você sabe exatamente o que vai pagar todo mês, sem susto, sem surpresa."'},
-  {q:'🤔 "Preciso pensar melhor / falar com minha esposa/marido."',a:'<strong>Vira assim:</strong> "Claro! O que você precisaria entender melhor para se sentir confiante para decidir? Às vezes a dúvida tem uma resposta rápida que resolvo agora mesmo." Identifique a objeção real escondida por trás do "preciso pensar".'},
-  {q:'📦 "Prefiro ter o carro no meu nome, é meu."',a:'<strong>Vira assim:</strong> "Entendo essa sensação de posse. Mas me pergunta uma coisa: você usa o dinheiro na conta do banco, ou ele é seu? A conta é do banco, mas o dinheiro é seu. Na assinatura é igual — você usa o carro todos os dias, vai onde quiser, tem CNH no para-brisa. Sem ter o bem, você não tem o risco de desvalorização."'},
-  {q:'⏳ "Vou esperar mais um pouco, ainda não é o momento."',a:'<strong>Vira assim:</strong> "Esperar é válido. Só preciso te dizer: a disponibilidade do modelo que você quer pode mudar, e o preço da mensalidade está travado hoje. O que te faria sentir que chegou a hora?"'},
-  {q:'📱 "Já uso Uber e 99 — tô satisfeito assim."',a:'<strong>Vira assim:</strong> "Show! Quanto você gasta por mês nos apps? [deixa responder]. Normalmente são R$800–R$2.000/mês. Às vezes dá pra ter um carro assinado por valor próximo — e aí você vai onde quiser, na hora que quiser, sem esperar motorista."'},
-  {q:'🔄 "Vou renovar o meu carro atual em breve."',a:'<strong>Vira assim:</strong> "Ótima intenção! Uma reflexão rápida: seu carro já está depreciado. Se você vender agora, ainda pega um valor razoável. Se esperar mais, perde mais. E em vez de comprar outro que vai depreciar de novo, você assina um zero-bala sem essa dor de cabeça toda."'},
-  {q:'🏢 "Minha empresa vai comprar o carro pra mim."',a:'<strong>Vira assim:</strong> "Que ótimo! Mas sabia que muitas empresas estão migrando para assinatura exatamente por isso? A assinatura PJ sai do balanço patrimonial, é despesa operacional, deduz do IR, e a empresa não fica presa num bem que deprecia. Vale levar essa proposta pro financeiro."'},
-  {q:'⚠️ "E se eu precisar rodar mais km do que o contrato?"',a:'<strong>Vira assim:</strong> "Excelente pergunta! Você pode escolher franquias maiores — 1.500, 2.000 ou 2.500 km/mês. Prefiro que a gente calibre certo agora do que você ter surpresa no fim do mês. Me fala sua rotina e ajustamos o plano perfeito pra você."'},
-];
+animateFancy();
 
 (function(){
-  const g=document.getElementById('objGrid');
-  objecoes.forEach(o=>{
-    const card=document.createElement('div');card.className='obj-card';
-    card.innerHTML=`<div class="obj-header"><div class="obj-q">${o.q}</div><div class="obj-arrow">›</div></div><div class="obj-body"><div class="obj-answer">${o.a}</div></div>`;
-    card.onclick=()=>{
-      card.classList.toggle('open');
-      const rect=card.getBoundingClientRect();
-      spawnConf(rect.left+80,rect.top+20,6);
-    };
-    g.appendChild(card);
-  });
+  const container = document.getElementById('particles');
+  const colors = ['#FF3CAC','#FFE74C','#00F5D4','#2B86C5','#06D6A0','#FF6B35','#784BA0'];
+  for(let i=0;i<35;i++){
+    const p = document.createElement('div');
+    p.className='particle';
+    const size = Math.random()*6+3;
+    p.style.cssText=`width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;animation-duration:${Math.random()*10+8}s;animation-delay:${Math.random()*10}s;border-radius:${Math.random()>0.5?'50%':'2px'};`;
+    container.appendChild(p);
+  }
 })();
 
-// MODAL DATA
-const MD={
-  1:{emoji:'🔥',title:'MOTIVO DA BUSCA',question:'O que levou o cliente a se interessar pela assinatura de veículo?',gradient:'linear-gradient(135deg,#FF3CAC,#FF6B35)',dot:'#FF3CAC',tabColor:'#FF3CAC',
-    obj:'Descobrir a DOR que a assinatura resolve — essa é a base de todo o pitch. Sem saber o motivo, você está atirando no escuro.',
-    perguntas:[
-      {q:'O que te fez pensar em assinar um carro agora?',hint:'A resposta revela se é razão emocional ou racional. Adapte o pitch inteiro a partir disso.'},
-      {q:'Teve algum evento recente que te fez buscar isso? (carro na oficina, gasto inesperado, acidente...)',hint:'Identifica a dor aguda — facilita a criação de urgência real.'},
-      {q:'Você já conhecia o modelo de assinatura antes ou foi a primeira vez que ouviu falar?',hint:'Calibra o quanto você precisa educar antes de ofertar.'},
-      {q:'O que mais te atrai: praticidade, previsibilidade de custo, carro sempre novo ou outra coisa?',hint:'Use a resposta como âncora durante toda a negociação.'},
-      {q:'Tem alguma coisa que seu carro atual — ou sua mobilidade atual — não resolve bem pra você?',hint:'Mapeia a insatisfação com o status quo. É ouro para o pitch.'},
-      {q:'Você veio por indicação, anúncio, site? Quem ou o que te trouxe até aqui?',hint:'Entender a origem ajuda a calibrar a confiança inicial do cliente.'},
-    ],
-    sinais:[
-      {icon:'🔴',t:'Cansou de manutenção surpresa',d:'Dor forte e presente — enfatize que IPVA, seguro, manutenção e revisão são inclusos. Zero surpresa.'},
-      {icon:'🟡',t:'Quer um carro mais novo e bonito',d:'Desejo de status/prazer — mostre modelos atrativos disponíveis, diferenciais de design.'},
-      {icon:'🟢',t:'Quer previsibilidade financeira',d:'Perfil organizado e racional — apresente a comparação de custo total em números.'},
-      {icon:'🔵',t:'Empresa (PJ) buscando benefício corporativo',d:'Ouro puro! Assinatura PJ tem dedução fiscal e não entra no balanço — enfatize isso forte.'},
-      {icon:'⚡',t:'Novo na cidade / mudança de rotina',d:'Não conhece a região ainda — flexibilidade da assinatura é argumento perfeito.'},
-    ],
-    armadilhas:[
-      {type:'red',icon:'🚫',text:'Não presuma o motivo — ouça primeiro. Dizer "ah, então é por economia" quando o cliente quer praticidade quebra o rapport imediatamente.'},
-      {type:'green',icon:'✅',text:'Repita o motivo do cliente durante toda a negociação: "Como você mesmo disse, você quer praticidade — e isso é exatamente o que a assinatura entrega."'},
-      {type:'red',icon:'🚫',text:'Não saia explicando produto antes de ter clareza sobre a dor. Quanto mais você fala antes de ouvir, menos relevante sua oferta parece.'},
-      {type:'green',icon:'✅',text:'Anote mentalmente (ou de verdade) a palavra exata que o cliente usou para descrever a dor. Repita essa palavra no fechamento.'},
-    ]
-  },
-  2:{emoji:'📍',title:'SITUAÇÃO ATUAL',question:'Qual o cenário de mobilidade atual do cliente?',gradient:'linear-gradient(135deg,#784BA0,#2B86C5)',dot:'#784BA0',tabColor:'#784BA0',
-    obj:'Mapear a dor financeira e operacional — construir o argumento de valor com os números reais do cliente, não com os seus.',
-    perguntas:[
-      {q:'Você tem carro hoje? Qual modelo e ano?',hint:'Avalia o "ponto de comparação" — importante para adequar o modelo que você vai oferecer.'},
-      {q:'Há quanto tempo está com esse carro?',hint:'Mais de 3 anos = provavelmente já perdeu valor e vai dar mais manutenção nos próximos meses.'},
-      {q:'Quanto você gasta por mês somando: combustível, seguro, IPVA, revisão, lavagem?',hint:'Deixe o cliente calcular em voz alta — ele costuma se surpreender com o total.'},
-      {q:'Você já passou por alguma situação chata com o carro? Oficina, acidente, quebra na estrada?',hint:'Ativa memória de dor — muito poderoso para criar urgência emocional.'},
-      {q:'Se você usa Uber ou 99, quanto sai por mês, em média?',hint:'R$800+ por mês já justifica muitos planos de assinatura. Faça o comparativo na hora.'},
-      {q:'Tem financiamento ativo no carro atual? Quanto falta pagar?',hint:'Pode haver oportunidade de vender o carro, quitar o financiamento e ainda ter dinheiro em caixa.'},
-    ],
-    sinais:[
-      {icon:'💸',t:'Gasto mensal alto (+R$1.500 com mobilidade)',d:'Mostre que a assinatura pode custar igual ou menos com muito mais praticidade e previsibilidade.'},
-      {icon:'🔧',t:'Carro velho ou dando problema frequente',d:'Dor presente — crie urgência: quanto mais esperar pra trocar, mais vai gastar com susto.'},
-      {icon:'📱',t:'Gasta muito em app de mobilidade',d:'Cálculo direto: R$1.200 em Uber × assinatura de R$1.100 com muito mais liberdade e conforto.'},
-      {icon:'🚘',t:'Financiamento ainda ativo e alto',d:'Explorar venda do carro para quitar + entrar na assinatura pode ser vantajoso — monte a conta junto.'},
-      {icon:'😤',t:'Cita manutenção surpresa no último mês',d:'Esse é o timing perfeito. A dor está fresca — não deixe o momento passar.'},
-    ],
-    armadilhas:[
-      {type:'red',icon:'🚫',text:'Não subestime o apego ao carro atual. "Mas meu carro tá ótimo!" — valide o sentimento antes de contraargumentar.'},
-      {type:'green',icon:'✅',text:'Faça o cliente calcular na hora com você: "Vamos fazer as contas juntos?" Quando ele vê o número, a conversa muda.'},
-      {type:'red',icon:'🚫',text:'Não compare sua assinatura com o carro ideal sonhado do cliente — compare com a realidade atual e os custos reais dele.'},
-      {type:'green',icon:'✅',text:'Se o custo atual for menor que a assinatura, não entre em pânico. Explore o valor emocional: carro novo, confiabilidade, sem dor de cabeça.'},
-    ]
-  },
-  3:{emoji:'🛣️',title:'PERFIL DE USO',question:'Como o carro vai ser usado no dia a dia?',gradient:'linear-gradient(135deg,#06D6A0,#118AB2)',dot:'#06D6A0',tabColor:'#06D6A0',
-    obj:'Identificar o modelo certo, a categoria ideal e a franquia de km adequada para esse cliente específico — sem suposição.',
-    perguntas:[
-      {q:'Me conta um dia típico seu com o carro — do começo ao fim.',hint:'Pergunta aberta que entrega tudo: rotina, km estimado, quem usa, finalidade, horário.'},
-      {q:'Quantos km você roda por mês, em média?',hint:'Crucial para a franquia. Errar pra baixo gera cobranças extras — o maior ponto de insatisfação pós-venda.'},
-      {q:'É mais cidade ou estrada? Tem pedágio frequente na rota?',hint:'Impacta consumo, conforto e tipo ideal de carro.'},
-      {q:'Vai usar só você, ou tem mais pessoas? Tem criança pequena ou pet?',hint:'Define tamanho mínimo necessário. Cadeirinha exige carro adequado.'},
-      {q:'Precisa de porta-malas grande? Carrega material de trabalho, ferramentas?',hint:'Vendedores, técnicos, pais de família — necessidades bem diferentes de espaço.'},
-      {q:'Prefere automático? Tem preferência de combustível — flex, híbrido, elétrico?',hint:'Conforto e tecnologia são argumentos emocionais poderosos para justificar valores maiores.'},
-      {q:'Tem necessidade de estacionar em vaga pequena? Usa muito estacionamento rotativo?',hint:'Define se compacto urbano é mais adequado que SUV.'},
-    ],
-    sinais:[
-      {icon:'📏',t:'Roda mais de 2.000 km/mês',d:'Franquia maior é obrigatório. Apresente planos adequados — cobranças extras são o maior motivo de churn.'},
-      {icon:'👨‍👩‍👧',t:'Família com crianças ou idosos',d:'SUV ou crossover — explore segurança, conforto e espaço como argumentos principais.'},
-      {icon:'💼',t:'Uso profissional intenso (vendedores, técnicos)',d:'Franquia alta + confiabilidade são inegociáveis. Para eles, carro parado = dinheiro perdido.'},
-      {icon:'🌍',t:'Muito uso em estrada ou interior',d:'Seguro incluso é diferencial enorme — acidentes na estrada são mais graves e mais caros.'},
-      {icon:'🏙️',t:'Só tráfego urbano e curtas distâncias',d:'Compacto ou hatch — menor custo e facilidade de estacionar. Não venda SUV pra quem não precisa.'},
-    ],
-    armadilhas:[
-      {type:'red',icon:'🚫',text:'Não ofereça a franquia menor para parecer mais barato — km extra no fim do mês cria insatisfação e pedido de cancelamento.'},
-      {type:'green',icon:'✅',text:'Arredonde pra cima na franquia: "Prefiro garantir que você não tenha surpresa no fim do mês. Melhor sobrar do que faltar."'},
-      {type:'red',icon:'🚫',text:'Não ofereça compacto para quem claramente precisa de espaço — o cliente vai se arrepender e te responsabilizar pela escolha errada.'},
-      {type:'green',icon:'✅',text:'Quando o cliente hesitar entre dois modelos, ajude com perguntas: "Em qual você consegue imaginar mais facilmente sua família viajando feliz?"'},
-    ]
-  },
-  4:{emoji:'💳',title:'SITUAÇÃO FINANCEIRA',question:'Qual a capacidade e sensibilidade financeira do cliente?',gradient:'linear-gradient(135deg,#FFE74C,#FF6B35)',dot:'#FFE74C',tabColor:'#FFE74C',
-    obj:'Posicionar VALOR antes de falar de preço — calibrar a oferta certa sem assustar, e mostrar que a assinatura é comparação de custo total, não de mensalidade isolada.',
-    perguntas:[
-      {q:'Você tem uma faixa de valor mensal em mente?',hint:'Âncora inicial importante — nunca revele preço antes de entender o budget do cliente.'},
-      {q:'Você é pessoa física ou tem empresa aberta (PJ)?',hint:'PJ: assinatura pode ser despesa dedutível no IR — esse argumento pode mudar tudo.'},
-      {q:'Hoje você já tem parcela de carro? Quanto é por mês?',hint:'Substitua direto: "E se você pagasse o mesmo e tivesse seguro, revisão e IPVA inclusos?"'},
-      {q:'Além da parcela, quanto você gasta com seguro, IPVA e manutenção por mês?',hint:'Soma tudo — costuma chegar em R$800–R$2.000 extras que o cliente não via como custo do carro.'},
-      {q:'Se a gente conseguir encaixar tudo num valor que faça sentido, o que mais te impediria de fechar?',hint:'Essa pergunta descobre a objeção real escondida atrás do preço.'},
-      {q:'Você costuma fazer conta por parcela ou por custo total?',hint:'Calibra se o cliente pensa de forma emocional (parcela) ou racional (custo total). Adapte o argumento.'},
-    ],
-    sinais:[
-      {icon:'💰',t:'Menciona parcela de carro financiado',d:'Substitua direto: "E se você pagasse R$X a mais e tivesse seguro, revisão e IPVA inclusos? Faz conta."'},
-      {icon:'🏢',t:'É PJ — tem empresa aberta',d:'Explore dedução fiscal forte. Pode ser o argumento mais decisivo para fechar no dia.'},
-      {icon:'📊',t:'Pergunta muito sobre preço antes de ver o produto',d:'Está comparando com concorrente ou com custo atual. Mostre custo total antes de falar preço.'},
-      {icon:'🤑',t:'Menciona gasto alto com manutenção recente',d:'Calcule na hora: "Só de revisão você já gastou R$X. Na assinatura isso vem junto, todo mês, sem surpresa."'},
-      {icon:'💡',t:'Fala em usar como benefício para funcionário',d:'Frota ou benefício corporativo — caminho para venda de múltiplos veículos.'},
-    ],
-    armadilhas:[
-      {type:'red',icon:'🚫',text:'NUNCA fale o preço antes de construir valor. Preço sem contexto sempre parece caro — sempre.'},
-      {type:'green',icon:'✅',text:'Use a fórmula visual: Custo atual (seguro+IPVA+manutenção+combustível+depreciação) vs. mensalidade all-inclusive. Deixe o cliente ver os números.'},
-      {type:'red',icon:'🚫',text:'Não ofereça desconto antes de descobrir se preço é realmente a objeção — muitas vezes é outra coisa, e você queimou margem à toa.'},
-      {type:'green',icon:'✅',text:'Se o cliente disser que tá caro, pergunte: "Caro em relação a quê?" A resposta revela exatamente onde você precisa trabalhar.'},
-    ]
-  },
-  5:{emoji:'⏰',title:'MOMENTO DE DECISÃO',question:'Quem decide, quando e com base em quê?',gradient:'linear-gradient(135deg,#FF3CAC,#784BA0)',dot:'#FF3CAC',tabColor:'#FF3CAC',
-    obj:'Eliminar bloqueios, identificar o verdadeiro decisor e criar o caminho mais curto para o fechamento — de preferência hoje.',
-    perguntas:[
-      {q:'Além de você, tem mais alguém que participa dessa decisão?',hint:'Cônjuge, sócio, pai — identifique quem precisa ser conquistado. Não feche com quem não decide.'},
-      {q:'O que você vai levar em conta na hora H de decidir? Preço, modelo, prazo de entrega?',hint:'Critério de decisão = seu argumento principal de fechamento. Use as próprias palavras do cliente.'},
-      {q:'Se encontrar o carro certo, você tem interesse em fechar esta semana?',hint:'Calibra urgência sem pressionar abertamente — abre espaço para discutir timeline.'},
-      {q:'O que precisaria acontecer hoje pra você sair daqui com o carro garantido?',hint:'Pergunta poderosa — coloca o cliente como protagonista da decisão. Escuta com atenção.'},
-      {q:'Tem alguma coisa que, se eu resolver agora, você fecha?',hint:'Identifica a última objeção real — resolva ela e feche. Simples assim.'},
-      {q:'Qual é o prazo ideal para você começar a usar o carro?',hint:'Quem tem prazo tem urgência. Entrega rápida pode ser seu argumento de fechamento mais forte.'},
-    ],
-    sinais:[
-      {icon:'⚡',t:'Urgência clara — precisa do carro logo',d:'Confirme entrega rápida e use isso como argumento central de fechamento agora.'},
-      {icon:'👫',t:'Precisa falar com cônjuge, sócio ou familiar',d:'Não é "não" — é um obstáculo. Ofereça: "Posso falar com vocês dois juntos? Me chama ou fazemos uma videoconferência."'},
-      {icon:'🏷️',t:'Pergunta insistente sobre prazo de entrega',d:'Está comprando de cabeça — confirme disponibilidade e crie urgência real com estoque limitado.'},
-      {icon:'🔄',t:'"Preciso pensar" sem prazo claro',d:'Descubra o quê ele precisa pensar. Normalmente é uma objeção específica escondida — encontre e resolva.'},
-      {icon:'📋',t:'Pede proposta por escrito',d:'Bom sinal — quer levar para alguém ver. Faça uma proposta impactante e marque retorno no mesmo dia.'},
-    ],
-    armadilhas:[
-      {type:'red',icon:'🚫',text:'Não pressione artificialmente. Crie urgência REAL: disponibilidade limitada do modelo, preço com prazo de validade, entrega garantida só para quem fechar hoje.'},
-      {type:'green',icon:'✅',text:'Se o decisor é outra pessoa, não feche com quem não decide. Organize presença do decisor real antes de qualquer oferta.'},
-      {type:'red',icon:'🚫',text:'Não deixe o "preciso pensar" sem data de retorno. "Perfeito! Posso te ligar amanhã às 10h ou prefere à tarde?" — sempre com hora marcada.'},
-      {type:'green',icon:'✅',text:'Se perdeu o fechamento no dia, envie recapitulação por WhatsApp: modelo, valor, benefícios — e reforce o que ele mesmo disse que queria resolver.'},
-    ]
-  }
+window.addEventListener('scroll',()=>{
+  const h = document.body.scrollHeight - window.innerHeight;
+  const p = (window.scrollY / h)*100;
+  document.getElementById('progressBar').style.width = p+'%';
+});
+
+const modalData = {
+  1: { emoji:'🔥', title:'MOTIVO DA BUSCA', question:'O que levou o cliente a se interessar?', items:['💰 Economia','⚡ Praticidade','🚗 Troca de carro','💼 Trabalho'], obj:'Descobrir a DOR', gradient:'linear-gradient(135deg,#FF3CAC,#FF6B35)', dot:'#FF3CAC' },
+  2: { emoji:'📍', title:'SITUAÇÃO ATUAL', question:'Qual o cenário atual?', items:['🚗 Carro próprio','🚌 Transporte público','📱 App','🏷️ Modelo'], obj:'Descobrir a DOR', gradient:'linear-gradient(135deg,#784BA0,#2B86C5)', dot:'#784BA0' },
+  3: { emoji:'🛣️', title:'PERFIL DE USO', question:'Como usa o carro?', items:['📏 Km/mês','🌆 Cidade/Estrada','👥 Usuários'], obj:'Definir modelo e franquia', gradient:'linear-gradient(135deg,#06D6A0,#118AB2)', dot:'#06D6A0' },
+  4: { emoji:'💳', title:'FINANCEIRO', question:'Qual a capacidade?', items:['💵 Budget','🔧 Custos atuais'], obj:'Posicionar VALOR', gradient:'linear-gradient(135deg,#FFE74C,#FF6B35)', dot:'#FFE74C' },
+  5: { emoji:'⏰', title:'DECISÃO', question:'Quem decide e quando?', items:['👤 Decisor','⚡ Urgência'], obj:'Criar senso de urgência', gradient:'linear-gradient(135deg,#FF3CAC,#784BA0)', dot:'#FF3CAC' }
 };
 
-// MODAL LOGIC
-function openModal(id){
-  const d=MD[id];
-  document.getElementById('mEmoji').textContent=d.emoji;
-  document.getElementById('mTitle').textContent=d.title;
-  document.getElementById('mQuestion').textContent=d.question;
-  document.getElementById('mDivider').style.background=d.gradient;
-  document.getElementById('mObjTxt').textContent=d.obj;
-  document.getElementById('mObj').style.background=d.gradient;
-
-  const tabs=document.getElementById('mTabs');tabs.innerHTML='';
-  [['tabP','💬 Perguntas'],['tabS','🚦 Sinais'],['tabA','⚠️ Armadilhas']].forEach(([pid,lbl],i)=>{
-    const b=document.createElement('button');b.className='tab-btn'+(i===0?' active':'');
-    b.textContent=lbl;b.style.setProperty('--tac',d.tabColor);
-    b.onclick=e=>{e.stopPropagation();switchTab(i,d.tabColor);};
-    tabs.appendChild(b);
+function openModal(id) {
+  const d = modalData[id];
+  document.getElementById('mEmoji').textContent = d.emoji;
+  document.getElementById('mTitle').textContent = d.title;
+  document.getElementById('mQuestion').textContent = d.question;
+  document.getElementById('mObjText').textContent = d.obj;
+  document.getElementById('mObj').style.background = d.gradient;
+  const itemsEl = document.getElementById('mItems');
+  itemsEl.innerHTML = '';
+  d.items.forEach((item,i) => {
+    const el = document.createElement('div'); el.className='modal-item';
+    el.innerHTML=`<div class="modal-item-dot" style="background:${d.dot}"></div>${item}`;
+    itemsEl.appendChild(el);
   });
-
-  // perguntas
-  const pEl=document.getElementById('tabP');pEl.innerHTML='';
-  d.perguntas.forEach((p,i)=>{
-    const el=document.createElement('div');el.className='perg-item';
-    el.style.cssText=`border-left-color:${d.dot};animation-delay:${i*.06}s`;
-    el.innerHTML=`<div class="perg-item-q">❓ ${p.q}</div><div class="perg-item-hint">💡 ${p.hint}</div>`;
-    pEl.appendChild(el);
-  });
-
-  // sinais
-  const sEl=document.getElementById('tabS');sEl.innerHTML='';
-  d.sinais.forEach((s,i)=>{
-    const el=document.createElement('div');el.className='sinal-item';el.style.animationDelay=i*.07+'s';
-    el.innerHTML=`<div class="sinal-icon">${s.icon}</div><div class="sinal-text"><strong>${s.t}</strong><span>${s.d}</span></div>`;
-    sEl.appendChild(el);
-  });
-
-  // armadilhas
-  const aEl=document.getElementById('tabA');aEl.innerHTML='';
-  d.armadilhas.forEach((a,i)=>{
-    const el=document.createElement('div');el.className=`pitfall-item ${a.type}`;el.style.animationDelay=i*.08+'s';
-    el.innerHTML=`<div class="pi-icon">${a.icon}</div><div class="pi-text">${a.text}</div>`;
-    aEl.appendChild(el);
-  });
-
-  ['tabP','tabS','tabA'].forEach((id,i)=>document.getElementById(id).className='tab-panel'+(i===0?' active':''));
   document.getElementById('modalOverlay').classList.add('open');
-  spawnConf(window.innerWidth/2,window.innerHeight*.3,22);
 }
 
-function switchTab(idx,col){
-  ['tabP','tabS','tabA'].forEach((id,i)=>document.getElementById(id).className='tab-panel'+(i===idx?' active':''));
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.className='tab-btn'+(i===idx?' active':'');b.style.setProperty('--tac',col);});
+function closeModal(e) {
+  if(!e || e.target===document.getElementById('modalOverlay') || e.target.classList.contains('modal-close')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
 }
-function closeModal(e){if(!e||e.target===document.getElementById('modalOverlay')) closeModalDirect();}
-function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');}
-document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModalDirect();});
+
+function chipClick(e) {
+  e.stopPropagation();
+  const color = getComputedStyle(e.currentTarget.closest('.card')).getPropertyValue('--theme-color').trim();
+  fancyExplode(e, color || '#fff');
+}
+
+function ripple(e) {
+  const el = e.currentTarget;
+  const r = document.createElement('div');
+  r.style.cssText=`position:absolute;border-radius:50%;background:rgba(255,255,255,0.25);width:10px;height:10px;top:${e.offsetY-5}px;left:${e.offsetX-5}px;animation:rippleAnim 0.6s ease-out forwards;pointer-events:none;z-index:999;`;
+  el.style.position='relative';el.style.overflow='hidden';
+  el.appendChild(r);
+  setTimeout(()=>r.remove(),700);
+  if(!document.getElementById('rippleStyle')){
+    const s=document.createElement('style'); s.id='rippleStyle';
+    s.textContent='@keyframes rippleAnim{0%{transform:scale(0);opacity:1}100%{transform:scale(30);opacity:0}}';
+    document.head.appendChild(s);
+  }
+}
+
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
 </script>
 </body>
 </html>
