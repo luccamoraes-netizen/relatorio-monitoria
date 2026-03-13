@@ -38,7 +38,6 @@
     position: relative;
   }
 
-  /* ── Animated mesh background ── */
   .bg-mesh {
     position: fixed;
     inset: 0;
@@ -83,7 +82,6 @@
     100% { transform: translate(0, 0) scale(1); }
   }
 
-  /* Noise grain overlay */
   .grain {
     position: fixed;
     inset: -50%;
@@ -103,7 +101,6 @@
     100% { transform: translate(0,0); }
   }
 
-  /* ── Grid lines ── */
   .grid-lines {
     position: fixed;
     inset: 0;
@@ -116,7 +113,6 @@
     mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
   }
 
-  /* ── Main layout ── */
   .wrapper {
     position: relative;
     z-index: 10;
@@ -129,7 +125,6 @@
     max-width: 900px;
   }
 
-  /* ── Header ── */
   header {
     text-align: center;
     animation: reveal-up 0.9s cubic-bezier(0.16,1,0.3,1) both;
@@ -178,7 +173,6 @@
     font-weight: 300;
   }
 
-  /* ── Card ── */
   .card-wrap {
     animation: reveal-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.18s both;
     perspective: 1200px;
@@ -209,7 +203,6 @@
     transform-style: preserve-3d;
   }
 
-  /* Glossy top edge */
   .card::before {
     content: '';
     position: absolute;
@@ -219,7 +212,6 @@
     border-radius: 50%;
   }
 
-  /* Animated gradient hover spot */
   .card-glow {
     position: absolute;
     width: 380px; height: 380px;
@@ -243,7 +235,6 @@
       0 0 60px rgba(0,245,196,0.08);
   }
 
-  /* Badge */
   .badge {
     display: inline-flex;
     align-items: center;
@@ -327,7 +318,6 @@
   .card:hover .cta { gap: 13px; }
   .card:hover .cta svg { transform: translateX(4px); }
 
-  /* Corner decoration */
   .corner-deco {
     width: 52px; height: 52px;
     border-radius: 12px;
@@ -339,7 +329,6 @@
     font-size: 22px;
   }
 
-  /* ── Footer ── */
   footer {
     animation: reveal-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.36s both;
     font-size: 12px;
@@ -349,13 +338,11 @@
     opacity: 0.5;
   }
 
-  /* ── Reveal animation ── */
   @keyframes reveal-up {
     from { opacity: 0; transform: translateY(28px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── Scan line that runs across card on hover ── */
   .scan-line {
     position: absolute;
     left: 0; right: 0;
@@ -377,7 +364,6 @@
     100% { top: 100%; }
   }
 
-  /* ── Floating particles ── */
   .particles {
     position: fixed;
     inset: 0;
@@ -443,7 +429,7 @@
 
       <div class="card-footer">
         <div class="cta">
-          Acessar material
+          Acessar relatório
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -453,12 +439,11 @@
     </a>
   </div>
 
-  <footer>© 2025 Portal da Qualidade</footer>
+  <footer>© 2026 Portal da Qualidade</footer>
 
 </div>
 
 <script>
-  // 3D tilt on card
   const card = document.querySelector('.card');
   const wrap = document.querySelector('.card-wrap');
 
@@ -470,7 +455,6 @@
     const dy = (e.clientY - cy) / (rect.height / 2);
     card.style.transform = `translateY(-10px) rotateX(${-dy * 6}deg) rotateY(${dx * 6}deg)`;
 
-    // move glow with cursor
     const glow = card.querySelector('.card-glow');
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -483,7 +467,6 @@
     card.style.transform = '';
   });
 
-  // Floating particles
   const container = document.getElementById('particles');
   const colors = ['#00f5c4', '#6c63ff', '#ff4ecd', '#ffffff'];
 
