@@ -177,7 +177,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: stretch; /* Garante que os containers tenham a mesma altura na linha */
+    align-items: stretch;
     gap: 32px;
     width: 100%;
   }
@@ -185,7 +185,7 @@
   .card-wrap {
     perspective: 1200px;
     animation: reveal-up 0.9s cubic-bezier(0.16,1,0.3,1) both;
-    display: flex; /* Permite que o card interno estique */
+    display: flex;
   }
 
   .card-wrap:nth-child(1) { animation-delay: 0.15s; }
@@ -198,7 +198,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    flex: 1; /* Faz o card preencher 100% da altura do wrapper */
+    flex: 1;
     width: min(420px, 90vw);
     min-height: 260px;
     padding: 36px 38px 32px;
@@ -286,7 +286,7 @@
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02em;
-    flex: 1; /* Empurra o rodapé para o fim garantindo alinhamento */
+    flex: 1;
   }
 
   .card-title span {
@@ -303,7 +303,7 @@
     margin-top: 12px;
     line-height: 1.55;
     font-weight: 300;
-    margin-bottom: 32px; /* Garante respiro entre texto e rodapé */
+    margin-bottom: 32px;
   }
 
   .card-footer {
@@ -311,7 +311,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: auto; /* Garante que os botões fiquem colados embaixo sempre alinhados */
+    margin-top: auto;
   }
 
   .cta {
@@ -345,7 +345,6 @@
     font-size: 22px;
   }
 
-  /* CARD URGENTE/ALARMISTA */
   
   .card-urgent {
     border-color: rgba(255, 78, 205, 0.4);
@@ -496,7 +495,7 @@
       Sistema de Gestão
       <span></span>
     </div>
-    <h1>Quali </h1>
+    <h1>Quali Point</h1>
     <p class="subtitle">Monitoramento inteligente · Alta performance</p>
   </header>
 
