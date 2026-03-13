@@ -122,7 +122,7 @@
     gap: 64px;
     padding: 60px 24px;
     width: 100%;
-    max-width: 900px;
+    max-width: 1400px;
   }
 
   header {
@@ -173,10 +173,24 @@
     font-weight: 300;
   }
 
-  .card-wrap {
-    animation: reveal-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.18s both;
-    perspective: 1200px;
+  .cards-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch; /* Garante que os containers tenham a mesma altura na linha */
+    gap: 32px;
+    width: 100%;
   }
+
+  .card-wrap {
+    perspective: 1200px;
+    animation: reveal-up 0.9s cubic-bezier(0.16,1,0.3,1) both;
+    display: flex; /* Permite que o card interno estique */
+  }
+
+  .card-wrap:nth-child(1) { animation-delay: 0.15s; }
+  .card-wrap:nth-child(2) { animation-delay: 0.30s; }
+  .card-wrap:nth-child(3) { animation-delay: 0.45s; }
 
   .card {
     position: relative;
@@ -184,6 +198,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
+    flex: 1; /* Faz o card preencher 100% da altura do wrapper */
     width: min(420px, 90vw);
     min-height: 260px;
     padding: 36px 38px 32px;
@@ -271,7 +286,7 @@
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.02em;
-    flex: 1;
+    flex: 1; /* Empurra o rodapé para o fim garantindo alinhamento */
   }
 
   .card-title span {
@@ -288,14 +303,15 @@
     margin-top: 12px;
     line-height: 1.55;
     font-weight: 300;
+    margin-bottom: 32px; /* Garante respiro entre texto e rodapé */
   }
 
   .card-footer {
-    margin-top: 32px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: auto; /* Garante que os botões fiquem colados embaixo sempre alinhados */
   }
 
   .cta {
@@ -329,13 +345,87 @@
     font-size: 22px;
   }
 
+  /* CARD URGENTE/ALARMISTA */
+  
+  .card-urgent {
+    border-color: rgba(255, 78, 205, 0.4);
+    animation: urgent-glow 1.5s infinite, urgent-shake 4s infinite;
+  }
+
+  .card-urgent .card-glow {
+    background: radial-gradient(circle, rgba(255, 78, 205, 0.25) 0%, transparent 65%);
+  }
+
+  .card-urgent:hover {
+    border-color: var(--accent3);
+    box-shadow:
+      0 30px 80px rgba(0,0,0,0.5),
+      0 0 0 1px rgba(255, 78, 205, 0.2),
+      0 0 60px rgba(255, 78, 205, 0.15);
+  }
+
+  .badge-urgent {
+    background: rgba(255, 78, 205, 0.15);
+    border-color: rgba(255, 78, 205, 0.5);
+    color: var(--accent3);
+    animation: text-blink 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .badge-urgent .badge-dot {
+    background: var(--accent3);
+    animation: pulse-dot-urgent 1s ease infinite;
+  }
+
+  .card-urgent .card-title span {
+    background: linear-gradient(120deg, #fff 30%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card-urgent .cta {
+    color: var(--accent3);
+  }
+
+  .card-urgent .corner-deco {
+    background: linear-gradient(135deg, rgba(255,78,205,0.25), rgba(255,0,0,0.15));
+  }
+
+  .card-urgent .scan-line {
+    background: linear-gradient(90deg, transparent, rgba(255, 78, 205, 0.8), transparent);
+  }
+
+  @keyframes urgent-glow {
+    0% { box-shadow: 0 0 15px rgba(255, 78, 205, 0.1); }
+    50% { box-shadow: 0 0 35px rgba(255, 78, 205, 0.4), inset 0 0 15px rgba(255, 78, 205, 0.1); }
+    100% { box-shadow: 0 0 15px rgba(255, 78, 205, 0.1); }
+  }
+
+  @keyframes pulse-dot-urgent {
+    0%   { box-shadow: 0 0 0 0 rgba(255, 78, 205, 0.7); }
+    70%  { box-shadow: 0 0 0 10px rgba(255, 78, 205, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 78, 205, 0); }
+  }
+
+  @keyframes text-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  @keyframes urgent-shake {
+    0%, 90%, 100% { transform: translateX(0); }
+    92%, 96% { transform: translateX(-3px) rotate(1deg); }
+    94%, 98% { transform: translateX(3px) rotate(-1deg); }
+  }
+
   footer {
-    animation: reveal-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.36s both;
+    animation: reveal-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.6s both;
     font-size: 12px;
     color: var(--muted);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     opacity: 0.5;
+    margin-top: 32px;
   }
 
   @keyframes reveal-up {
@@ -410,33 +500,66 @@
     <p class="subtitle">Monitoramento inteligente · Alta performance</p>
   </header>
 
-  <div class="card-wrap">
-    <a class="card" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/Sondagem_de_alto_impacto.html">
-      <div class="card-glow"></div>
-      <div class="scan-line"></div>
+  <div class="cards-grid">
+    
+    <div class="card-wrap">
+      <a class="card card-urgent" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/Mapa_mental_sondagem.html">
+        <div class="card-glow"></div>
+        <div class="scan-line"></div>
 
-      <div>
-        <div class="badge">
-          <div class="badge-dot"></div>
-          Ativo
+        <div>
+          <div class="badge badge-urgent">
+            <div class="badge-dot"></div>
+            NOVO MATERIAL
+          </div>
+          <div class="card-title">
+            <span>Mapa Mental</span>
+            <span>de Sondagem</span>
+          </div>
+          <p class="card-desc">Ferramenta recém-adicionada! Estrutura visual completa para dominar o fluxo de sondagem e fechamento.</p>
         </div>
-        <div class="card-title">
-          <span>Sondagem de</span>
-          <span>Alto Impacto</span>
-        </div>
-        <p class="card-desc">6 perguntas usadas por vendedores de alta performance em assinaturas de veículos.</p>
-      </div>
 
-      <div class="card-footer">
-        <div class="cta">
-          Acessar material
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+        <div class="card-footer">
+          <div class="cta">
+            Acessar agora
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="corner-deco">🔥</div>
         </div>
-        <div class="corner-deco">⚡</div>
-      </div>
-    </a>
+      </a>
+    </div>
+
+    <div class="card-wrap">
+      <a class="card" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/Sondagem_de_alto_impacto.html">
+        <div class="card-glow"></div>
+        <div class="scan-line"></div>
+
+        <div>
+          <div class="badge">
+            <div class="badge-dot"></div>
+            Ativo
+          </div>
+          <div class="card-title">
+            <span>Sondagem de</span>
+            <span>Alto Impacto</span>
+          </div>
+          <p class="card-desc">6 perguntas usadas por vendedores de alta performance em assinaturas de veículos.</p>
+        </div>
+
+        <div class="card-footer">
+          <div class="cta">
+            Acessar material
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="corner-deco">⚡</div>
+        </div>
+      </a>
+    </div>
+
   </div>
 
   <footer>© 2026 Portal da Qualidade</footer>
@@ -444,27 +567,32 @@
 </div>
 
 <script>
-  const card = document.querySelector('.card');
-  const wrap = document.querySelector('.card-wrap');
+  const wraps = document.querySelectorAll('.card-wrap');
 
-  wrap.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = (e.clientX - cx) / (rect.width / 2);
-    const dy = (e.clientY - cy) / (rect.height / 2);
-    card.style.transform = `translateY(-10px) rotateX(${-dy * 6}deg) rotateY(${dx * 6}deg)`;
+  wraps.forEach(wrap => {
+    const card = wrap.querySelector('.card');
+    
+    wrap.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = (e.clientX - cx) / (rect.width / 2);
+      const dy = (e.clientY - cy) / (rect.height / 2);
+      card.style.transform = `translateY(-10px) rotateX(${-dy * 6}deg) rotateY(${dx * 6}deg)`;
 
-    const glow = card.querySelector('.card-glow');
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    glow.style.left = x + 'px';
-    glow.style.top  = y + 'px';
-    glow.style.transform = 'translate(-50%, -50%)';
-  });
+      const glow = card.querySelector('.card-glow');
+      if (glow) {
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        glow.style.left = x + 'px';
+        glow.style.top  = y + 'px';
+        glow.style.transform = 'translate(-50%, -50%)';
+      }
+    });
 
-  wrap.addEventListener('mouseleave', () => {
-    card.style.transform = '';
+    wrap.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
   });
 
   const container = document.getElementById('particles');
@@ -489,4 +617,3 @@
 
 </body>
 </html>
-
