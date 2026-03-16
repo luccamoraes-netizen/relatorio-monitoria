@@ -8,17 +8,17 @@
 
 <style>
   :root {
-    --bg: #050810;
-    --surface: #0d1120;
-    --accent1: #00f5c4;
-    --accent2: #6c63ff;
-    --accent3: #ff4ecd;
-    --text: #eef0f8;
-    --muted: #7b82a0;
+    --bg: #07050f;
+    --surface: #100820;
+    --accent1: #c084fc;
+    --accent2: #818cf8;
+    --accent3: #f472b6;
+    --text: #f0eeff;
+    --muted: #8b7aa8;
     --card-bg: rgba(255,255,255,0.035);
     --card-border: rgba(255,255,255,0.07);
-    --glow1: rgba(0,245,196,0.18);
-    --glow2: rgba(108,99,255,0.18);
+    --glow1: rgba(192,132,252,0.18);
+    --glow2: rgba(129,140,248,0.18);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -159,7 +159,7 @@
     font-weight: 800;
     line-height: 1.0;
     letter-spacing: -0.03em;
-    background: linear-gradient(135deg, #ffffff 20%, var(--accent1) 60%, var(--accent2) 100%);
+    background: linear-gradient(135deg, #ffffff 15%, var(--accent3) 45%, var(--accent1) 70%, var(--accent2) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -231,7 +231,7 @@
     position: absolute;
     width: 380px; height: 380px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,245,196,0.22) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(192,132,252,0.22) 0%, transparent 65%);
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0;
@@ -243,11 +243,11 @@
 
   .card:hover {
     transform: translateY(-10px) rotateX(4deg);
-    border-color: rgba(0,245,196,0.25);
+    border-color: rgba(192,132,252,0.3);
     box-shadow:
       0 30px 80px rgba(0,0,0,0.4),
-      0 0 0 1px rgba(0,245,196,0.12),
-      0 0 60px rgba(0,245,196,0.08);
+      0 0 0 1px rgba(192,132,252,0.15),
+      0 0 60px rgba(192,132,252,0.1);
   }
 
   .badge {
@@ -256,8 +256,8 @@
     gap: 6px;
     padding: 5px 12px 5px 8px;
     border-radius: 100px;
-    background: rgba(0,245,196,0.09);
-    border: 1px solid rgba(0,245,196,0.2);
+    background: rgba(192,132,252,0.09);
+    border: 1px solid rgba(192,132,252,0.22);
     font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -271,13 +271,13 @@
     border-radius: 50%;
     background: var(--accent1);
     animation: pulse-dot 2s ease infinite;
-    box-shadow: 0 0 0 0 rgba(0,245,196,0.5);
+    box-shadow: 0 0 0 0 rgba(192,132,252,0.5);
   }
 
   @keyframes pulse-dot {
-    0%   { box-shadow: 0 0 0 0 rgba(0,245,196,0.5); }
-    70%  { box-shadow: 0 0 0 7px rgba(0,245,196,0); }
-    100% { box-shadow: 0 0 0 0 rgba(0,245,196,0); }
+    0%   { box-shadow: 0 0 0 0 rgba(192,132,252,0.5); }
+    70%  { box-shadow: 0 0 0 7px rgba(192,132,252,0); }
+    100% { box-shadow: 0 0 0 0 rgba(192,132,252,0); }
   }
 
   .card-title {
@@ -337,7 +337,7 @@
   .corner-deco {
     width: 52px; height: 52px;
     border-radius: 12px;
-    background: linear-gradient(135deg, rgba(108,99,255,0.25), rgba(0,245,196,0.15));
+    background: linear-gradient(135deg, rgba(129,140,248,0.25), rgba(192,132,252,0.15));
     border: 1px solid rgba(255,255,255,0.08);
     display: flex;
     align-items: center;
@@ -436,7 +436,7 @@
     position: absolute;
     left: 0; right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0,245,196,0.6), transparent);
+    background: linear-gradient(90deg, transparent, rgba(192,132,252,0.7), transparent);
     top: 0;
     opacity: 0;
     transition: opacity 0.1s;
@@ -502,30 +502,30 @@
   <div class="cards-grid">
     
     <div class="card-wrap">
-      <a class="card card-urgent" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/Mapa_mental_sondagem.html">
+      <a class="card" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/Mapa_mental_sondagem.html">
         <div class="card-glow"></div>
         <div class="scan-line"></div>
 
         <div>
-          <div class="badge badge-urgent">
+          <div class="badge">
             <div class="badge-dot"></div>
-            NOVO MATERIAL
+            Ativo
           </div>
           <div class="card-title">
             <span>Mapa Mental</span>
             <span>de Sondagem</span>
           </div>
-          <p class="card-desc">Ferramenta recém-adicionada! Estrutura visual completa para dominar o fluxo de sondagem e fechamento.</p>
+          <p class="card-desc">Ferramenta completa para dominar o fluxo de sondagem!</p>
         </div>
 
         <div class="card-footer">
           <div class="cta">
-            Acessar agora
+            Acessar material
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <div class="corner-deco">🔥</div>
+          <div class="corner-deco">⚡</div>
         </div>
       </a>
     </div>
@@ -595,7 +595,7 @@
   });
 
   const container = document.getElementById('particles');
-  const colors = ['#00f5c4', '#6c63ff', '#ff4ecd', '#ffffff'];
+  const colors = ['#c084fc', '#818cf8', '#f472b6', '#ffffff'];
 
   for (let i = 0; i < 22; i++) {
     const p = document.createElement('div');
