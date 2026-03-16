@@ -347,32 +347,33 @@
 
   
   .card-urgent {
-    border-color: rgba(255, 78, 205, 0.4);
-    animation: urgent-glow 1.5s infinite, urgent-shake 4s infinite;
+    border-color: rgba(255, 78, 205, 0.45);
+    animation: card-breathe 3s ease-in-out infinite, urgent-glow 3s ease-in-out infinite;
   }
 
   .card-urgent .card-glow {
-    background: radial-gradient(circle, rgba(255, 78, 205, 0.25) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(255, 78, 205, 0.28) 0%, transparent 65%);
   }
 
   .card-urgent:hover {
     border-color: var(--accent3);
+    animation-play-state: paused;
     box-shadow:
       0 30px 80px rgba(0,0,0,0.5),
-      0 0 0 1px rgba(255, 78, 205, 0.2),
-      0 0 60px rgba(255, 78, 205, 0.15);
+      0 0 0 1px rgba(255, 78, 205, 0.25),
+      0 0 60px rgba(255, 78, 205, 0.18);
   }
 
   .badge-urgent {
     background: rgba(255, 78, 205, 0.15);
-    border-color: rgba(255, 78, 205, 0.5);
+    border-color: rgba(255, 78, 205, 0.55);
     color: var(--accent3);
-    animation: text-blink 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: text-blink 2.4s ease-in-out infinite;
   }
 
   .badge-urgent .badge-dot {
     background: var(--accent3);
-    animation: pulse-dot-urgent 1s ease infinite;
+    animation: pulse-dot-urgent 1.2s ease infinite;
   }
 
   .card-urgent .card-title span {
@@ -387,17 +388,24 @@
   }
 
   .card-urgent .corner-deco {
-    background: linear-gradient(135deg, rgba(255,78,205,0.25), rgba(255,0,0,0.15));
+    background: linear-gradient(135deg, rgba(255,100,50,0.35), rgba(255,78,205,0.2));
+    animation: fire-glow 2s ease-in-out infinite;
   }
 
   .card-urgent .scan-line {
     background: linear-gradient(90deg, transparent, rgba(255, 78, 205, 0.8), transparent);
   }
 
+  @keyframes card-breathe {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.028); }
+    100% { transform: scale(1); }
+  }
+
   @keyframes urgent-glow {
-    0% { box-shadow: 0 0 15px rgba(255, 78, 205, 0.1); }
-    50% { box-shadow: 0 0 35px rgba(255, 78, 205, 0.4), inset 0 0 15px rgba(255, 78, 205, 0.1); }
-    100% { box-shadow: 0 0 15px rgba(255, 78, 205, 0.1); }
+    0%   { box-shadow: 0 0 18px rgba(255, 78, 205, 0.12); }
+    50%  { box-shadow: 0 0 45px rgba(255, 78, 205, 0.45), inset 0 0 20px rgba(255, 78, 205, 0.07); }
+    100% { box-shadow: 0 0 18px rgba(255, 78, 205, 0.12); }
   }
 
   @keyframes pulse-dot-urgent {
@@ -408,13 +416,12 @@
 
   @keyframes text-blink {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    50% { opacity: 0.45; }
   }
 
-  @keyframes urgent-shake {
-    0%, 90%, 100% { transform: translateX(0); }
-    92%, 96% { transform: translateX(-3px) rotate(1deg); }
-    94%, 98% { transform: translateX(3px) rotate(-1deg); }
+  @keyframes fire-glow {
+    0%, 100% { box-shadow: 0 0 8px rgba(255,100,50,0.3); }
+    50%       { box-shadow: 0 0 18px rgba(255,100,50,0.7); }
   }
 
   footer {
@@ -502,14 +509,14 @@
   <div class="cards-grid">
     
     <div class="card-wrap">
-      <a class="card" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/Mapa_mental_sondagem.html">
+      <a class="card card-urgent" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/Mapa_mental_sondagem.html">
         <div class="card-glow"></div>
         <div class="scan-line"></div>
 
         <div>
-          <div class="badge">
+          <div class="badge badge-urgent">
             <div class="badge-dot"></div>
-            Ativo
+            Novo Material
           </div>
           <div class="card-title">
             <span>Mapa Mental</span>
@@ -525,7 +532,7 @@
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <div class="corner-deco">⚡</div>
+          <div class="corner-deco">🔥</div>
         </div>
       </a>
     </div>
