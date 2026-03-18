@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cronograma Diário — Dryve</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --ink:   #0a0a0a;
+  --paper: #f5f3ee;
+  --cream: #fffdf7;
+  --rule:  rgba(10,10,10,0.09);
+  --neon-y: #ffe234;
+  --neon-p: #ff2d8b;
+  --neon-b: #00c8ff;
+  --neon-g: #00f57a;
+  --org: #ff6b00;
+  --qte: #ff2d8b;
+  --new: #00c8ff;
+  --mor: #bf5fff;
+  --fri: #6366f1;
+  --ret: #00f57a;
+  --rev: #ffe234;
+}
+
+body { font-family: 'Nunito', sans-serif; background: var(--paper); color: var(--ink); overflow-x: hidden; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--paper); }
+::-webkit-scrollbar-thumb { background: var(--ink); border-radius: 2px; }
+
+.floaters { position: fixed; inset: 0; pointer-events: none; z-index: 9000; overflow: hidden; }
+.floater { position: absolute; bottom: -60px; opacity: 0; animation: fe 6s ease-out forwards; }
+@keyframes fe {
+  0%   { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 0; }
+  10%  { opacity: 1; } 85% { opacity: 0.8; }
+  100% { transform: translateY(-105vh) rotate(360deg) scale(1.1); opacity: 0; }
+}
+
+.back-btn {
+  position: fixed; top: 22px; left: 22px; z-index: 9999;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 18px 8px 12px;
+  background: var(--ink); color: #fff;
+  font-family: 'Bebas Neue', cursive; font-size: 14px; letter-spacing: 0.18em;
+  text-decoration: none; border: 2px solid var(--ink);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.back-btn:hover { background: var(--neon-p); border-color: var(--neon-p); transform: translateX(-3px); }
+.back-btn svg { transition: transform 0.2s; }
+.back-btn:hover svg { transform: translateX(-3px); }
+
+.hero {
+  min-height: 100vh;
+  background: var(--cream);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  border-bottom: 3px solid var(--ink);
+  position: relative; overflow: hidden;
+}
+
+.hero-rules {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 79px, var(--rule) 79px, var(--rule) 80px);
+}
+
+.hero-bar { position: absolute; left: 140px; top: 0; bottom: 0; width: 4px; background: var(--neon-p); }
+@media(max-width:640px){ .hero-bar { left: 20px; } }
+
+.hero-content {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 120px 60px 60px 180px; gap: 0;
+}
+@media(max-width:640px){ .hero-content { padding: 100px 24px 40px 44px; } }
+
+.hero-eyebrow {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 13px; letter-spacing: 0.35em; color: var(--neon-p); margin-bottom: 16px;
+  animation: sl 0.8s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(72px, 14vw, 180px);
+  line-height: 0.87; letter-spacing: -0.02em; color: var(--ink);
+  animation: sl 0.85s cubic-bezier(0.16,1,0.3,1) 0.08s both;
+}
+.hero-title em { font-style: normal; -webkit-text-stroke: 2px var(--ink); color: transparent; display: block; }
+.hero-title .ac { color: var(--neon-p); }
+
+.hero-meta {
+  display: flex; gap: 28px; margin-top: 36px; flex-wrap: wrap;
+  animation: sl 0.85s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+}
+.mp {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+}
+.mp::before { content: ''; display: block; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.mp-1 { color: var(--org); } .mp-2 { color: var(--qte); }
+.mp-3 { color: var(--new); } .mp-4 { color: var(--ret); }
+
+.hero-cta-wrap { margin-top: 52px; animation: sl 0.85s cubic-bezier(0.16,1,0.3,1) 0.32s both; }
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: var(--ink); color: #fff;
+  font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 0.12em;
+  padding: 16px 36px; border: 3px solid var(--ink);
+  text-decoration: none; cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.hero-cta:hover { background: var(--neon-y); color: var(--ink); transform: translate(-4px,-4px); box-shadow: 6px 6px 0 var(--ink); }
+.hero-cta:active { transform: translate(0,0); box-shadow: none; }
+
+.hero-strip { position: relative; z-index: 2; display: flex; border-top: 2px solid var(--ink); }
+.strip-item { flex: 1; padding: 16px 24px; border-right: 2px solid var(--ink); }
+.strip-item:last-child { border-right: none; }
+.strip-num { font-family: 'Bebas Neue', cursive; font-size: 36px; line-height: 1; display: block; }
+.strip-label { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(10,10,10,0.38); margin-top: 2px; display: block; }
+@media(max-width:480px){ .strip-item { padding: 12px; } .strip-num { font-size: 26px; } }
+
+@keyframes sl { from { opacity: 0; transform: translateX(-32px); } to { opacity: 1; transform: translateX(0); } }
+
+.ticker-wrap { overflow: hidden; background: var(--ink); padding: 10px 0; white-space: nowrap; }
+.ticker-inner { display: inline-block; animation: tick 32s linear infinite; }
+.ticker-inner span { font-family: 'Bebas Neue', cursive; font-size: 16px; letter-spacing: 0.2em; color: var(--neon-y); padding: 0 24px; }
+.ticker-inner span::after { content: ' / '; color: rgba(255,226,52,0.3); }
+@keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.tl-section { background: var(--cream); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); }
+
+.tl-header {
+  padding: 48px 60px 32px; border-bottom: 2px solid var(--ink);
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+}
+@media(max-width:640px){ .tl-header { padding: 36px 24px 24px; } }
+
+.tl-header-title { font-family: 'Bebas Neue', cursive; font-size: clamp(38px,7vw,76px); line-height: 0.9; letter-spacing: -0.01em; }
+.tl-header-title span { color: var(--neon-p); }
+
+.tl-hint { font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(10,10,10,0.3); display: flex; align-items: center; gap: 8px; }
+.tl-hint::before { content: '←→'; font-family: 'Bebas Neue', cursive; font-size: 16px; }
+
+.tl-outer {
+  overflow-x: auto; overflow-y: visible; cursor: grab;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; scrollbar-color: var(--ink) var(--paper);
+}
+.tl-outer:active { cursor: grabbing; }
+.tl-outer::-webkit-scrollbar { height: 4px; }
+.tl-outer::-webkit-scrollbar-thumb { background: var(--ink); }
+
+.tl-track { display: flex; width: max-content; position: relative; }
+.tl-track::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 120px; height: 3px;
+  background: var(--ink); z-index: 0;
+}
+
+.station {
+  width: 340px; flex-shrink: 0;
+  border-right: 2px solid var(--ink);
+  position: relative;
+  transition: background 0.3s;
+}
+.station:last-child { border-right: none; }
+.station:hover { background: rgba(10,10,10,0.025); }
+
+.st-bar { position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--ac, #000); transform: scaleX(0); transform-origin: left; transition: transform 0.45s cubic-bezier(0.16,1,0.3,1); }
+.station:hover .st-bar { transform: scaleX(1); }
+
+.st-top { height: 120px; padding: 24px 28px 0; display: flex; flex-direction: column; justify-content: flex-start; position: relative; }
+.st-time { font-family: 'Bebas Neue', cursive; font-size: 20px; letter-spacing: 0.2em; color: var(--ac, rgba(10,10,10,0.5)); margin-bottom: 4px; }
+
+.st-dot {
+  position: absolute; bottom: -10px; left: 28px;
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 3px solid var(--ink); background: var(--ac, var(--paper));
+  z-index: 2; transition: transform 0.3s;
+}
+.station:hover .st-dot { transform: scale(1.5); }
+
+.st-body { padding: 28px 28px 36px; border-top: 2px solid var(--ink); }
+
+.st-num { font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 0.25em; color: var(--ac,#999); padding: 3px 10px; border: 1.5px solid var(--ac,#999); display: inline-block; margin-bottom: 12px; }
+.st-focus { font-size: 10.5px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ac,#999); opacity: 0.85; margin-bottom: 8px; display: block; }
+.st-title { font-family: 'Bebas Neue', cursive; font-size: clamp(30px,4vw,40px); line-height: 0.95; letter-spacing: -0.01em; margin-bottom: 18px; color: var(--ink); }
+
+.st-items { display: flex; flex-direction: column; }
+.st-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid rgba(10,10,10,0.07);
+  font-size: 13px; color: rgba(10,10,10,0.68); line-height: 1.5; font-weight: 600;
+  transition: padding-left 0.2s, color 0.2s;
+}
+.st-item:last-child { border-bottom: none; }
+.station:hover .st-item { padding-left: 4px; color: var(--ink); }
+.st-bullet { flex-shrink: 0; width: 16px; height: 16px; border-radius: 50%; background: var(--ac,#888); display: flex; align-items: center; justify-content: center; font-size: 8px; color: #fff; margin-top: 2px; font-weight: 900; }
+.s-ret .st-bullet, .s-rev .st-bullet { color: var(--ink); }
+
+.st-dica { margin-top: 14px; padding: 12px 14px; background: var(--ink); font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; border-left: 3px solid var(--ac,#fff); }
+.st-dica strong { color: var(--ac, var(--neon-y)); font-weight: 800; }
+
+.loca-name { font-family: 'Bebas Neue', cursive; font-size: 13px; letter-spacing: 0.16em; color: var(--ac,#fff); margin: 10px 0 4px; }
+
+.order-list { display: flex; flex-direction: column; gap: 5px; margin-top: 14px; }
+.order-item { display: flex; align-items: center; gap: 10px; padding: 7px 12px; background: rgba(10,10,10,0.04); font-size: 12px; font-weight: 700; border-left: 2px solid var(--ac,#888); }
+.order-n { font-family: 'Bebas Neue', cursive; font-size: 18px; color: var(--ac,#888); line-height: 1; min-width: 16px; }
+
+.s-org { --ac: var(--org); } .s-qte { --ac: var(--qte); } .s-new { --ac: var(--new); }
+.s-mor { --ac: var(--mor); } .s-fri { --ac: var(--fri); } .s-ret { --ac: var(--ret); } .s-rev { --ac: var(--rev); }
+
+.tl-controls { display: flex; align-items: center; padding: 16px 60px; border-top: 2px solid var(--ink); gap: 20px; }
+@media(max-width:640px){ .tl-controls { padding: 14px 20px; } }
+.tl-nav { display: flex; }
+.tl-nav-btn { width: 50px; height: 50px; background: var(--ink); border: none; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; border-right: 1px solid rgba(255,255,255,0.15); transition: background 0.2s; }
+.tl-nav-btn:hover { background: var(--neon-p); }
+.tl-nav-btn:last-child { border-right: none; }
+.tl-prog-track { flex: 1; height: 3px; background: rgba(10,10,10,0.1); overflow: hidden; }
+.tl-prog-fill { height: 100%; width: 0%; background: var(--ink); transition: width 0.3s; }
+.tl-lbl { font-family: 'Bebas Neue', cursive; font-size: 13px; letter-spacing: 0.2em; color: rgba(10,10,10,0.28); }
+
+.check-section { background: var(--ink); padding: 80px 60px; border-top: 3px solid var(--ink); }
+@media(max-width:640px){ .check-section { padding: 60px 24px; } }
+
+.check-hdr { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 24px; margin-bottom: 52px; }
+.check-title { font-family: 'Bebas Neue', cursive; font-size: clamp(48px,9vw,110px); line-height: 0.88; letter-spacing: -0.02em; color: var(--paper); }
+.check-title span { color: var(--neon-y); }
+.check-sub { font-size: 13px; color: rgba(255,255,255,0.3); font-weight: 400; max-width: 260px; line-height: 1.6; }
+
+.check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 9px; max-width: 1100px; }
+
+.check-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 15px 20px; border: 2px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.03);
+  cursor: pointer; user-select: none;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.check-item:hover { border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); transform: translateX(4px); }
+.check-item.done { border-color: var(--neon-g); background: rgba(0,245,122,0.07); }
+.check-item.done .ci-box { background: var(--neon-g); border-color: var(--neon-g); color: var(--ink); }
+.check-item.done .ci-text { color: rgba(255,255,255,0.28); text-decoration: line-through; }
+.check-item.done .ci-time { color: var(--neon-g); }
+
+.ci-box { width: 26px; height: 26px; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; color: transparent; transition: all 0.2s; }
+.ci-text { flex: 1; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.72); line-height: 1.45; }
+.ci-time { flex-shrink: 0; font-family: 'Bebas Neue', cursive; font-size: 14px; letter-spacing: 0.12em; color: rgba(255,255,255,0.18); }
+
+.check-bar-wrap { margin-top: 36px; max-width: 1100px; }
+.check-bar-lbl { display: flex; justify-content: space-between; font-family: 'Bebas Neue', cursive; font-size: 13px; letter-spacing: 0.2em; color: rgba(255,255,255,0.3); margin-bottom: 10px; }
+.check-bar { height: 4px; background: rgba(255,255,255,0.07); overflow: hidden; }
+.check-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--neon-g), var(--neon-b)); transition: width 0.5s cubic-bezier(0.16,1,0.3,1); }
+
+.mantras-section { background: var(--paper); border-top: 3px solid var(--ink); padding: 80px 60px; }
+@media(max-width:640px){ .mantras-section { padding: 60px 24px; } }
+
+.mantras-hed { font-family: 'Bebas Neue', cursive; font-size: clamp(42px,8vw,96px); line-height: 0.9; letter-spacing: -0.02em; margin-bottom: 52px; }
+.mantras-hed span { -webkit-text-stroke: 2px var(--ink); color: transparent; }
+
+.mantras-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 0; border: 2px solid var(--ink); }
+@media(max-width:640px){ .mantras-grid { grid-template-columns: 1fr; } }
+
+.m-cell {
+  padding: 36px 32px; border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+  position: relative; overflow: hidden; cursor: pointer; transition: background 0.3s;
+}
+.m-cell:nth-child(even) { border-right: none; }
+.m-cell:nth-child(3), .m-cell:nth-child(4) { border-bottom: none; }
+.m-cell:hover { background: var(--ink); }
+.m-cell::before { content: attr(data-n); position: absolute; right: 16px; bottom: -24px; font-family: 'Bebas Neue', cursive; font-size: 130px; color: rgba(10,10,10,0.04); line-height: 1; transition: color 0.3s; }
+.m-cell:hover::before { color: rgba(255,255,255,0.03); }
+
+.m-emoji { font-size: 30px; display: block; margin-bottom: 14px; }
+.m-quote { font-family: 'Bebas Neue', cursive; font-size: clamp(19px,2.4vw,26px); line-height: 1.1; letter-spacing: 0.01em; color: var(--ink); transition: color 0.3s; }
+.m-cell:hover .m-quote { color: var(--neon-y); }
+.m-src { display: block; margin-top: 10px; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(10,10,10,0.3); transition: color 0.3s; }
+.m-cell:hover .m-src { color: rgba(255,226,52,0.45); }
+
+.final-section { position: relative; overflow: hidden; background: var(--neon-p); padding: 100px 60px; text-align: center; border-top: 3px solid var(--ink); }
+.final-section::before { content: 'EXECUTA TODO DIA'; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-family: 'Bebas Neue', cursive; font-size: clamp(60px,13vw,180px); color: rgba(0,0,0,0.07); white-space: nowrap; pointer-events: none; letter-spacing: -0.02em; }
+.final-inner { position: relative; z-index: 2; }
+.final-tag { display: inline-block; background: var(--ink); color: var(--neon-y); font-family: 'Bebas Neue', cursive; font-size: 12px; letter-spacing: 0.3em; padding: 5px 18px; margin-bottom: 20px; }
+.final-big { font-family: 'Bebas Neue', cursive; font-size: clamp(64px,13vw,150px); line-height: 0.88; letter-spacing: -0.02em; color: var(--ink); }
+.final-big em { font-style: normal; display: block; -webkit-text-stroke: 2px var(--ink); color: transparent; }
+.final-sub { font-size: 15px; color: rgba(10,10,10,0.55); margin-top: 22px; line-height: 1.65; font-weight: 400; max-width: 440px; margin-left: auto; margin-right: auto; }
+.final-btn { display: inline-flex; align-items: center; gap: 12px; margin-top: 44px; padding: 16px 38px; background: var(--ink); color: #fff; font-family: 'Bebas Neue', cursive; font-size: 18px; letter-spacing: 0.12em; text-decoration: none; border: 3px solid var(--ink); transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s; }
+.final-btn:hover { background: transparent; color: var(--ink); transform: translate(-4px,-4px); box-shadow: 6px 6px 0 var(--ink); }
+
+.rv { opacity: 0; transform: translateY(26px); transition: opacity 0.65s cubic-bezier(0.16,1,0.3,1), transform 0.65s cubic-bezier(0.16,1,0.3,1); }
+.rv.in { opacity: 1; transform: translateY(0); }
+.d1{transition-delay:.05s}.d2{transition-delay:.12s}.d3{transition-delay:.19s}
+.d4{transition-delay:.26s}.d5{transition-delay:.33s}.d6{transition-delay:.40s}.d7{transition-delay:.47s}
+
+#confettiCanvas { display:none; position:fixed; inset:0; z-index:9998; pointer-events:none; }
+
+#completeOverlay {
+  display:none; position:fixed; inset:0; z-index:9997; pointer-events:none;
+  align-items:center; justify-content:center; flex-direction:column;
+  background: rgba(10,10,10,0.55); backdrop-filter: blur(4px);
+  animation: ov-in 0.35s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes ov-in { from{opacity:0;} to{opacity:1;} }
+.overlay-card {
+  background: var(--ink); padding: 48px 60px; max-width: 520px; width: 90%;
+  border: 4px solid var(--neon-y); box-shadow: 10px 10px 0 var(--neon-y);
+  text-align: center;
+  animation: card-pop 0.55s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+}
+@keyframes card-pop {
+  0%  { transform: translateY(50px) scale(0.85); opacity:0; }
+  65% { transform: translateY(-10px) scale(1.04); opacity:1; }
+  100%{ transform: translateY(0) scale(1); opacity:1; }
+}
+.overlay-emoji { font-size: 72px; display:block; margin-bottom:16px; animation: em-spin 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s both; }
+@keyframes em-spin { from{transform:rotate(-20deg) scale(0);} to{transform:rotate(0deg) scale(1);} }
+.overlay-title {
+  font-family:'Bebas Neue',cursive;
+  font-size: clamp(40px,8vw,80px); line-height:0.9; letter-spacing:-0.01em;
+  color: var(--neon-y);
+}
+.overlay-sub { font-size:14px; color:rgba(255,255,255,0.6); margin-top:12px; font-weight:600; line-height:1.55; }
+</style>
+</head>
+<body>
+
+<div class="floaters" id="floaters"></div>
+<canvas id="confettiCanvas"></canvas>
+<div id="completeOverlay">
+  <div class="overlay-card">
+    <span class="overlay-emoji">🏆</span>
+    <div class="overlay-title">DIA<br>CONCLUÍDO!</div>
+    <p class="overlay-sub">Você executou 100% do cronograma.<br>Isso é o que separa campeões! 🔥</p>
+  </div>
+</div>
+
+<a class="back-btn" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/">
+  <svg width="14" height="14" viewBox="0 0 15 15" fill="none">
+    <path d="M12 7.5H3M7 3.5L3 7.5L7 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  VOLTAR
+</a>
+
+<section class="hero">
+  <div class="hero-rules"></div>
+  <div class="hero-bar"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Dryve · Rotina de Alta Performance</div>
+    <h1 class="hero-title">CRONO<br><em>GRA</em><span class="ac">MA</span></h1>
+    <div class="hero-meta">
+      <div class="mp mp-1">Organização</div>
+      <div class="mp mp-2">Fechamento</div>
+      <div class="mp mp-3">Sondagem</div>
+      <div class="mp mp-4">Retomada</div>
+    </div>
+    <div class="hero-cta-wrap">
+      <a class="hero-cta" id="heroBtn" href="#tl" onclick="spawnE(['⏰','🔥','🚀'])">VER O DIA →</a>
+    </div>
+  </div>
+  <div class="hero-strip">
+    <div class="strip-item"><span class="strip-num">07</span><span class="strip-label">Blocos no dia</span></div>
+    <div class="strip-item"><span class="strip-num">08h</span><span class="strip-label">Início</span></div>
+    <div class="strip-item"><span class="strip-num">18h</span><span class="strip-label">Encerramento</span></div>
+    <div class="strip-item"><span class="strip-num">100%</span><span class="strip-label">Meta diária</span></div>
+  </div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span>ORGANIZAÇÃO</span><span>CLIENTES QUENTES</span><span>LEADS NOVOS</span>
+    <span>SONDAGEM</span><span>FECHAMENTO</span><span>ARGUMENTAÇÃO</span>
+    <span>RETOMADA</span><span>REVISÃO DO FUNIL</span><span>DRYVE</span>
+    <span>ORGANIZAÇÃO</span><span>CLIENTES QUENTES</span><span>LEADS NOVOS</span>
+    <span>SONDAGEM</span><span>FECHAMENTO</span><span>ARGUMENTAÇÃO</span>
+    <span>RETOMADA</span><span>REVISÃO DO FUNIL</span><span>DRYVE</span>
+  </div>
+</div>
+
+<section class="tl-section" id="tl">
+  <div class="tl-header rv">
+    <div class="tl-header-title">SEU DIA,<br><span>BLOCO A BLOCO</span></div>
+    <div class="tl-hint">Arraste ou use as setas</div>
+  </div>
+
+  <div class="tl-outer" id="tlScroll">
+    <div class="tl-track">
+
+      <div class="station s-org" onclick="spawnE(['📋','✅','☀️'])">
+        <div class="st-bar"></div>
+        <div class="st-top"><div class="st-time">08:00 — 08:30</div><div class="st-dot"></div></div>
+        <div class="st-body">
+          <div class="st-num">Bloco 01</div>
+          <div class="st-title">Organização<br>do Dia</div>
+          <div class="st-items">
+            <div class="st-item"><div class="st-bullet">→</div>Identificar clientes quentes prioritários</div>
+            <div class="st-item"><div class="st-bullet">→</div>Verificar vendas necessárias para meta do dia</div>
+            <div class="st-item"><div class="st-bullet">→</div>Conferir agenda de retornos programados</div>
+          </div>
+          <div class="st-dica"><strong>Nunca saia atirando.</strong> Os primeiros 30 min definem a qualidade do seu dia inteiro.</div>
+        </div>
+      </div>
+
+      <div class="station s-qte" onclick="spawnE(['🔥','💸','✅'])">
+        <div class="st-bar"></div>
+        <div class="st-top"><div class="st-time">08:30 — 10:30</div><div class="st-dot"></div></div>
+        <div class="st-body">
+          <div class="st-num">Bloco 02</div>
+          <div class="st-focus">🎯 Foco em Fechamento</div>
+          <div class="st-title">Clientes<br>Quentes</div>
+          <div class="st-items">
+            <div class="st-item"><div class="st-bullet">→</div>Mensagens fora do horário de trabalho</div>
+            <div class="st-item"><div class="st-bullet">→</div>Clientes com documentação aprovada</div>
+            <div class="st-item"><div class="st-bullet">→</div>Cadastrados no aplicativo Movida</div>
+            <div class="st-item"><div class="st-bullet">→</div>Intenção clara de contratação</div>
+          </div>
+          <div class="loca-name">→ MOVIDA</div>
+          <div class="st-items">
+            <div class="st-item"><div class="st-bullet">1</div>Aguardando pagamento — cartão de crédito</div>
+            <div class="st-item"><div class="st-bullet">2</div>Aguardando documentação</div>
+            <div class="st-item"><div class="st-bullet">3</div>Em negociação</div>
+          </div>
+          <div class="loca-name">→ LOCALIZA</div>
+          <div class="st-items">
+            <div class="st-item"><div class="st-bullet">1</div>Aguardando assinatura do contrato</div>
+            <div class="st-item"><div class="st-bullet">2</div>Aguardando prova de vida</div>
+            <div class="st-item"><div class="st-bullet">3</div>Em negociação</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="station s-new" onclick="spawnE(['🆕','👋','📞'])">
+        <div class="st-bar"></div>
+        <div class="st-top"><div class="st-time">10:30 — 12:30</div><div class="st-dot"></div></div>
+        <div class="st-body">
+          <div class="st-num">Bloco 03</div>
+          <div class="st-focus">🔍 Foco em Sondagem</div>
+          <div class="st-title">Leads<br>Novos</div>
+          <div class="st-items">
+            <div class="st-item"><div class="st-bullet">→</div>Realizar primeiro contato</div>
+            <div class="st-item"><div class="st-bullet">→</div>Fazer abordagem inicial</div>
+            <div class="st-item"><div class="st-bullet">→</div>Realizar sondagem de perfil e necessidade</div>
+          </div>
+          <div class="st-dica"><strong>Dicas:</strong> Movimentar lead para etapa correta. Incluir TAG conforme qualificação.</div>
+        </div>
+      </div>
+
+      <div class="station s-mor" onclick="spawnE(['🌡️','💬','🧠'])">
+        <div class="st-bar"></div>
+        <div class="st-top"><div class="st-time">13:00 — 14:30</div><div class="st-dot"></div></div>
+        <div class="st-body">
+          <div class="st-num">Bloco 04</div>
+          <div class="st-focus">💬 Foco em Argumentação</div>
+          <div class="st-title">Leads<br>Mornos</div>
+          <div class="st-items">
+            <div class="st-item"><div class="st-bullet">→</div>Clientes analisando proposta</div>
+            <div class="st-item"><div class="st-bullet">→</div>Clientes enviando documentação</div>
+            <div class="st-item"><div class="st-bullet">→</div>Clientes consultando terceiros</div>
+          </div>
+          <div class="st-dica"><strong>Como agir:</strong> Entender o real motivo do não fechamento. Momento de ser mais incisivo.</div>
+        </div>
+      </div>
+
+      <div class="station s-fri" onclick="spawnE(['❄️','📲','🔄'])">
+        <div class="st-bar"></div>
+        <div class="st-top"><div class="st-time">14:30 — 16:30</div><div class="st-dot"></div></div>
+        <div class="st-body">
+          <div class="st-num">Bloco 05</div>
+          <div class="st-title">Leads<br>Frios</div>
+          <div class="st-items">
+            <div class="st-item"><div class="st-bullet">→</div>Reavaliar estágio se o cliente responder</div>
+            <div class="st-item"><div class="st-bullet">→</div>Atualizar TAG e registrar no CRM</div>
+            <div class="st-item"><div class="st-bullet">→</div>Garantir contato com todos os leads</div>
+          </div>
+          <div class="order-list">
+            <div class="order-item"><span class="order-n">1</span>💬 Mensagem WhatsApp</div>
+            <div class="order-item"><span class="order-n">2</span>📞 Ligação Dryvepro</div>
+            <div class="order-item"><span class="order-n">3</span>📲 Ligação WhatsApp</div>
+            <div class="order-item"><span class="order-n">4</span>✉️ SMS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="station s-ret" onclick="spawnE(['♻️','💰','⚡'])">
+        <div class="st-bar"></div>
+        <div class="st-top"><div class="st-time">16:30 — 17:30</div><div class="st-dot"></div></div>
+        <div class="st-body">
+          <div class="st-num">Bloco 06</div>
+          <div class="st-focus">⚡ Horário mais estratégico do dia</div>
+          <div class="st-title">Retomada de<br>Negociações</div>
+          <div class="st-items">
+            <div class="st-item"><div class="st-bullet">→</div>Follow-ups estratégicos — Leads Quentes</div>
+            <div class="st-item"><div class="st-bullet">→</div>Agendamentos de retorno e reuniões</div>
+            <div class="st-item"><div class="st-bullet">→</div>Leads perdidos se necessário — Remalho</div>
+          </div>
+          <div class="st-dica">Use para retomar clientes com <strong>promessa de pagamento</strong> que ainda não responderam. Não desperdice este bloco.</div>
+        </div>
+      </div>
+
+      <div class="station s-rev" onclick="spawnE(['✅','📊','🏁'])">
+        <div class="st-bar"></div>
+        <div class="st-top"><div class="st-time">17:30 — 18:00</div><div class="st-dot"></div></div>
+        <div class="st-body">
+          <div class="st-num">Bloco 07</div>
+          <div class="st-title">Revisão<br>do Funil</div>
+          <div class="st-items">
+            <div class="st-item"><div class="st-bullet">→</div>Verificar se todos os clientes foram respondidos</div>
+            <div class="st-item"><div class="st-bullet">→</div>Atualizar informações no CRM</div>
+            <div class="st-item"><div class="st-bullet">→</div>Garantir que cada lead esteja na etapa correta</div>
+          </div>
+          <div class="st-dica"><strong>Amanhã começa hoje.</strong> CRM atualizado = manhã organizada = mais vendas.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="tl-controls">
+    <div class="tl-nav">
+      <button class="tl-nav-btn" id="tlPrev">←</button>
+      <button class="tl-nav-btn" id="tlNext">→</button>
+    </div>
+    <div class="tl-prog-track"><div class="tl-prog-fill" id="tlFill"></div></div>
+    <div class="tl-lbl" id="tlLbl">01 / 07</div>
+  </div>
+</section>
+
+<section class="check-section" id="checklist">
+  <div class="check-hdr rv">
+    <div>
+      <div class="check-title">CUMPRI<br><span>HOJE?</span></div>
+    </div>
+    <div class="check-sub">Marque cada bloco ao longo do dia. 7 de 7 = dia de campeão.</div>
+  </div>
+  <div class="check-grid">
+    <div class="check-item rv d1" onclick="ck(this)"><div class="ci-box">✓</div><span class="ci-text">Organizei o dia e identifiquei os quentes prioritários</span><span class="ci-time">08:00</span></div>
+    <div class="check-item rv d2" onclick="ck(this)"><div class="ci-box">✓</div><span class="ci-text">Contatei todos os quentes seguindo a ordem de prioridade</span><span class="ci-time">08:30</span></div>
+    <div class="check-item rv d3" onclick="ck(this)"><div class="ci-box">✓</div><span class="ci-text">Fiz a sondagem dos leads novos e atualizei CRM com TAG</span><span class="ci-time">10:30</span></div>
+    <div class="check-item rv d4" onclick="ck(this)"><div class="ci-box">✓</div><span class="ci-text">Trabalhei os mornos com argumentação focada</span><span class="ci-time">13:00</span></div>
+    <div class="check-item rv d5" onclick="ck(this)"><div class="ci-box">✓</div><span class="ci-text">Contatei frios: WhatsApp → Dryvepro → Ligação → SMS</span><span class="ci-time">14:30</span></div>
+    <div class="check-item rv d6" onclick="ck(this)"><div class="ci-box">✓</div><span class="ci-text">Fiz follow-ups e retomadas no horário estratégico</span><span class="ci-time">16:30</span></div>
+    <div class="check-item rv d7" onclick="ck(this)"><div class="ci-box">✓</div><span class="ci-text">Revisei o funil e fechei o dia com tudo respondido</span><span class="ci-time">17:30</span></div>
+  </div>
+  <div class="check-bar-wrap rv">
+    <div class="check-bar-lbl"><span>PROGRESSO DO DIA</span><span id="ckTxt">0 / 7</span></div>
+    <div class="check-bar"><div class="check-fill" id="ckFill"></div></div>
+  </div>
+</section>
+
+<section class="mantras-section">
+  <div class="mantras-hed rv">FRASE<br><span>DO DIA</span></div>
+  <div class="mantras-grid">
+    <div class="m-cell" data-n="01" onclick="spawnE(['⏰','💪'])">
+      <span class="m-emoji">🎯</span>
+      <blockquote class="m-quote">"Nós somos o que fazemos repetidamente. A excelência, portanto, não é um ato, mas um hábito."</blockquote>
+      <cite class="m-src">— Aristóteles</cite>
+    </div>
+    <div class="m-cell" data-n="02" onclick="spawnE(['🔥','💸'])">
+      <span class="m-emoji">⚡</span>
+      <blockquote class="m-quote">"A melhor hora para plantar uma árvore foi há vinte anos. A segunda melhor hora é agora."</blockquote>
+      <cite class="m-src">— Provérbio Chinês</cite>
+    </div>
+    <div class="m-cell" data-n="03" onclick="spawnE(['🧠','📊'])">
+      <span class="m-emoji">🔑</span>
+      <blockquote class="m-quote">"O sucesso é a soma de pequenos esforços repetidos dia após dia."</blockquote>
+      <cite class="m-src">— Robert Collier</cite>
+    </div>
+    <div class="m-cell" data-n="04" onclick="spawnE(['♻️','⚡'])">
+      <span class="m-emoji">🏹</span>
+      <blockquote class="m-quote">"Ou você corre pelo seu sonho ou corre pela sobrevivência. A escolha é sua."</blockquote>
+      <cite class="m-src">— Des Linden</cite>
+    </div>
+  </div>
+</section>
+
+<section class="final-section">
+  <div class="final-inner rv">
+    <div class="final-tag">Dryve · 0km por Assinatura</div>
+    <div class="final-big">EXECUTA<br><em>TODO</em> DIA.</div>
+    <p class="final-sub">Cronograma não é sugestão — é o mapa do tesouro. Quem segue, converte.</p>
+    <a class="final-btn" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/" onclick="spawnE(['🚀','🏆','💥','⭐','🎉'])">← VOLTAR À BIBLIOTECA</a>
+  </div>
+</section>
+
+<script>
+const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: 0.08 });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+document.getElementById('heroBtn').addEventListener('click', e => {
+  e.preventDefault();
+  document.getElementById('tl').scrollIntoView({ behavior: 'smooth' });
+});
+
+const scroller = document.getElementById('tlScroll');
+const SW = 342;
+
+function tlUI() {
+  const s = scroller.scrollLeft, max = scroller.scrollWidth - scroller.clientWidth;
+  document.getElementById('tlFill').style.width = (max > 0 ? s/max*100 : 0) + '%';
+  const idx = Math.min(Math.round(s/SW)+1, 7);
+  document.getElementById('tlLbl').textContent = String(idx).padStart(2,'0') + ' / 07';
+}
+
+document.getElementById('tlNext').addEventListener('click', () => scroller.scrollBy({ left: SW, behavior: 'smooth' }));
+document.getElementById('tlPrev').addEventListener('click', () => scroller.scrollBy({ left: -SW, behavior: 'smooth' }));
+scroller.addEventListener('scroll', tlUI, { passive: true });
+
+let drag = false, sx, ss;
+scroller.addEventListener('mousedown', e => { drag=true; sx=e.pageX; ss=scroller.scrollLeft; scroller.style.userSelect='none'; });
+window.addEventListener('mousemove', e => { if(drag) scroller.scrollLeft = ss-(e.pageX-sx); });
+window.addEventListener('mouseup', () => { drag=false; scroller.style.userSelect=''; });
+
+function ck(item) {
+  item.classList.toggle('done');
+  const done = document.querySelectorAll('.check-item.done').length;
+  const tot  = document.querySelectorAll('.check-item').length;
+  document.getElementById('ckFill').style.width = (done/tot*100)+'%';
+  document.getElementById('ckTxt').textContent = done+' / '+tot;
+  if (item.classList.contains('done')) spawnE(['✅','⚡']);
+  if (done === tot) explode();
+}
+
+function spawnE(list, opts={}) {
+  const c = document.getElementById('floaters');
+  list.forEach((em,i) => setTimeout(() => {
+    const el = document.createElement('div');
+    el.className = 'floater';
+    el.textContent = em;
+    const sz = opts.big ? Math.random()*28+32 : Math.random()*16+18;
+    const startX = opts.x != null ? opts.x : Math.random()*90+5;
+    el.style.cssText = `left:${startX}%;font-size:${sz}px;animation-duration:${Math.random()*2+4}s`;
+    c.appendChild(el);
+    setTimeout(() => el.remove(), 7000);
+  }, i * (opts.delay || 110)));
+}
+
+function explode() {
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.style.display = 'block';
+
+  const colors = ['#ffe234','#ff2d8b','#00f57a','#00c8ff','#bf5fff','#ff6b00','#ffffff'];
+  const pieces = [];
+  for (let i = 0; i < 280; i++) {
+    pieces.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      w: Math.random() * 12 + 5,
+      h: Math.random() * 6 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rot: Math.random() * 360,
+      vx: (Math.random() - 0.5) * 6,
+      vy: Math.random() * 4 + 2,
+      vr: (Math.random() - 0.5) * 8,
+      opacity: 1
+    });
+  }
+
+  let frame = 0;
+  function drawConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      if (frame > 90) p.opacity -= 0.012;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.opacity);
+      ctx.translate(p.x + p.w/2, p.y + p.h/2);
+      ctx.rotate(p.rot * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+    });
+    frame++;
+    if (frame < 160) requestAnimationFrame(drawConfetti);
+    else { ctx.clearRect(0,0,canvas.width,canvas.height); canvas.style.display='none'; overlay.style.display='none'; }
+  }
+  drawConfetti();
+
+  const overlay = document.getElementById('completeOverlay');
+  overlay.style.display = 'flex';
+  setTimeout(() => { overlay.style.display = 'none'; }, 4000);
+
+  const pool = ['🎉','🏆','🔥','🚀','⭐','💥','✨','🎊','💪','🥇','💰','🎯'];
+  for (let w = 0; w < 3; w++) {
+    setTimeout(() => {
+      const wave = [...pool].sort(() => Math.random()-.5).slice(0, 8);
+      spawnE(wave, { big: true, delay: 60 });
+    }, w * 700);
+  }
+
+  const sec = document.querySelector('.check-section');
+  sec.style.transition = 'background 0.15s';
+  const flashes = ['#ffe234','#ff2d8b','#00f57a','#0a0a0a'];
+  flashes.forEach((col, i) => setTimeout(() => { sec.style.background = col; }, i * 160));
+  setTimeout(() => { sec.style.background = ''; sec.style.transition = ''; }, flashes.length * 160 + 200);
+}
+
+setInterval(() => {
+  const p = ['⏰','🔥','⚡','💰','🎯','📈','💪','🏆'];
+  spawnE([p[Math.floor(Math.random()*p.length)]]);
+}, 9000);
+</script>
+</body>
+</html>
