@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Funil DryvePro — Etapas do CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --bg:     #0c0c10;
+  --surf:   #111116;
+  --surf2:  #16161c;
+  --border: rgba(255,255,255,0.06);
+  --text:   #e9e7f5;
+  --muted:  rgba(255,255,255,0.38);
+
+  --c1: #3b82f6;
+  --c2: #f59e0b;
+  --c3: #ef4444;
+  --c4: #22c55e;
+  --c5: #a855f7;
+  --c6: #b45309;
+  --c7: #0ea5e9;
+}
+
+body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--c1); border-radius: 2px; }
+
+.floaters { position: fixed; inset: 0; pointer-events: none; z-index: 9000; overflow: hidden; }
+.floater { position: absolute; bottom: -60px; opacity: 0; animation: fe 6s ease-out forwards; }
+@keyframes fe {
+  0%  { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 0; }
+  10% { opacity: 1; } 85% { opacity: 0.8; }
+  100%{ transform: translateY(-105vh) rotate(360deg) scale(1.1); opacity: 0; }
+}
+
+.back-btn {
+  position: fixed; top: 22px; left: 22px; z-index: 9999;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 18px 8px 12px; border-radius: 100px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px); color: #fff;
+  font-size: 13px; font-weight: 800; letter-spacing: 0.04em;
+  text-decoration: none; transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.back-btn:hover { background: var(--c1); border-color: var(--c1); transform: translateX(-3px); }
+.back-btn svg { transition: transform 0.2s; }
+.back-btn:hover svg { transform: translateX(-3px); }
+
+.hero {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 100px 24px 100px;
+  position: relative; overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(255,255,255,0.012) 3px,
+    rgba(255,255,255,0.012) 4px
+  );
+  pointer-events: none; z-index: 1;
+}
+
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 65% 65% at 50% 45%, rgba(59,130,246,0.1), transparent 70%);
+  pointer-events: none; z-index: 1;
+}
+
+.hero > * { position: relative; z-index: 2; }
+
+.hero-ring {
+  position: absolute; z-index: 1;
+  border-radius: 50%; border: 1px solid rgba(59,130,246,0.1);
+  pointer-events: none;
+}
+.ring-1 { width: 600px; height: 600px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation: spin-r 40s linear infinite; }
+.ring-2 { width: 900px; height: 900px; top: 50%; left: 50%; transform: translate(-50%,-50%); animation: spin-r 70s linear infinite reverse; border-color: rgba(168,85,247,0.06); }
+.ring-1::before { content: ''; position: absolute; top: -4px; left: 50%; width: 8px; height: 8px; border-radius: 50%; background: var(--c1); transform: translateX(-50%); box-shadow: 0 0 12px var(--c1); }
+.ring-2::before { content: ''; position: absolute; bottom: -4px; left: 50%; width: 6px; height: 6px; border-radius: 50%; background: var(--c5); transform: translateX(-50%); box-shadow: 0 0 10px var(--c5); }
+@keyframes spin-r { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+.hero-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25);
+  color: var(--c1); font-family: 'Bebas Neue', cursive;
+  font-size: 12px; letter-spacing: 0.3em;
+  padding: 6px 18px; border-radius: 100px; margin-bottom: 32px;
+  animation: pop-in 0.7s cubic-bezier(0.16,1,0.3,1) both;
+}
+.hero-chip::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--c1); animation: blink 1.8s ease infinite; }
+@keyframes blink { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(59,130,246,0.6);} 50%{opacity:0.3;box-shadow:0 0 0 4px rgba(59,130,246,0);} }
+
+.hero-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(64px, 13vw, 160px);
+  line-height: 0.9; letter-spacing: 0.01em;
+  animation: pop-in 0.85s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+}
+.ht-1 { display: block; color: #fff; }
+.ht-2 { display: block; color: var(--c1); }
+.ht-3 {
+  display: block;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,0.18);
+  color: transparent;
+  letter-spacing: 0.06em;
+}
+
+.hero-sub {
+  font-size: clamp(14px,2.2vw,17px); color: var(--muted);
+  margin-top: 22px; max-width: 460px; line-height: 1.65;
+  font-weight: 400;
+  animation: pop-in 0.85s cubic-bezier(0.16,1,0.3,1) 0.22s both;
+}
+.hero-sub strong { color: #fff; font-weight: 800; }
+
+.hero-cta {
+  margin-top: 40px;
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--c1); color: #fff;
+  font-family: 'Bebas Neue', cursive; font-size: 17px; letter-spacing: 0.12em;
+  padding: 14px 34px; border-radius: 8px; border: none;
+  text-decoration: none; cursor: pointer;
+  animation: pop-in 0.85s cubic-bezier(0.16,1,0.3,1) 0.34s both;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 32px rgba(59,130,246,0.35);
+}
+.hero-cta:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 14px 40px rgba(59,130,246,0.5); }
+.hero-cta:active { transform: scale(0.97); }
+
+.hero-strip {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+  display: flex; border-top: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+.hs { flex: 1; padding: 16px 12px; text-align: center; border-right: 1px solid var(--border); }
+.hs:last-child { border-right: none; }
+.hs-n { font-family: 'Bebas Neue', cursive; font-size: 30px; line-height: 1; display: block; }
+.hs-l { font-size: 9px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 2px; display: block; }
+@media(max-width:480px){ .hs{padding:12px 6px;} .hs-n{font-size:22px;} }
+
+@keyframes pop-in { from{opacity:0;transform:translateY(28px) scale(0.97);} to{opacity:1;transform:translateY(0) scale(1);} }
+
+.ticker-wrap { overflow: hidden; background: rgba(59,130,246,0.12); border-top: 1px solid rgba(59,130,246,0.2); border-bottom: 1px solid rgba(59,130,246,0.2); padding: 10px 0; white-space: nowrap; }
+.ticker-inner { display: inline-block; animation: tick 32s linear infinite; }
+.ticker-inner span { font-family: 'Bebas Neue', cursive; font-size: 14px; letter-spacing: 0.22em; color: var(--c1); padding: 0 22px; }
+.ticker-inner span::after { content: ' · '; opacity: 0.4; }
+@keyframes tick { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+.kanban-section { padding: 80px 24px; background: var(--bg); }
+.kanban-inner { max-width: 1200px; margin: 0 auto; }
+
+.kh { margin-bottom: 52px; }
+.kh-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Bebas Neue', cursive; font-size: 11px; letter-spacing: 0.28em;
+  color: var(--c1); background: rgba(59,130,246,0.08);
+  border: 1px solid rgba(59,130,246,0.18); padding: 4px 14px; border-radius: 100px;
+  margin-bottom: 14px;
+}
+.kh-title { font-family: 'Bebas Neue', cursive; font-size: clamp(36px,6vw,72px); line-height: 0.9; letter-spacing: -0.01em; }
+.kh-title span { color: var(--c1); }
+.kh-sub { margin-top: 10px; font-size: 13px; color: var(--muted); font-weight: 400; }
+
+.steps { display: flex; flex-direction: column; gap: 0; position: relative; }
+
+.steps::before {
+  content: '';
+  position: absolute; left: 35px; top: 44px; bottom: 44px; width: 2px;
+  background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 6px, transparent 6px, transparent 12px);
+  z-index: 0;
+}
+@media(max-width:560px){ .steps::before { left: 24px; } }
+
+.step {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 0;
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  position: relative; z-index: 1;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.3s, box-shadow 0.3s;
+  cursor: default;
+}
+.step:hover {
+  transform: translateX(10px);
+  border-color: var(--sc);
+  box-shadow: -6px 0 0 var(--sc), 0 8px 32px rgba(0,0,0,0.35);
+}
+
+.step-num {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 6px; padding: 22px 0;
+  background: color-mix(in srgb, var(--sc) 10%, var(--surf));
+  border-right: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.step:hover .step-num { background: color-mix(in srgb, var(--sc) 18%, var(--surf)); }
+
+.sn-n { font-family: 'Bebas Neue', cursive; font-size: 30px; line-height: 1; color: var(--sc); transition: transform 0.3s; }
+.step:hover .sn-n { transform: scale(1.18); }
+.sn-icon { font-size: 18px; }
+
+.step-body {
+  padding: 20px 26px;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 16px; align-items: start;
+}
+@media(max-width:560px){ .step-body { grid-template-columns: 1fr; } }
+
+.sb-main {}
+
+.step-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 9.5px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--sc); padding: 2px 10px; border-radius: 100px;
+  border: 1px solid color-mix(in srgb, var(--sc) 35%, transparent);
+  background: color-mix(in srgb, var(--sc) 10%, transparent);
+  margin-bottom: 8px;
+}
+
+.step-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(20px,3vw,28px); letter-spacing: 0.02em; line-height: 1;
+  color: #fff; margin-bottom: 7px;
+}
+
+.step-desc { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; font-weight: 400; margin-bottom: 12px; }
+.step-desc strong { color: rgba(255,255,255,0.85); font-weight: 800; }
+
+.step-crit {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 14px; border-radius: 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-left: 3px solid var(--sc);
+}
+.sc-lbl { font-family: 'Bebas Neue', cursive; font-size: 10px; letter-spacing: 0.24em; color: var(--sc); flex-shrink: 0; padding-top: 1px; }
+.sc-txt { font-size: 12.5px; color: rgba(255,255,255,0.5); line-height: 1.55; font-style: italic; }
+
+.step-meta {
+  display: flex; flex-direction: column; gap: 8px;
+  min-width: 100px; padding-top: 4px;
+}
+@media(max-width:560px){ .step-meta { flex-direction: row; padding-top: 0; } }
+
+.sm-item {}
+.sm-label { font-size: 9px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.2); margin-bottom: 2px; }
+.sm-val { font-family: 'Bebas Neue', cursive; font-size: 14px; letter-spacing: 0.06em; color: var(--sc); }
+
+.s1{--sc:var(--c1);} .s2{--sc:var(--c2);} .s3{--sc:var(--c3);}
+.s4{--sc:var(--c4);} .s5{--sc:var(--c5);} .s6{--sc:var(--c6);} .s7{--sc:var(--c7);}
+
+@media(max-width:560px){
+  .step { grid-template-columns: 52px 1fr; }
+  .sn-n { font-size: 22px; }
+}
+
+.map-section {
+  padding: 80px 24px;
+  background: var(--surf);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.map-inner { max-width: 1200px; margin: 0 auto; }
+
+.map-title { font-family: 'Bebas Neue', cursive; font-size: clamp(36px,6vw,72px); line-height: 0.9; letter-spacing: -0.01em; margin-bottom: 40px; }
+.map-title span { color: var(--c4); }
+
+.map-grid {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  gap: 2px;
+}
+@media(max-width:900px){ .map-grid { grid-template-columns: repeat(4,1fr); } }
+@media(max-width:560px){ .map-grid { grid-template-columns: repeat(2,1fr); } }
+
+.map-tile {
+  padding: 20px 16px; border-radius: 8px;
+  background: color-mix(in srgb, var(--tc) 10%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--tc) 22%, transparent);
+  display: flex; flex-direction: column; gap: 8px;
+  cursor: default; position: relative; overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), background 0.3s;
+}
+.map-tile:hover {
+  transform: translateY(-6px) scale(1.04);
+  background: color-mix(in srgb, var(--tc) 20%, var(--bg));
+}
+.map-tile::after {
+  content: attr(data-n);
+  position: absolute; right: -8px; bottom: -16px;
+  font-family: 'Bebas Neue', cursive; font-size: 72px; color: color-mix(in srgb, var(--tc) 12%, transparent); line-height: 1;
+}
+
+.mt1{--tc:var(--c1);} .mt2{--tc:var(--c2);} .mt3{--tc:var(--c3);}
+.mt4{--tc:var(--c4);} .mt5{--tc:var(--c5);} .mt6{--tc:var(--c6);} .mt7{--tc:var(--c7);}
+
+.tile-icon { font-size: 22px; }
+.tile-n { font-family: 'Bebas Neue', cursive; font-size: 10px; letter-spacing: 0.24em; color: color-mix(in srgb, var(--tc) 70%, white); }
+.tile-name { font-family: 'Bebas Neue', cursive; font-size: 14px; letter-spacing: 0.03em; color: #fff; line-height: 1.1; }
+.tile-crit { font-size: 11px; color: rgba(255,255,255,0.45); line-height: 1.45; font-weight: 600; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06); }
+
+.rules-section { padding: 80px 24px; background: var(--bg); }
+.rules-inner { max-width: 1200px; margin: 0 auto; }
+
+.rules-title { font-family: 'Bebas Neue', cursive; font-size: clamp(36px,6vw,72px); line-height: 0.9; letter-spacing: -0.01em; margin-bottom: 40px; }
+.rules-title span { color: var(--c3); }
+
+.rules-row { display: grid; grid-template-columns: repeat(auto-fit,minmax(270px,1fr)); gap: 12px; }
+
+.rule-card {
+  background: var(--surf); border: 1px solid var(--border); border-radius: 12px;
+  padding: 28px 24px; position: relative; overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.3s;
+  cursor: default;
+}
+.rule-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.12); }
+
+.rule-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--rc); border-radius: 12px 12px 0 0; }
+
+.rc1{--rc:var(--c1);} .rc2{--rc:var(--c2);} .rc3{--rc:var(--c4);}
+
+.rule-icon { font-size: 32px; display: block; margin-bottom: 14px; }
+.rule-title { font-family: 'Bebas Neue', cursive; font-size: 22px; letter-spacing: 0.04em; color: var(--rc); margin-bottom: 8px; }
+.rule-text { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.65; font-weight: 400; }
+
+.final-section {
+  padding: 100px 24px; text-align: center;
+  background: var(--surf); border-top: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.final-glow {
+  position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none;
+}
+.fg1 { width: 500px; height: 500px; background: radial-gradient(circle,rgba(59,130,246,0.12),transparent 70%); top: -100px; left: 50%; transform: translateX(-50%); }
+.fg2 { width: 300px; height: 300px; background: radial-gradient(circle,rgba(168,85,247,0.08),transparent 70%); bottom: -50px; right: 10%; }
+
+.final-inner { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
+
+.final-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.25);
+  color: var(--c1); font-family: 'Bebas Neue', cursive;
+  font-size: 11px; letter-spacing: 0.28em; padding: 5px 16px; border-radius: 100px;
+  margin-bottom: 24px;
+}
+
+.final-big {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(52px,10vw,120px); line-height: 0.9; letter-spacing: -0.01em; color: #fff;
+}
+.final-big .fb2 { color: var(--c1); display: block; }
+.final-big .fb3 { -webkit-text-stroke: 1.5px rgba(255,255,255,0.2); color: transparent; display: block; letter-spacing: 0.04em; }
+
+.final-sub { font-size: 15px; color: var(--muted); margin-top: 22px; line-height: 1.65; font-weight: 300; }
+
+.final-btn {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 44px;
+  padding: 14px 34px; border-radius: 8px;
+  background: rgba(255,255,255,0.06); color: #fff;
+  font-family: 'Bebas Neue', cursive; font-size: 16px; letter-spacing: 0.12em;
+  border: 1px solid rgba(255,255,255,0.12); text-decoration: none;
+  transition: background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.2s;
+}
+.final-btn:hover { background: var(--c1); border-color: var(--c1); transform: translateY(-4px); box-shadow: 0 14px 36px rgba(59,130,246,0.4); }
+
+.rv { opacity:0; transform:translateY(24px); transition:opacity 0.65s cubic-bezier(0.16,1,0.3,1),transform 0.65s cubic-bezier(0.16,1,0.3,1); }
+.rv.in { opacity:1; transform:translateY(0); }
+.d1{transition-delay:.04s}.d2{transition-delay:.10s}.d3{transition-delay:.16s}
+.d4{transition-delay:.22s}.d5{transition-delay:.28s}.d6{transition-delay:.34s}.d7{transition-delay:.40s}
+
+@media(max-width:640px){ .kanban-section,.map-section,.rules-section,.final-section{padding-left:16px;padding-right:16px;} }
+</style>
+</head>
+<body>
+
+<div class="floaters" id="floaters"></div>
+
+<a class="back-btn" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/">
+  <svg width="14" height="14" viewBox="0 0 15 15" fill="none">
+    <path d="M12 7.5H3M7 3.5L3 7.5L7 11.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  Voltar
+</a>
+
+<section class="hero">
+  <div class="hero-ring ring-1"></div>
+  <div class="hero-ring ring-2"></div>
+
+  <div class="hero-chip">DryvePro · CRM · Kanban</div>
+
+  <h1 class="hero-title">
+    <span class="ht-1">FUNIL DE</span>
+    <span class="ht-2">VENDAS</span>
+    <span class="ht-3">DRYVEPRO</span>
+  </h1>
+
+  <p class="hero-sub">
+    <strong>7 etapas, critérios claros.</strong> Saiba exatamente onde cada lead deve estar e o que precisa acontecer para ele avançar.
+  </p>
+
+  <a class="hero-cta" href="#kanban" id="heroBtn" onclick="spawnE(['📋','🎯','⚡'])">
+    VER ETAPAS →
+  </a>
+
+  <div class="hero-strip">
+    <div class="hs"><span class="hs-n" style="color:var(--c1)">07</span><span class="hs-l">Etapas</span></div>
+    <div class="hs"><span class="hs-n" style="color:var(--c4)">02</span><span class="hs-l">Locadoras</span></div>
+    <div class="hs"><span class="hs-n" style="color:var(--c2)">01</span><span class="hs-l">CRM</span></div>
+    <div class="hs"><span class="hs-n" style="color:var(--c5)">100%</span><span class="hs-l">Funil organizado</span></div>
+  </div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <span>NOVAS OPORTUNIDADES</span><span>TENTATIVA DE CONTATO</span><span>EM NEGOCIAÇÃO</span>
+    <span>AGUARDANDO PAGAMENTO</span><span>PROVA DE VIDA</span><span>ASSINATURA DO CONTRATO</span>
+    <span>AGUARDANDO DOCUMENTAÇÃO</span><span>DRYVEPRO</span><span>CRM</span>
+    <span>NOVAS OPORTUNIDADES</span><span>TENTATIVA DE CONTATO</span><span>EM NEGOCIAÇÃO</span>
+    <span>AGUARDANDO PAGAMENTO</span><span>PROVA DE VIDA</span><span>ASSINATURA DO CONTRATO</span>
+    <span>AGUARDANDO DOCUMENTAÇÃO</span><span>DRYVEPRO</span><span>CRM</span>
+  </div>
+</div>
+
+<section class="kanban-section" id="kanban">
+  <div class="kanban-inner">
+    <div class="kh rv">
+      <div class="kh-tag">Critérios por Etapa</div>
+      <div class="kh-title">7 ETAPAS DO<br><span>KANBAN</span></div>
+      <div class="kh-sub">Critério cumprido = lead avança. Critério não cumprido = lead fica.</div>
+    </div>
+
+    <div class="steps">
+
+      <div class="step s1 rv d1" onclick="spawnE(['📣','🆕'])">
+        <div class="step-num"><span class="sn-n">01</span><span class="sn-icon">📣</span></div>
+        <div class="step-body">
+          <div class="sb-main">
+            <div class="step-tag">Entrada do Funil</div>
+            <div class="step-title">Novas Oportunidades</div>
+            <div class="step-desc">Leads <strong>recém recebidos</strong>, sem tentativa completa de contato.</div>
+            <div class="step-crit">
+              <span class="sc-lbl">CRITÉRIO</span>
+              <span class="sc-txt">Ainda não houve tentativa de ligação + mensagem.</span>
+            </div>
+          </div>
+          <div class="step-meta">
+            <div class="sm-item"><div class="sm-label">Locadora</div><div class="sm-val">Todos</div></div>
+            <div class="sm-item"><div class="sm-label">Status</div><div class="sm-val">Sem contato</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step s2 rv d2" onclick="spawnE(['📞','💬'])">
+        <div class="step-num"><span class="sn-n">02</span><span class="sn-icon">📞</span></div>
+        <div class="step-body">
+          <div class="sb-main">
+            <div class="step-tag">Cadência Ativa</div>
+            <div class="step-title">Tentativa de Contato</div>
+            <div class="step-desc">Leads que já <strong>entraram na cadência de contato</strong>.</div>
+            <div class="step-crit">
+              <span class="sc-lbl">CRITÉRIO</span>
+              <span class="sc-txt">Houveram tentativas de contato por ligação e WhatsApp, sem sucesso.</span>
+            </div>
+          </div>
+          <div class="step-meta">
+            <div class="sm-item"><div class="sm-label">Locadora</div><div class="sm-val">Todos</div></div>
+            <div class="sm-item"><div class="sm-label">Status</div><div class="sm-val">Sem retorno</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step s3 rv d3" onclick="spawnE(['🤝','🔥'])">
+        <div class="step-num"><span class="sn-n">03</span><span class="sn-icon">🤝</span></div>
+        <div class="step-body">
+          <div class="sb-main">
+            <div class="step-tag">Cliente Respondeu</div>
+            <div class="step-title">Em Negociação</div>
+            <div class="step-desc">Leads que tiveram <strong>retorno do cliente</strong>.</div>
+            <div class="step-crit">
+              <span class="sc-lbl">CRITÉRIO</span>
+              <span class="sc-txt">Cliente demonstrou interesse e o Closer iniciou a sondagem, negociação de proposta, condições ou produto.</span>
+            </div>
+          </div>
+          <div class="step-meta">
+            <div class="sm-item"><div class="sm-label">Locadora</div><div class="sm-val">Todos</div></div>
+            <div class="sm-item"><div class="sm-label">Status</div><div class="sm-val">Sondagem</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step s4 rv d4" onclick="spawnE(['💳','✅','💰'])">
+        <div class="step-num"><span class="sn-n">04</span><span class="sn-icon">💳</span></div>
+        <div class="step-body">
+          <div class="sb-main">
+            <div class="step-tag">Movida</div>
+            <div class="step-title">Aguardando Pagamento do Cartão</div>
+            <div class="step-desc">Negociação e <strong>documentação já aprovadas</strong>.</div>
+            <div class="step-crit">
+              <span class="sc-lbl">CRITÉRIO</span>
+              <span class="sc-txt">Colocar nessa etapa apenas quando enviar o link de pagamento.</span>
+            </div>
+          </div>
+          <div class="step-meta">
+            <div class="sm-item"><div class="sm-label">Locadora</div><div class="sm-val">Movida</div></div>
+            <div class="sm-item"><div class="sm-label">Status</div><div class="sm-val">Link enviado</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step s5 rv d5" onclick="spawnE(['🛡️','👁️'])">
+        <div class="step-num"><span class="sn-n">05</span><span class="sn-icon">🛡️</span></div>
+        <div class="step-body">
+          <div class="sb-main">
+            <div class="step-tag">Localiza</div>
+            <div class="step-title">Aguardando Prova de Vida</div>
+            <div class="step-desc">Negociação já <strong>realizada e aprovada</strong>.</div>
+            <div class="step-crit">
+              <span class="sc-lbl">CRITÉRIO</span>
+              <span class="sc-txt">Cliente precisa realizar a prova de vida no sistema da Localiza para continuidade do processo.</span>
+            </div>
+          </div>
+          <div class="step-meta">
+            <div class="sm-item"><div class="sm-label">Locadora</div><div class="sm-val">Localiza</div></div>
+            <div class="sm-item"><div class="sm-label">Status</div><div class="sm-val">Aguard. cliente</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step s6 rv d6" onclick="spawnE(['📝','✍️'])">
+        <div class="step-num"><span class="sn-n">06</span><span class="sn-icon">📝</span></div>
+        <div class="step-body">
+          <div class="sb-main">
+            <div class="step-tag">Localiza</div>
+            <div class="step-title">Aguardando Assinatura do Contrato</div>
+            <div class="step-desc">Prova de vida já <strong>realizada com sucesso</strong>.</div>
+            <div class="step-crit">
+              <span class="sc-lbl">CRITÉRIO</span>
+              <span class="sc-txt">Contrato enviado e aguardando assinatura do cliente.</span>
+            </div>
+          </div>
+          <div class="step-meta">
+            <div class="sm-item"><div class="sm-label">Locadora</div><div class="sm-val">Localiza</div></div>
+            <div class="sm-item"><div class="sm-label">Status</div><div class="sm-val">Contrato enviado</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step s7 rv d7" onclick="spawnE(['📄','📎'])">
+        <div class="step-num"><span class="sn-n">07</span><span class="sn-icon">📄</span></div>
+        <div class="step-body">
+          <div class="sb-main">
+            <div class="step-tag">Movida</div>
+            <div class="step-title">Aguardando Documentação</div>
+            <div class="step-desc">Negociação <strong>em andamento</strong>.</div>
+            <div class="step-crit">
+              <span class="sc-lbl">CRITÉRIO</span>
+              <span class="sc-txt">Cliente precisa enviar documentação solicitada — extrato bancário, IR, holerite.</span>
+            </div>
+          </div>
+          <div class="step-meta">
+            <div class="sm-item"><div class="sm-label">Locadora</div><div class="sm-val">Movida</div></div>
+            <div class="sm-item"><div class="sm-label">Status</div><div class="sm-val">Doc. pendente</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="map-section">
+  <div class="map-inner">
+    <div class="map-title rv">MAPA<br><span>RÁPIDO</span></div>
+    <div class="map-grid rv">
+      <div class="map-tile mt1" data-n="1" onclick="spawnE(['📣'])"><span class="tile-icon">📣</span><span class="tile-n">Etapa 01</span><span class="tile-name">Novas Oportu&shy;nidades</span><span class="tile-crit">Sem ligação + mensagem ainda</span></div>
+      <div class="map-tile mt2" data-n="2" onclick="spawnE(['📞'])"><span class="tile-icon">📞</span><span class="tile-n">Etapa 02</span><span class="tile-name">Tentativa de Contato</span><span class="tile-crit">Tentativas sem retorno</span></div>
+      <div class="map-tile mt3" data-n="3" onclick="spawnE(['🤝'])"><span class="tile-icon">🤝</span><span class="tile-n">Etapa 03</span><span class="tile-name">Em Nego&shy;ciação</span><span class="tile-crit">Cliente respondeu, sondagem iniciada</span></div>
+      <div class="map-tile mt4" data-n="4" onclick="spawnE(['💳'])"><span class="tile-icon">💳</span><span class="tile-n">Etapa 04</span><span class="tile-name">Aguard. Pagamento</span><span class="tile-crit">Link de pagamento enviado · Movida</span></div>
+      <div class="map-tile mt5" data-n="5" onclick="spawnE(['🛡️'])"><span class="tile-icon">🛡️</span><span class="tile-n">Etapa 05</span><span class="tile-name">Aguard. Prova de Vida</span><span class="tile-crit">Negociação aprovada · Localiza</span></div>
+      <div class="map-tile mt6" data-n="6" onclick="spawnE(['📝'])"><span class="tile-icon">📝</span><span class="tile-n">Etapa 06</span><span class="tile-name">Aguard. Assinatura</span><span class="tile-crit">Contrato enviado · Localiza</span></div>
+      <div class="map-tile mt7" data-n="7" onclick="spawnE(['📄'])"><span class="tile-icon">📄</span><span class="tile-n">Etapa 07</span><span class="tile-name">Aguard. Documen&shy;tação</span><span class="tile-crit">Docs solicitados · Movida</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="rules-section">
+  <div class="rules-inner">
+    <div class="rules-title rv">REGRAS<br><span>DO FUNIL</span></div>
+    <div class="rules-row rv">
+      <div class="rule-card rc1" onclick="spawnE(['⚠️','📌'])">
+        <span class="rule-icon">⚠️</span>
+        <div class="rule-title">Critério é lei</div>
+        <div class="rule-text">Só mova o lead quando o critério daquela etapa estiver 100% cumprido. Funil errado = dado errado = decisão errada.</div>
+      </div>
+      <div class="rule-card rc2" onclick="spawnE(['🏷️','✅'])">
+        <span class="rule-icon">🏷️</span>
+        <div class="rule-title">Tag sempre</div>
+        <div class="rule-text">Inclua a TAG correta ao qualificar o lead. Isso garante segmentação precisa e relatórios confiáveis.</div>
+      </div>
+      <div class="rule-card rc3" onclick="spawnE(['📝','💬'])">
+        <span class="rule-icon">📝</span>
+        <div class="rule-title">Registre tudo</div>
+        <div class="rule-text">Cada interação com o cliente precisa estar anotada no CRM. Se não está registrado, não aconteceu.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-section">
+  <div class="final-glow fg1"></div>
+  <div class="final-glow fg2"></div>
+  <div class="final-inner rv">
+    <div class="final-badge">Dryve · 0km por Assinatura</div>
+    <div class="final-big">
+      FUNIL
+      <span class="fb2">ORGANIZADO,</span>
+      <span class="fb3">VENDA CERTA.</span>
+    </div>
+    <p class="final-sub">Lead no lugar errado é oportunidade perdida. Mantém o kanban limpo e o funil sempre saudável. 🎯</p>
+    <a class="final-btn" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/" onclick="spawnE(['🚀','🏆','💥','⭐','🎉'])">← Voltar à Biblioteca</a>
+  </div>
+</section>
+
+<script>
+const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); }), { threshold: 0.08 });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+document.getElementById('heroBtn').addEventListener('click', e => {
+  e.preventDefault();
+  document.getElementById('kanban').scrollIntoView({ behavior: 'smooth' });
+});
+
+function spawnE(list) {
+  const c = document.getElementById('floaters');
+  list.forEach((em,i) => setTimeout(() => {
+    const el = document.createElement('div');
+    el.className = 'floater';
+    el.textContent = em;
+    el.style.cssText = `left:${Math.random()*90+5}%;font-size:${Math.random()*14+18}px;animation-duration:${Math.random()*2+4}s`;
+    c.appendChild(el);
+    setTimeout(() => el.remove(), 7000);
+  }, i*110));
+}
+
+setInterval(() => {
+  const p = ['📋','🎯','⚡','✅','📊','💪','🔥'];
+  spawnE([p[Math.floor(Math.random()*p.length)]]);
+}, 10000);
+</script>
+</body>
+</html>
