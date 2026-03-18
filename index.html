@@ -4,29 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quality Point</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --bg: #07050f;
-    --surface: #100820;
-    --accent1: #c084fc;
-    --accent2: #818cf8;
-    --accent3: #f472b6;
-    --text: #f0eeff;
-    --muted: #8b7aa8;
-    --card-bg: rgba(255,255,255,0.035);
-    --card-border: rgba(255,255,255,0.07);
-    --glow1: rgba(192,132,252,0.18);
-    --glow2: rgba(129,140,248,0.18);
+    --bg: #0A0A0A;
+    --accent1: #FF2D8B;
+    --accent2: #00C8FF;
+    --accent3: #FFE234;
+    --accent4: #00F57A;
+    
+    --text: #FFFDF0;
+    --muted: rgba(255, 253, 240, 0.5);
+    --card-bg: rgba(255, 255, 255, 0.02);
+    --card-border: rgba(255, 255, 255, 0.05);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Outfit', sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -34,83 +32,36 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    position: relative;
+    justify-content: flex-start;
   }
 
-  .bg-mesh {
+  #gl-canvas {
     position: fixed;
-    inset: 0;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     z-index: 0;
-    overflow: hidden;
     pointer-events: none;
   }
 
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.35;
-    animation: drift linear infinite;
-  }
-
-  .orb-1 {
-    width: 520px; height: 520px;
-    background: radial-gradient(circle, var(--accent2), transparent 70%);
-    top: -10%; left: -12%;
-    animation-duration: 22s;
-  }
-  .orb-2 {
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, var(--accent1), transparent 70%);
-    bottom: 0%; right: -8%;
-    animation-duration: 18s;
-    animation-delay: -9s;
-  }
-  .orb-3 {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, var(--accent3), transparent 70%);
-    top: 55%; left: 30%;
-    animation-duration: 26s;
-    animation-delay: -14s;
-  }
-
-  @keyframes drift {
-    0%   { transform: translate(0, 0) scale(1); }
-    33%  { transform: translate(40px, -30px) scale(1.06); }
-    66%  { transform: translate(-25px, 50px) scale(0.95); }
-    100% { transform: translate(0, 0) scale(1); }
+  .grid-lines {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 56px 56px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 10%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 10%, transparent 80%);
   }
 
   .grain {
     position: fixed;
     inset: -50%;
     width: 200%; height: 200%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.04;
     pointer-events: none;
-    z-index: 1;
-    animation: grain-move 0.8s steps(2) infinite;
-  }
-
-  @keyframes grain-move {
-    0%   { transform: translate(0,0); }
-    25%  { transform: translate(-2%, 1%); }
-    50%  { transform: translate(1%, -1%); }
-    75%  { transform: translate(2%, 2%); }
-    100% { transform: translate(0,0); }
-  }
-
-  .grid-lines {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    z-index: 2;
   }
 
   .wrapper {
@@ -119,58 +70,65 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 64px;
-    padding: 60px 24px;
+    gap: 80px;
+    padding: 80px 24px;
     width: 100%;
     max-width: 1400px;
   }
 
   header {
     text-align: center;
-    animation: reveal-up 0.9s cubic-bezier(0.16,1,0.3,1) both;
+    animation: reveal-header 1s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  @keyframes reveal-header {
+    from { opacity: 0; transform: translateY(-30px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   .eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.22em;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: var(--accent1);
-    margin-bottom: 20px;
-    position: relative;
+    color: var(--accent3);
+    margin-bottom: 24px;
   }
 
-  .eyebrow::before,
-  .eyebrow::after {
-    content: '';
-    display: block;
-    width: 28px;
-    height: 1px;
-    background: var(--accent1);
-    opacity: 0.6;
+  .eyebrow-line {
+    display: block; width: 40px; height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--accent3));
   }
+  .eyebrow-line:last-child { background: linear-gradient(90deg, var(--accent3), transparent); }
 
   h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(42px, 7vw, 82px);
-    font-weight: 800;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 900;
     line-height: 1.0;
-    letter-spacing: -0.03em;
-    background: linear-gradient(135deg, #ffffff 15%, var(--accent3) 45%, var(--accent1) 70%, var(--accent2) 100%);
+    letter-spacing: -0.04em;
+    background: linear-gradient(140deg, #ffffff 0%, rgba(255,255,255,0.9) 15%, var(--accent3) 38%, var(--accent1) 62%, var(--accent2) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background-size: 200% auto;
+    animation: gradient-shift 6s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 
   .subtitle {
-    margin-top: 16px;
-    font-size: 15px;
+    margin-top: 20px; 
+    font-size: 18px; 
+    font-weight: 400; 
     color: var(--muted);
-    letter-spacing: 0.01em;
-    font-weight: 300;
+    letter-spacing: 0.05em; 
+    text-transform: none; 
   }
 
   .cards-grid {
@@ -178,447 +136,428 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: stretch;
-    gap: 32px;
+    gap: 40px;
     width: 100%;
+    perspective: 1200px;
   }
 
   .card-wrap {
-    perspective: 1200px;
-    animation: reveal-up 0.9s cubic-bezier(0.16,1,0.3,1) both;
     display: flex;
+    flex: 1;
+    min-width: 320px;
+    max-width: 420px;
+    animation: reveal-card 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    contain: layout style;
   }
 
-  .card-wrap:nth-child(1) { animation-delay: 0.15s; }
-  .card-wrap:nth-child(2) { animation-delay: 0.30s; }
-  .card-wrap:nth-child(3) { animation-delay: 0.45s; }
+  .card-wrap:nth-child(1) { animation-delay: 0.1s; }
+  .card-wrap:nth-child(2) { animation-delay: 0.25s; }
+  .card-wrap:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes reveal-card {
+    from { opacity: 0; transform: translateY(60px) scale(0.9); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
 
   .card {
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     justify-content: space-between;
-    flex: 1;
-    width: min(420px, 90vw);
-    min-height: 260px;
-    padding: 36px 38px 32px;
-    border-radius: 20px;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
+    width: 100%;
+    min-height: 290px;
+    padding: 40px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.005));
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     text-decoration: none;
     color: var(--text);
     cursor: pointer;
-    overflow: hidden;
-    transition:
-      transform 0.45s cubic-bezier(0.16,1,0.3,1),
-      box-shadow 0.45s cubic-bezier(0.16,1,0.3,1),
-      border-color 0.3s ease;
     transform-style: preserve-3d;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+    border: 1px solid var(--card-border);
+    will-change: transform;
   }
 
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 10%; right: 10%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-    border-radius: 50%;
+  .card-content-wrapper {
+    transform: translateZ(40px);
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
   }
 
-  .card-glow {
-    position: absolute;
-    width: 380px; height: 380px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(192,132,252,0.22) 0%, transparent 65%);
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
+  .card:hover {
+    border-color: rgba(0,200,255,0.3);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,200,255,0.08);
+  }
+
+  .card-urgent-shell {
+    position: relative;
+    display: flex;
+    border-radius: 30px;
+    padding: 2px;
+    width: 100%;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .card-urgent-shell::before {
+    content: ''; position: absolute; inset: 0; border-radius: 30px; padding: 2px;
+    background: conic-gradient(from var(--angle, 0deg), transparent 0deg, var(--accent3) 90deg, var(--accent1) 180deg, var(--accent2) 270deg, transparent 360deg);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: spin-border 3s linear infinite;
     pointer-events: none;
   }
 
-  .card:hover .card-glow { opacity: 1; }
+  @property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+  @keyframes spin-border { to { --angle: 360deg; } }
 
-  .card:hover {
-    transform: translateY(-10px) rotateX(4deg);
-    border-color: rgba(192,132,252,0.3);
-    box-shadow:
-      0 30px 80px rgba(0,0,0,0.4),
-      0 0 0 1px rgba(192,132,252,0.15),
-      0 0 60px rgba(192,132,252,0.1);
+  .card-urgent { border: none; background: rgba(255,255,255,0.03); border-radius: 28px; }
+  .card-urgent:hover { 
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8), inset 0 0 30px rgba(255,45,139,0.15); 
+    border: none;
   }
 
+  .card-mouse-glow {
+    position: absolute;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+  }
+  .card:hover .card-mouse-glow { opacity: 1; }
+
   .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 5px 12px 5px 8px;
-    border-radius: 100px;
-    background: rgba(192,132,252,0.09);
-    border: 1px solid rgba(192,132,252,0.22);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent1);
-    font-weight: 600;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; border-radius: 100px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
     margin-bottom: 24px;
   }
 
-  .badge-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent1);
-    animation: pulse-dot 2s ease infinite;
-    box-shadow: 0 0 0 0 rgba(192,132,252,0.5);
+  .badge-normal { 
+    background: rgba(0,200,255,0.1); 
+    border: 1px solid rgba(0,200,255,0.25); 
+    color: var(--accent2); 
+  }
+  .badge-urgent { 
+    background: rgba(255,45,139,0.15); 
+    border: 1px solid rgba(255,45,139,0.3); 
+    color: var(--accent1); 
   }
 
-  @keyframes pulse-dot {
-    0%   { box-shadow: 0 0 0 0 rgba(192,132,252,0.5); }
-    70%  { box-shadow: 0 0 0 7px rgba(192,132,252,0); }
-    100% { box-shadow: 0 0 0 0 rgba(192,132,252,0); }
-  }
+  .badge-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .badge-normal .badge-dot { background: var(--accent2); box-shadow: 0 0 10px rgba(0,200,255,0.6); }
+  .badge-urgent .badge-dot { background: var(--accent1); box-shadow: 0 0 10px rgba(255,45,139,0.6); }
 
   .card-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    flex: 1;
+    font-size: 28px; font-weight: 800; line-height: 1.15; margin-bottom: 16px;
+    display: flex; flex-direction: column;
   }
-
   .card-title span {
-    display: block;
-    background: linear-gradient(120deg, #fff 30%, var(--accent1) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: linear-gradient(120deg, #ffffff 20%, rgba(255,253,240,0.7) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .card-urgent .card-title span { 
+    background: linear-gradient(120deg, #ffffff 10%, var(--accent3) 100%); 
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
   }
 
-  .card-desc {
-    font-size: 13.5px;
-    color: var(--muted);
-    margin-top: 12px;
-    line-height: 1.55;
-    font-weight: 300;
-    margin-bottom: 32px;
-  }
+  .card-desc { font-size: 14.5px; font-weight: 300; color: var(--muted); line-height: 1.6; }
 
   .card-footer {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: auto;
-  }
-
-  .cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--accent1);
-    transition: gap 0.3s ease;
-  }
-
-  .cta svg {
-    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-  }
-
-  .card:hover .cta { gap: 13px; }
-  .card:hover .cta svg { transform: translateX(4px); }
-
-  .corner-deco {
-    width: 52px; height: 52px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(129,140,248,0.25), rgba(192,132,252,0.15));
-    border: 1px solid rgba(255,255,255,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-  }
-
-  
-  .card-urgent {
-    border-color: rgba(255, 78, 205, 0.45);
-    animation: card-breathe 3s ease-in-out infinite, urgent-glow 3s ease-in-out infinite;
-  }
-
-  .card-urgent .card-glow {
-    background: radial-gradient(circle, rgba(255, 78, 205, 0.28) 0%, transparent 65%);
-  }
-
-  .card-urgent:hover {
-    border-color: var(--accent3);
-    animation-play-state: paused;
-    box-shadow:
-      0 30px 80px rgba(0,0,0,0.5),
-      0 0 0 1px rgba(255, 78, 205, 0.25),
-      0 0 60px rgba(255, 78, 205, 0.18);
-  }
-
-  .badge-urgent {
-    background: rgba(255, 78, 205, 0.15);
-    border-color: rgba(255, 78, 205, 0.55);
-    color: var(--accent3);
-    animation: text-blink 2.4s ease-in-out infinite;
-  }
-
-  .badge-urgent .badge-dot {
-    background: var(--accent3);
-    animation: pulse-dot-urgent 1.2s ease infinite;
-  }
-
-  .card-urgent .card-title span {
-    background: linear-gradient(120deg, #fff 30%, var(--accent3) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .card-urgent .cta {
-    color: var(--accent3);
-  }
-
-  .card-urgent .corner-deco {
-    background: linear-gradient(135deg, rgba(255,100,50,0.35), rgba(255,78,205,0.2));
-    animation: fire-glow 2s ease-in-out infinite;
-  }
-
-  .card-urgent .scan-line {
-    background: linear-gradient(90deg, transparent, rgba(255, 78, 205, 0.8), transparent);
-  }
-
-  @keyframes card-breathe {
-    0%   { transform: scale(1); }
-    50%  { transform: scale(1.028); }
-    100% { transform: scale(1); }
-  }
-
-  @keyframes urgent-glow {
-    0%   { box-shadow: 0 0 18px rgba(255, 78, 205, 0.12); }
-    50%  { box-shadow: 0 0 45px rgba(255, 78, 205, 0.45), inset 0 0 20px rgba(255, 78, 205, 0.07); }
-    100% { box-shadow: 0 0 18px rgba(255, 78, 205, 0.12); }
-  }
-
-  @keyframes pulse-dot-urgent {
-    0%   { box-shadow: 0 0 0 0 rgba(255, 78, 205, 0.7); }
-    70%  { box-shadow: 0 0 0 10px rgba(255, 78, 205, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 78, 205, 0); }
-  }
-
-  @keyframes text-blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.45; }
-  }
-
-  @keyframes fire-glow {
-    0%, 100% { box-shadow: 0 0 8px rgba(255,100,50,0.3); }
-    50%       { box-shadow: 0 0 18px rgba(255,100,50,0.7); }
-  }
-
-  footer {
-    animation: reveal-up 0.9s cubic-bezier(0.16,1,0.3,1) 0.6s both;
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0.5;
+    display: flex; align-items: center; justify-content: space-between;
     margin-top: 32px;
   }
 
-  @keyframes reveal-up {
-    from { opacity: 0; transform: translateY(28px); }
-    to   { opacity: 1; transform: translateY(0); }
+  .cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    color: var(--text); opacity: 0.8;
+    transition: all 0.3s ease;
   }
+  .card:hover .cta { opacity: 1; gap: 14px; color: var(--accent2); }
+  .card-urgent:hover .cta { color: var(--accent1); }
+  .cta svg { transition: transform 0.3s ease; }
+  .card:hover .cta svg { transform: translateX(4px); }
 
-  .scan-line {
-    position: absolute;
-    left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(192,132,252,0.7), transparent);
-    top: 0;
-    opacity: 0;
-    transition: opacity 0.1s;
-    pointer-events: none;
+  .corner-deco {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; font-size: 24px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
+  .card:hover .corner-deco { transform: rotate(15deg) scale(1.1); background: rgba(255,255,255,0.1); }
 
-  .card:hover .scan-line {
-    opacity: 1;
-    animation: scan 1.8s cubic-bezier(0.4,0,0.6,1) infinite;
-  }
-
-  @keyframes scan {
-    0%   { top: 0%; }
-    100% { top: 100%; }
-  }
-
-  .particles {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .particle {
-    position: absolute;
-    border-radius: 50%;
-    animation: float-up linear infinite;
-    opacity: 0;
-  }
-
-  @keyframes float-up {
-    0%   { transform: translateY(100vh) scale(0); opacity: 0; }
-    10%  { opacity: 0.6; }
-    90%  { opacity: 0.4; }
-    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+  footer {
+    font-size: 12px; font-weight: 500; color: var(--muted);
+    letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.5;
+    margin-top: 20px; padding-bottom: 40px;
   }
 </style>
 </head>
 <body>
 
-<div class="bg-mesh">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-</div>
+<canvas id="gl-canvas"></canvas>
+
 <div class="grain"></div>
 <div class="grid-lines"></div>
-<div class="particles" id="particles"></div>
 
-<div class="wrapper">
+<main class="wrapper">
 
   <header>
     <div class="eyebrow">
-      <span></span>
+      <span class="eyebrow-line"></span>
       Radar da Qualidade
-      <span></span>
+      <span class="eyebrow-line"></span>
     </div>
     <h1>Quality Point</h1>
-    <p class="subtitle">Biblioteca de Conteúdos</p>
+    <p class="subtitle">Biblioteca de conteúdos</p>
   </header>
 
-  <div class="cards-grid">
-    
-    <div class="card-wrap">
-      <a class="card card-urgent" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/Mapa_mental_sondagem.html">
-        <div class="card-glow"></div>
-        <div class="scan-line"></div>
+  <section class="cards-grid">
 
-        <div>
-          <div class="badge badge-urgent">
-            <div class="badge-dot"></div>
-            Novo Material
+    <article class="card-wrap">
+      <div class="card-urgent-shell js-tilt-card">
+        <a class="card card-urgent" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/cronograma.html">
+          <div class="card-mouse-glow"></div>
+          <div class="card-content-wrapper">
+            <div>
+              <div class="badge badge-urgent">
+                <div class="badge-dot"></div>
+                Novo Material
+              </div>
+              <h2 class="card-title">
+                <span>Cronograma</span>
+                <span>Diário</span>
+              </h2>
+              <p class="card-desc">A rotina de alta performance com 7 blocos para dominar suas vendas.</p>
+            </div>
+            <div class="card-footer">
+              <div class="cta">
+                Acessar material
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="corner-deco">⏰</div>
+            </div>
           </div>
-          <div class="card-title">
-            <span>Mapa Mental</span>
-            <span>de Sondagem</span>
-          </div>
-          <p class="card-desc">Ferramenta completa para dominar o fluxo de sondagem!</p>
-        </div>
+        </a>
+      </div>
+    </article>
 
-        <div class="card-footer">
-          <div class="cta">
-            Acessar material
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+    <article class="card-wrap">
+      <a class="card js-tilt-card" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/Mapa_mental_sondagem.html">
+        <div class="card-mouse-glow"></div>
+        <div class="card-content-wrapper">
+          <div>
+            <div class="badge badge-normal">
+              <div class="badge-dot"></div>
+              Ativo
+            </div>
+            <h2 class="card-title">
+              <span>Mapa Mental</span>
+              <span>de Sondagem</span>
+            </h2>
+            <p class="card-desc">Ferramenta visual completa para dominar o fluxo de sondagem com velocidade!</p>
           </div>
-          <div class="corner-deco">🔥</div>
-        </div>
-      </a>
-    </div>
-
-    <div class="card-wrap">
-      <a class="card" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/Sondagem_de_alto_impacto.html">
-        <div class="card-glow"></div>
-        <div class="scan-line"></div>
-
-        <div>
-          <div class="badge">
-            <div class="badge-dot"></div>
-            Ativo
+          <div class="card-footer">
+            <div class="cta">
+              Acessar material
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="corner-deco">⚡</div>
           </div>
-          <div class="card-title">
-            <span>Sondagem de</span>
-            <span>Alto Impacto</span>
-          </div>
-          <p class="card-desc">6 perguntas usadas por vendedores de alta performance em assinaturas de veículos.</p>
-        </div>
-
-        <div class="card-footer">
-          <div class="cta">
-            Acessar material
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="corner-deco">⚡</div>
         </div>
       </a>
-    </div>
+    </article>
 
-  </div>
+    <article class="card-wrap">
+      <a class="card js-tilt-card" href="https://luccamoraes-netizen.github.io/relatorio-monitoria/Sondagem_de_alto_impacto.html">
+        <div class="card-mouse-glow"></div>
+        <div class="card-content-wrapper">
+          <div>
+            <div class="badge badge-normal">
+              <div class="badge-dot"></div>
+              Ativo
+            </div>
+            <h2 class="card-title">
+              <span>Sondagem de</span>
+              <span>Alto Impacto</span>
+            </h2>
+            <p class="card-desc">6 perguntas usadas por vendedores de alta performance em assinaturas de veículos.</p>
+          </div>
+          <div class="card-footer">
+            <div class="cta">
+              Acessar material
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="corner-deco">🎯</div>
+          </div>
+        </div>
+      </a>
+    </article>
+
+  </section>
 
   <footer>© 2026 Quality-X</footer>
 
-</div>
+</main>
 
 <script>
-  const wraps = document.querySelectorAll('.card-wrap');
+  const lerp = (start, end, factor) => start + (end - start) * factor;
 
-  wraps.forEach(wrap => {
-    const card = wrap.querySelector('.card');
-    
-    wrap.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const dx = (e.clientX - cx) / (rect.width / 2);
-      const dy = (e.clientY - cy) / (rect.height / 2);
-      card.style.transform = `translateY(-10px) rotateX(${-dy * 6}deg) rotateY(${dx * 6}deg)`;
+  class Smooth3DCard {
+    constructor(el) {
+      this.el = el;
+      this.glow = el.querySelector('.card-mouse-glow');
+      this.bounds = this.el.getBoundingClientRect();
+      
+      this.target = { rx: 0, ry: 0, tx: 0, ty: 0, glowX: -100, glowY: -100 };
+      this.current = { rx: 0, ry: 0, tx: 0, ty: 0, glowX: -100, glowY: -100 };
+      
+      this.isHovered = false;
+      this.initEvents();
+    }
 
-      const glow = card.querySelector('.card-glow');
-      if (glow) {
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        glow.style.left = x + 'px';
-        glow.style.top  = y + 'px';
-        glow.style.transform = 'translate(-50%, -50%)';
+    initEvents() {
+      this.el.addEventListener('mouseenter', () => {
+        this.isHovered = true;
+        this.bounds = this.el.getBoundingClientRect();
+      });
+
+      this.el.addEventListener('mousemove', (e) => {
+        const cx = this.bounds.left + this.bounds.width / 2;
+        const cy = this.bounds.top + this.bounds.height / 2;
+        
+        const dx = (e.clientX - cx) / (this.bounds.width / 2);
+        const dy = (e.clientY - cy) / (this.bounds.height / 2);
+        
+        this.target.rx = -dy * 15;
+        this.target.ry = dx * 15;
+        this.target.tx = -dy * 10; 
+        this.target.ty = dx * 10;
+        
+        this.target.glowX = e.clientX - this.bounds.left;
+        this.target.glowY = e.clientY - this.bounds.top;
+      });
+
+      this.el.addEventListener('mouseleave', () => {
+        this.isHovered = false;
+        this.target.rx = 0; this.target.ry = 0;
+        this.target.tx = 0; this.target.ty = 0;
+      });
+    }
+
+    update() {
+      this.current.rx = lerp(this.current.rx, this.target.rx, 0.1);
+      this.current.ry = lerp(this.current.ry, this.target.ry, 0.1);
+      this.current.tx = lerp(this.current.tx, this.target.tx, 0.1);
+      this.current.ty = lerp(this.current.ty, this.target.ty, 0.1);
+      
+      this.el.style.transform = `translate3d(${this.current.ty}px, ${this.current.tx}px, 0) rotateX(${this.current.rx}deg) rotateY(${this.current.ry}deg)`;
+      
+      if (this.glow && this.isHovered) {
+        this.current.glowX = lerp(this.current.glowX, this.target.glowX, 0.2);
+        this.current.glowY = lerp(this.current.glowY, this.target.glowY, 0.2);
+        this.glow.style.left = `${this.current.glowX}px`;
+        this.glow.style.top = `${this.current.glowY}px`;
       }
-    });
-
-    wrap.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
-  });
-
-  const container = document.getElementById('particles');
-  const colors = ['#c084fc', '#818cf8', '#f472b6', '#ffffff'];
-
-  for (let i = 0; i < 22; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random() * 3 + 1;
-    p.style.cssText = `
-      width: ${size}px;
-      height: ${size}px;
-      background: ${colors[Math.floor(Math.random() * colors.length)]};
-      left: ${Math.random() * 100}%;
-      animation-duration: ${Math.random() * 16 + 10}s;
-      animation-delay: ${Math.random() * -20}s;
-      filter: blur(${Math.random() < 0.4 ? 1 : 0}px);
-    `;
-    container.appendChild(p);
+    }
   }
+
+  const cards = Array.from(document.querySelectorAll('.js-tilt-card')).map(el => new Smooth3DCard(el));
+
+  function animateCards() {
+    cards.forEach(card => card.update());
+    requestAnimationFrame(animateCards);
+  }
+  animateCards();
+
+  window.addEventListener('resize', () => cards.forEach(c => c.bounds = c.el.getBoundingClientRect()));
+  window.addEventListener('scroll', () => cards.forEach(c => c.bounds = c.el.getBoundingClientRect()));
+
+  const canvas = document.getElementById('gl-canvas');
+  const ctx = canvas.getContext('2d', { alpha: false }); 
+  let width, height;
+
+  let mouse = { x: window.innerWidth/2, y: window.innerHeight/2 };
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const orbs = [
+    { x: 0.3, y: 0.4, vx: 0.001, vy: 0.0015, r: 0.6, color: 'rgba(255, 45, 139, 0.15)' },
+    { x: 0.7, y: 0.6, vx: -0.0012, vy: -0.001, r: 0.7, color: 'rgba(0, 200, 255, 0.12)' },
+    { x: 0.5, y: 0.8, vx: 0.0008, vy: -0.0018, r: 0.5, color: 'rgba(255, 226, 52, 0.08)' }
+  ];
+
+  const particles = Array.from({ length: 80 }, () => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    size: Math.random() * 2 + 0.5,
+    speedY: Math.random() * -0.5 - 0.1,
+    alpha: Math.random() * 0.5 + 0.1
+  }));
+
+  function drawCanvas() {
+    ctx.fillStyle = '#0A0A0A';
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.globalCompositeOperation = 'screen';
+
+    orbs.forEach(orb => {
+      orb.x += orb.vx;
+      orb.y += orb.vy;
+      
+      if (orb.x < -0.2 || orb.x > 1.2) orb.vx *= -1;
+      if (orb.y < -0.2 || orb.y > 1.2) orb.vy *= -1;
+
+      const px = (orb.x * width) + (mouse.x - width/2) * 0.05;
+      const py = (orb.y * height) + (mouse.y - height/2) * 0.05;
+      const radius = width * orb.r;
+
+      const gradient = ctx.createRadialGradient(px, py, 0, px, py, radius);
+      gradient.addColorStop(0, orb.color);
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+    });
+
+    ctx.globalCompositeOperation = 'lighter';
+    particles.forEach(p => {
+      p.y += p.speedY;
+      
+      const px = p.x + (mouse.x - width/2) * (p.size * 0.005);
+      
+      if (p.y < -10) {
+        p.y = height + 10;
+        p.x = Math.random() * width;
+      }
+
+      ctx.beginPath();
+      ctx.arc(px, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 253, 240, ${p.alpha})`;
+      ctx.fill();
+    });
+
+    ctx.globalCompositeOperation = 'source-over'; 
+    requestAnimationFrame(drawCanvas);
+  }
+
+  drawCanvas();
 </script>
 
 </body>
