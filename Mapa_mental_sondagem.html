@@ -702,7 +702,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
     if (!user) {
       window.location.href = "login.html";
     } else {
-      document.body.style.display = ''; 
+      document.body.style.display = 'block'; 
       
       if (!window.rastreioFeito) {
         registrarAcesso(user);
