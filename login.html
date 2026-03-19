@@ -250,7 +250,7 @@
     </div>
     
     <h1>Quality Point</h1>
-    <p>Faça login com sua conta corporativa para acessar a biblioteca de conteúdos da Dryve.</p>
+    <p>Faça login com sua conta corporativa ou Google para acessar a biblioteca de conteúdos da Dryve.</p>
     
     <div class="auth-buttons">
       <button id="google-login-btn" class="auth-btn google-btn">
@@ -348,7 +348,7 @@
         if (error.code === 'auth/popup-closed-by-user') {
           errorMsg.textContent = "O login foi cancelado.";
         } else {
-          errorMsg.textContent = "Pendente aprovação do TI da empresa.";
+          errorMsg.textContent = "Pendente de aprovação pelo TI.";
           console.error("Erro Auth Microsoft:", error.message);
         }
       });
