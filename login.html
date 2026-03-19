@@ -276,7 +276,8 @@
   const msProvider = new OAuthProvider('microsoft.com');
   msProvider.setCustomParameters({
     prompt: 'select_account',
-    lang: 'pt-BR'
+    lang: 'pt-BR',
+    tenant: '0b40c1cd-53a9-4ab9-8abb-c56a50dbb445'
   });
 
   document.getElementById('ms-login-btn').addEventListener('click', () => {
