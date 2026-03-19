@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
+  body { display: none; }
   :root {
     --bg: #0A0A0A;
     --accent1: #FF2D8B;
@@ -558,6 +560,37 @@
   }
 
   drawCanvas();
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBsF136lpHDCE62lVLoFK4K0FuxgpRUr6s",
+    authDomain: "quality-point-finx.firebaseapp.com",
+    projectId: "quality-point-finx",
+    storageBucket: "quality-point-finx.firebasestorage.app",
+    messagingSenderId: "400200617084",
+    appId: "1:400200617084:web:3b834238653c34721dcdf9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+    } else {
+      document.body.style.display = 'flex';
+    }
+  });
+
+  window.fazerLogout = function() {
+    signOut(auth).then(() => {
+      window.location.href = "login.html";
+    });
+  }
 </script>
 
 </body>
