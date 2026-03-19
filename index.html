@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
+  body { display: none; }
   :root {
     --bg: #0A0A0A;
     --accent1: #FF2D8B;
@@ -301,9 +302,57 @@
     letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.5;
     margin-top: 20px; padding-bottom: 40px;
   }
+
+  .logout-btn {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+
+  .logout-btn:hover {
+    background: rgba(255, 45, 139, 0.15);
+    border-color: rgba(255, 45, 139, 0.4);
+    color: var(--accent1);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 45, 139, 0.2);
+  }
+
+  .logout-btn svg {
+    transition: transform 0.3s ease;
+  }
+
+  .logout-btn:hover svg {
+    transform: translateX(3px);
+  }
 </style>
 </head>
 <body>
+
+<button id="logout-btn" class="logout-btn">
+  Sair
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+    <polyline points="16 17 21 12 16 7"></polyline>
+    <line x1="21" y1="12" x2="9" y2="12"></line>
+  </svg>
+</button>
 
 <canvas id="gl-canvas"></canvas>
 
@@ -319,7 +368,7 @@
       <span class="eyebrow-line"></span>
     </div>
     <h1>Quality Point</h1>
-    <p class="subtitle">Biblioteca de conteúdos</p>
+    <p class="subtitle">Biblioteca de Conteúdos</p>
   </header>
 
   <section class="cards-grid">
@@ -558,6 +607,42 @@
   }
 
   drawCanvas();
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBsF136lpHDCE62lVLoFK4K0FuxgpRUr6s",
+    authDomain: "quality-point-finx.firebaseapp.com",
+    projectId: "quality-point-finx",
+    storageBucket: "quality-point-finx.firebasestorage.app",
+    messagingSenderId: "400200617084",
+    appId: "1:400200617084:web:3b834238653c34721dcdf9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+    } else {
+      document.body.style.display = 'flex';
+    }
+  });
+
+  const logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      signOut(auth).then(() => {
+        window.location.href = "login.html";
+      }).catch((error) => {
+        console.error("Erro ao fazer logout:", error);
+      });
+    });
+  }
 </script>
 
 </body>
