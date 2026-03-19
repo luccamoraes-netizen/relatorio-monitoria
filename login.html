@@ -4,89 +4,258 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - Quality Point</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0A0A0A;
     --accent1: #FF2D8B;
     --accent2: #00C8FF;
+    --accent3: #FFE234;
     --text: #FFFDF0;
+    --muted: rgba(255, 253, 240, 0.5);
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  
   body {
     font-family: 'Outfit', sans-serif;
     background: var(--bg);
     color: var(--text);
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    position: relative;
   }
-  .glow {
-    position: absolute; width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(255,45,139,0.15), transparent 60%);
-    filter: blur(40px); z-index: 0;
+
+  .ambient-glow {
+    position: absolute;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
   }
-  .login-box {
-    position: relative; z-index: 1;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 50px 40px;
-    border-radius: 24px;
-    width: 100%; max-width: 400px;
-    backdrop-filter: blur(20px);
+
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: float-orb 10s ease-in-out infinite alternate;
+  }
+
+  .orb-1 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255, 45, 139, 0.15), transparent 70%);
+    top: 10%; left: 20%;
+  }
+
+  .orb-2 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0, 200, 255, 0.12), transparent 70%);
+    bottom: 5%; right: 15%;
+    animation-delay: -5s;
+  }
+
+  @keyframes float-orb {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, -40px) scale(1.1); }
+  }
+
+  .grid-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle at center, black 0%, transparent 80%);
+  }
+
+  .login-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 440px;
+    padding: 24px;
+    animation: fade-up 0.8s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .login-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 32px;
+    padding: 56px 40px;
     text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1);
   }
-  h2 { font-weight: 800; font-size: 32px; margin-bottom: 8px; }
-  p { color: rgba(255,255,255,0.5); font-size: 14px; margin-bottom: 32px; }
-  
-  .input-group { margin-bottom: 20px; text-align: left; }
-  input {
-    width: 100%; padding: 16px;
-    background: rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    color: white; font-family: 'Outfit';
-    outline: none; transition: border 0.3s;
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: rgba(0, 200, 255, 0.1);
+    border: 1px solid rgba(0, 200, 255, 0.2);
+    color: var(--accent2);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
   }
-  input:focus { border-color: var(--accent2); }
-  
-  button {
-    width: 100%; padding: 16px;
-    background: var(--accent1); color: white;
-    border: none; border-radius: 12px;
-    font-weight: 800; font-size: 16px; font-family: 'Outfit';
-    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-    margin-top: 10px;
+
+  .badge-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent2);
+    box-shadow: 0 0 10px var(--accent2);
+    animation: pulse-dot 2s infinite;
   }
-  button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,45,139,0.3); }
-  
-  #error-msg { color: #ff4d4d; font-size: 13px; margin-top: 16px; display: none; }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  h1 {
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    background: linear-gradient(120deg, #ffffff 20%, rgba(255,253,240,0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+    font-weight: 400;
+  }
+
+  .ms-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+    padding: 16px 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .ms-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent2);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(0, 200, 255, 0.15), inset 0 0 20px rgba(0, 200, 255, 0.05);
+  }
+
+  .ms-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  .ms-logo {
+    width: 20px;
+    height: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 2px;
+  }
+  .ms-logo div { border-radius: 1px; }
+  .ms-logo .c1 { background: #F25022; }
+  .ms-logo .c2 { background: #7FBA00; }
+  .ms-logo .c3 { background: #00A4EF; }
+  .ms-logo .c4 { background: #FFB900; }
+
+  #error-msg {
+    color: #ff4d4d;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 20px;
+    display: none;
+    padding: 12px;
+    background: rgba(255, 77, 77, 0.1);
+    border: 1px solid rgba(255, 77, 77, 0.2);
+    border-radius: 8px;
+    animation: fade-in 0.3s ease;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .footer-text {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    z-index: 10;
+  }
 </style>
 </head>
 <body>
 
-<div class="glow"></div>
-
-<div class="login-box">
-  <h2>Quality Point</h2>
-  <p>Acesso restrito à biblioteca</p>
-  
-  <div class="input-group">
-    <input type="email" id="email" placeholder="Seu e-mail corporativo">
-  </div>
-  <div class="input-group">
-    <input type="password" id="password" placeholder="Sua senha">
-  </div>
-  
-  <button id="login-btn">ENTRAR NO RADAR</button>
-  <div id="error-msg">E-mail ou senha incorretos.</div>
+<div class="ambient-glow">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
 </div>
+<div class="grid-bg"></div>
+
+<main class="login-wrapper">
+  <div class="login-card">
+    <div class="badge">
+      <div class="badge-dot"></div>
+      Acesso Restrito
+    </div>
+    
+    <h1>Quality Point</h1>
+    <p>Faça login com sua conta corporativa para acessar a biblioteca de conteúdos da Dryve.</p>
+    
+    <button id="ms-login-btn" class="ms-btn">
+      <div class="ms-logo">
+        <div class="c1"></div><div class="c2"></div>
+        <div class="c3"></div><div class="c4"></div>
+      </div>
+      <span id="btn-text">Entrar com Microsoft</span>
+    </button>
+
+    <div id="error-msg"></div>
+  </div>
+</main>
+
+<div class="footer-text">© 2026 Quality-X</div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+  import { getAuth, onAuthStateChanged, OAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBsF136lpHDCE62lVLoFK4K0FuxgpRUr6s",
@@ -104,20 +273,36 @@
     if (user) { window.location.href = "index.html"; }
   });
 
-  document.getElementById('login-btn').addEventListener('click', () => {
-    const email = document.getElementById('email').value;
-    const pass = document.getElementById('password').value;
-    const errorMsg = document.getElementById('error-msg');
+  const msProvider = new OAuthProvider('microsoft.com');
+  msProvider.setCustomParameters({
+    prompt: 'select_account',
+    lang: 'pt-BR'
+  });
 
-    signInWithEmailAndPassword(auth, email, pass)
-      .then((userCredential) => {
+  document.getElementById('ms-login-btn').addEventListener('click', () => {
+    const errorMsg = document.getElementById('error-msg');
+    const btnText = document.getElementById('btn-text');
+    
+    errorMsg.style.display = 'none';
+    btnText.textContent = "Autenticando...";
+    
+    signInWithPopup(auth, msProvider)
+      .then((result) => {
         window.location.href = "index.html";
       })
       .catch((error) => {
+        btnText.textContent = "Entrar com Microsoft";
         errorMsg.style.display = 'block';
-        console.error("Erro no login:", error.message);
+        
+        if (error.code === 'auth/popup-closed-by-user') {
+          errorMsg.textContent = "O login foi cancelado. Tente novamente.";
+        } else {
+          errorMsg.textContent = "Ocorreu um erro ao acessar. Fale com o suporte.";
+          console.error("Erro Auth:", error.message);
+        }
       });
   });
 </script>
+
 </body>
 </html>
