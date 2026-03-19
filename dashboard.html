@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Quality Point</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  body { display: none; }
+  
+  :root {
+    --bg: #0A0A0A;
+    --accent1: #FF2D8B;
+    --accent2: #00C8FF;
+    --accent3: #FFE234;
+    --text: #FFFDF0;
+    --card-bg: rgba(255, 255, 255, 0.03);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+
+  .title {
+    font-size: 32px;
+    font-weight: 800;
+  }
+  .title span { color: var(--accent2); }
+
+  .btn-voltar {
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .btn-voltar:hover { background: rgba(255,255,255,0.1); }
+
+  .table-container {
+    width: 100%;
+    max-width: 1000px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  th {
+    background: rgba(0, 200, 255, 0.1);
+    color: var(--accent2);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 12px;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  td {
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background: rgba(255,255,255,0.02); }
+
+  .tag-page {
+    background: rgba(255, 226, 52, 0.1);
+    color: var(--accent3);
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: rgba(255,255,255,0.5);
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="title">Relatório de <span>Acessos</span></div>
+  <a href="index.html" class="btn-voltar">← Voltar ao Radar</a>
+</div>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Data e Hora</th>
+        <th>Vendedor</th>
+        <th>E-mail</th>
+        <th>Material Acessado</th>
+      </tr>
+    </thead>
+    <tbody id="tabela-dados">
+      <tr>
+        <td colspan="4" class="loading">Carregando dados ao vivo do Firebase...</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBsF136lpHDCE62lVLoFK4K0FuxgpRUr6s",
+    authDomain: "quality-point-finx.firebaseapp.com",
+    projectId: "quality-point-finx",
+    storageBucket: "quality-point-finx.firebasestorage.app",
+    messagingSenderId: "400200617084",
+    appId: "1:400200617084:web:3b834238653c34721dcdf9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const emailsGestores = [
+    "lucca.moraes@finxcapital.com.br",
+    // "@finxcapital.com.br" 
+  ];
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+    } else if (!emailsGestores.includes(user.email)) {
+      alert("Acesso Negado: Apenas lideranças e áreas administrativas podem ver esta página.");
+      window.location.href = "index.html";
+    } else {
+      document.body.style.display = 'flex';
+      carregarDados();
+    }
+  });
+
+  async function carregarDados() {
+    const tabela = document.getElementById('tabela-dados');
+    
+    try {
+      const q = query(collection(db, "acessos"), orderBy("dataAcesso", "desc"));
+      const querySnapshot = await getDocs(q);
+      
+      tabela.innerHTML = '';
+
+      if (querySnapshot.empty) {
+        tabela.innerHTML = '<tr><td colspan="4" style="text-align:center;">Nenhum acesso registrado ainda.</td></tr>';
+        return;
+      }
+
+      querySnapshot.forEach((doc) => {
+        const dado = doc.data();
+        
+        let dataFormatada = "Data não disponível";
+        if (dado.dataAcesso) {
+          const dataObj = dado.dataAcesso.toDate();
+          dataFormatada = dataObj.toLocaleString('pt-BR', { 
+            day: '2-digit', month: '2-digit', year: 'numeric', 
+            hour: '2-digit', minute: '2-digit' 
+          });
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-weight: 600;">${dataFormatada}</td>
+          <td>${dado.nome || "Não informado"}</td>
+          <td style="opacity: 0.6;">${dado.email || "-"}</td>
+          <td><span class="tag-page">${dado.pagina || "Página Desconhecida"}</span></td>
+        `;
+        tabela.appendChild(tr);
+      });
+
+    } catch (erro) {
+      console.error("Erro ao buscar dados:", erro);
+      tabela.innerHTML = '<tr><td colspan="4" style="color:#ff4d4d; text-align:center;">Erro ao carregar dados. O banco bloqueou a leitura ou está vazio.</td></tr>';
+    }
+  }
+</script>
+
+</body>
+</html>
