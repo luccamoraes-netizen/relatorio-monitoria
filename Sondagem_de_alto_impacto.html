@@ -670,6 +670,7 @@
   async function registrarAcesso(usuario) {
     try {
       await addDoc(collection(db, "acessos"), {
+        nome: usuario.displayName || "Nome não informado",
         email: usuario.email || "Email não retornado",
         pagina: document.title, 
         dataAcesso: serverTimestamp(), 
